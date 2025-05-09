@@ -1,13 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Data;
 using System.Diagnostics;
-using Microsoft.VisualBasic.Devices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Drawing;
-using System.Numerics;
-using System.Windows.Forms;
-using System;
+using System.Runtime.InteropServices;
 using WindowsInput;
-using System.Data;
 
 
 
@@ -176,6 +170,52 @@ namespace Auto_Clicker
         [DllImport("user32.dll")]
         private static extern bool SetCursorPos(int X, int Y);
 
+        public static (DialogResult result, bool anotherClicked) ShowCustomMessage(string message)
+        {
+            bool anotherClicked = false;
+
+            Form form = new Form
+            {
+                Text = "Info",
+                Size = new Size(300, 150),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterScreen,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            Label lbl = new Label
+            {
+                Text = message,
+                AutoSize = false,
+                Size = new Size(260, 40),
+                Location = new Point(20, 10),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            form.Controls.Add(lbl);
+
+            Button okButton = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(50, 70), Size = new Size(75, 30) };
+            Button anotherButton = new Button { Text = "Set Another", Location = new Point(150, 70), Size = new Size(85, 30) };
+
+            anotherButton.Click += (s, e) =>
+            {
+                anotherClicked = true;
+                form.DialogResult = DialogResult.Retry;
+                form.Close();
+            };
+
+            form.Controls.Add(okButton);
+            form.Controls.Add(anotherButton);
+
+            form.AcceptButton = okButton;
+
+            var result = form.ShowDialog();
+            return (result, anotherClicked);
+        }
+
+
+
 
         /*private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
@@ -194,6 +234,8 @@ namespace Auto_Clicker
 
         private List<ClickOrKeyAction> SavedActions = new List<ClickOrKeyAction>();
 
+        private List<Form> activeMarkers = new();
+
         private int clickIndex = 0;
 
 
@@ -206,7 +248,6 @@ namespace Auto_Clicker
             Properties.Settings.Default.Hotkey = hotkey.ToString();
             Properties.Settings.Default.HoldOrSwitch = HoldToClick.Checked ? "hold" : "switch";
             Properties.Settings.Default.PositionButton = PositionIsChecked.Checked;
-            Properties.Settings.Default.ShowallPositions = ShowAllPositionsCheck.Checked;
 
             Properties.Settings.Default.Clickkey = clickKey.ToString();
 
@@ -308,14 +349,6 @@ namespace Auto_Clicker
             {
                 SettingsSaveonexit.Checked = false;
                 SettingsSaveonexit.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
-            }
-            if (Properties.Settings.Default.ShowallPositions)
-            {
-                ShowAllPositionsCheck.Checked = true;
-            }
-            else
-            {
-                ShowAllPositionsCheck.Checked = false;
             }
 
             if (!string.IsNullOrEmpty(Properties.Settings.Default.Hotkey))
@@ -475,20 +508,22 @@ namespace Auto_Clicker
             }
         }
 
-        private void ShowPositionMarker(Point pos, int setTime = 2)
+        private Form ShowPositionMarker(Point pos, int setTime = 2)
         {
-            Form marker = new Form();
-            marker.FormBorderStyle = FormBorderStyle.None;
-            marker.StartPosition = FormStartPosition.Manual;
-            marker.BackColor = Color.Magenta;
-            marker.TransparencyKey = Color.Magenta;
-            marker.TopMost = true;
-            marker.ShowInTaskbar = false;
+            int size = 10;
+            var marker = new Form
+            {
+                FormBorderStyle = FormBorderStyle.None,
+                StartPosition = FormStartPosition.Manual,
+                BackColor = Color.Magenta,
+                TransparencyKey = Color.Magenta,
+                TopMost = true,
+                ShowInTaskbar = false,
+                Size = new Size(size, size),
+                Location = new Point(pos.X - size / 2, pos.Y - size / 2)
+            };
 
             // Größe des Punkts (z. B. 6×6 Pixel)
-            int size = 10;
-            marker.Size = new Size(size, size);
-            marker.Location = new Point(pos.X - size / 2, pos.Y - size / 2); // zentrieren
             int Posindex = SavedActions.FindIndex(a => a.MousePosition.X == pos.X && a.MousePosition.Y == pos.Y) + 1;
 
             marker.Paint += (s, e) =>
@@ -520,14 +555,6 @@ namespace Auto_Clicker
                 }
             };
 
-            /*Label PosLabel = new Label();
-            PosLabel.Text = $"{Posindex}. X={pos.X} Y={pos.Y}";
-            PosLabel.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            PosLabel.TextAlign = ContentAlignment.TopRight;
-            PosLabel.Dock = DockStyle.Fill;
-            PosLabel.ForeColor = Color.White;
-            marker.Controls.Add(PosLabel);*/
-
             marker.Show();
 
             // Kreis nach kurzer Zeit wieder entfernen
@@ -539,14 +566,12 @@ namespace Auto_Clicker
                 {
                     t.Stop();
                     marker.Close();
+                    
                 };
                 t.Start();
             }
-            else
-            {
-                marker.Show();
+            return marker;
             }
-        }
 
         private void DoClick()
         {
@@ -1252,9 +1277,6 @@ namespace Auto_Clicker
             {
 
             }
-            else
-            {
-
             }
         }
     }
