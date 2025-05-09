@@ -229,13 +229,12 @@ namespace Auto_Clicker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowallPositions {
+        public global::System.Collections.Specialized.StringCollection BlacklistedApps {
             get {
-                return ((bool)(this["ShowallPositions"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["BlacklistedApps"]));
             }
             set {
-                this["ShowallPositions"] = value;
+                this["BlacklistedApps"] = value;
             }
         }
     }

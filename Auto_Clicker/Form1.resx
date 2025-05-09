@@ -659,7 +659,7 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;UseMouse.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>GroupKeyPress</value>
   </data>
   <data name="&gt;&gt;UseMouse.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -683,7 +683,7 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;UseKeyboard.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>GroupKeyPress</value>
   </data>
   <data name="&gt;&gt;UseKeyboard.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -692,7 +692,7 @@ when assign a Key to Something</value>
     <value>143, 57</value>
   </data>
   <data name="SwitchToClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
+    <value>70, 24</value>
   </data>
   <data name="SwitchToClick.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -717,6 +717,69 @@ when assign a Key to Something</value>
   </data>
   <data name="&gt;&gt;SwitchToClick.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="PositionIsChecked.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PositionIsChecked.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 22</value>
+  </data>
+  <data name="PositionIsChecked.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 28</value>
+  </data>
+  <data name="PositionIsChecked.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="PositionIsChecked.Text" xml:space="preserve">
+    <value>Use Actions</value>
+  </data>
+  <metadata name="CheckUsePositions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 54</value>
+  </metadata>
+  <data name="PositionIsChecked.ToolTip" xml:space="preserve">
+    <value>if checked it switched between the position down in the Clicker position</value>
+  </data>
+  <data name="&gt;&gt;PositionIsChecked.Name" xml:space="preserve">
+    <value>PositionIsChecked</value>
+  </data>
+  <data name="&gt;&gt;PositionIsChecked.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PositionIsChecked.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;PositionIsChecked.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ResetAllSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>352, 25</value>
+  </data>
+  <data name="ResetAllSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 50</value>
+  </data>
+  <data name="ResetAllSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ResetAllSettings.Text" xml:space="preserve">
+    <value>Reset Settings</value>
+  </data>
+  <metadata name="Reset.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>294, 17</value>
+  </metadata>
+  <data name="ResetAllSettings.ToolTip" xml:space="preserve">
+    <value>Reset all Settings and Save them</value>
+  </data>
+  <data name="&gt;&gt;ResetAllSettings.Name" xml:space="preserve">
+    <value>ResetAllSettings</value>
+  </data>
+  <data name="&gt;&gt;ResetAllSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ResetAllSettings.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;ResetAllSettings.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="HoldToClick.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 25</value>
@@ -746,37 +809,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;HoldToClick.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="PositionIsChecked.Location" type="System.Drawing.Point, System.Drawing">
-    <value>221, 24</value>
-  </data>
-  <data name="PositionIsChecked.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 21</value>
-  </data>
-  <data name="PositionIsChecked.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="PositionIsChecked.Text" xml:space="preserve">
-    <value>Use Positions</value>
-  </data>
-  <metadata name="CheckUsePositions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 54</value>
-  </metadata>
-  <data name="PositionIsChecked.ToolTip" xml:space="preserve">
-    <value>if checked it switched between the position down in the Clicker position</value>
-  </data>
-  <data name="&gt;&gt;PositionIsChecked.Name" xml:space="preserve">
-    <value>PositionIsChecked</value>
-  </data>
-  <data name="&gt;&gt;PositionIsChecked.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PositionIsChecked.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;PositionIsChecked.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="HotkeyFindKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 52</value>
@@ -800,7 +833,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;HotkeyFindKey.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="Hotkeypressvalue.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 22</value>
@@ -827,13 +860,13 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;Hotkeypressvalue.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>149, 27</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 91</value>
+    <value>455, 91</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -875,7 +908,7 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;KeyToPress.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>GroupKeyPress</value>
   </data>
   <data name="&gt;&gt;KeyToPress.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -899,36 +932,36 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ClickKeyFind.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+    <value>GroupKeyPress</value>
   </data>
   <data name="&gt;&gt;ClickKeyFind.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="GroupKeyPress.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="GroupKeyPress.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 28</value>
   </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="GroupKeyPress.Size" type="System.Drawing.Size, System.Drawing">
     <value>131, 183</value>
   </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
+  <data name="GroupKeyPress.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
+  <data name="GroupKeyPress.Text" xml:space="preserve">
     <value>Key Press</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;GroupKeyPress.Name" xml:space="preserve">
+    <value>GroupKeyPress</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
+  <data name="&gt;&gt;GroupKeyPress.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;GroupKeyPress.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;GroupKeyPress.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="ClickPerSecNum.Location" type="System.Drawing.Point, System.Drawing">
@@ -1241,10 +1274,13 @@ when assign a Key to Something</value>
     <value>46, 389</value>
   </data>
   <data name="InfoLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 23</value>
+    <value>558, 23</value>
   </data>
   <data name="InfoLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="InfoLabel.Text" xml:space="preserve">
+    <value>Infos LOL</value>
   </data>
   <data name="&gt;&gt;InfoLabel.Name" xml:space="preserve">
     <value>InfoLabel</value>
@@ -1258,41 +1294,11 @@ when assign a Key to Something</value>
   <data name="&gt;&gt;InfoLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="ResetAllSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>563, 48</value>
-  </data>
-  <data name="ResetAllSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 59</value>
-  </data>
-  <data name="ResetAllSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ResetAllSettings.Text" xml:space="preserve">
-    <value>Reset Settings</value>
-  </data>
-  <metadata name="Reset.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>294, 17</value>
-  </metadata>
-  <data name="ResetAllSettings.ToolTip" xml:space="preserve">
-    <value>Reset all Settings and Save them</value>
-  </data>
-  <data name="&gt;&gt;ResetAllSettings.Name" xml:space="preserve">
-    <value>ResetAllSettings</value>
-  </data>
-  <data name="&gt;&gt;ResetAllSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ResetAllSettings.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ResetAllSettings.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="ShowAllPositionsCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ShowAllPositionsCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>341, 143</value>
+    <value>236, 143</value>
   </data>
   <data name="ShowAllPositionsCheck.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 21</value>
@@ -1325,7 +1331,7 @@ when assign a Key to Something</value>
     <value>True</value>
   </data>
   <data name="LabelUsingActions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>276, 0</value>
+    <value>170, 2</value>
   </data>
   <data name="LabelUsingActions.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 17</value>
@@ -1362,7 +1368,7 @@ else it will use the normal Key press</value>
     <value>NoControl</value>
   </data>
   <data name="KeySaveInList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 48</value>
+    <value>9, 57</value>
   </data>
   <data name="KeySaveInList.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 29</value>
@@ -1371,7 +1377,7 @@ else it will use the normal Key press</value>
     <value>5</value>
   </data>
   <data name="KeySaveInList.Text" xml:space="preserve">
-    <value>Save Key Press</value>
+    <value>Save Key</value>
   </data>
   <data name="&gt;&gt;KeySaveInList.Name" xml:space="preserve">
     <value>KeySaveInList</value>
@@ -1386,7 +1392,7 @@ else it will use the normal Key press</value>
     <value>2</value>
   </data>
   <data name="CurserPositionList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 22</value>
+    <value>137, 22</value>
   </data>
   <data name="CurserPositionList.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 116</value>
@@ -1407,7 +1413,7 @@ else it will use the normal Key press</value>
     <value>3</value>
   </data>
   <data name="PositionSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 13</value>
+    <value>9, 22</value>
   </data>
   <data name="PositionSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 29</value>
@@ -1431,7 +1437,7 @@ else it will use the normal Key press</value>
     <value>4</value>
   </data>
   <data name="PositionClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 118</value>
+    <value>9, 127</value>
   </data>
   <data name="PositionClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 29</value>
@@ -1455,7 +1461,7 @@ else it will use the normal Key press</value>
     <value>5</value>
   </data>
   <data name="PositionRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 83</value>
+    <value>9, 92</value>
   </data>
   <data name="PositionRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 29</value>
@@ -1479,7 +1485,7 @@ else it will use the normal Key press</value>
     <value>6</value>
   </data>
   <data name="ShowPointOnClick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 143</value>
+    <value>137, 143</value>
   </data>
   <data name="ShowPointOnClick.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 21</value>
@@ -1512,13 +1518,13 @@ else it will use the normal Key press</value>
     <value>12, 216</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>421, 170</value>
+    <value>317, 170</value>
   </data>
   <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="groupBox5.Text" xml:space="preserve">
-    <value>Clicker Positons</value>
+    <value>Actions</value>
   </data>
   <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
     <value>groupBox5</value>
@@ -1530,11 +1536,140 @@ else it will use the normal Key press</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
   </metadata>
+  <data name="ResetBlacklistList.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ResetBlacklistList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="ResetBlacklistList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 31</value>
+  </data>
+  <data name="ResetBlacklistList.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="ResetBlacklistList.Text" xml:space="preserve">
+    <value>Reset List</value>
+  </data>
+  <data name="&gt;&gt;ResetBlacklistList.Name" xml:space="preserve">
+    <value>ResetBlacklistList</value>
+  </data>
+  <data name="&gt;&gt;ResetBlacklistList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ResetBlacklistList.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;ResetBlacklistList.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="SaveBlacklistList.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="SaveBlacklistList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>81, 20</value>
+  </data>
+  <data name="SaveBlacklistList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 31</value>
+  </data>
+  <data name="SaveBlacklistList.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="SaveBlacklistList.Text" xml:space="preserve">
+    <value>Save List</value>
+  </data>
+  <data name="&gt;&gt;SaveBlacklistList.Name" xml:space="preserve">
+    <value>SaveBlacklistList</value>
+  </data>
+  <data name="&gt;&gt;SaveBlacklistList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;SaveBlacklistList.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;SaveBlacklistList.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 20</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 31</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="AllAppsList.HorizontalScrollbar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AllAppsList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 52</value>
+  </data>
+  <data name="AllAppsList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 112</value>
+  </data>
+  <data name="AllAppsList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;AllAppsList.Name" xml:space="preserve">
+    <value>AllAppsList</value>
+  </data>
+  <data name="&gt;&gt;AllAppsList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AllAppsList.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;AllAppsList.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>335, 216</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>269, 170</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Blacklist Apps</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1548,7 +1683,7 @@ else it will use the normal Key press</value>
     <value>None</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>643, 421</value>
+    <value>611, 421</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10pt</value>
@@ -1862,9 +1997,6 @@ else it will use the normal Key press</value>
   </data>
   <data name="$this.RightToLeftLayout" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value> Auto Clicker</value>

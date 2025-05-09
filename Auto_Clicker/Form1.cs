@@ -1,7 +1,11 @@
 ﻿using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Xml.Linq;
 using WindowsInput;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
 
@@ -10,6 +14,13 @@ namespace Auto_Clicker
 
     public partial class Form1 : Form
     {
+        string[] blacklistapps =
+        [
+            "TextInputHost.exe",
+            "SystemSettings.exe",
+            "ApplicationFrameHost.exe"
+        ];
+
         string[] AllowedKeyboardList =
         [
             // Buchstaben A-Z
@@ -167,54 +178,36 @@ namespace Auto_Clicker
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(Keys vKey);
 
+
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
         [DllImport("user32.dll")]
-        private static extern bool SetCursorPos(int X, int Y);
+        static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
-        public static (DialogResult result, bool anotherClicked) ShowCustomMessage(string message)
-        {
-            bool anotherClicked = false;
+        [DllImport("user32.dll")]
+        static extern bool IsWindowVisible(IntPtr hWnd);
 
-            Form form = new Form
-            {
-                Text = "Info",
-                Size = new Size(300, 150),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                StartPosition = FormStartPosition.CenterScreen,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                TopMost = true
-            };
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
-            Label lbl = new Label
-            {
-                Text = message,
-                AutoSize = false,
-                Size = new Size(260, 40),
-                Location = new Point(20, 10),
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            form.Controls.Add(lbl);
+        [DllImport("user32.dll")]
+        static extern IntPtr GetShellWindow();
 
-            Button okButton = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(50, 70), Size = new Size(75, 30) };
-            Button anotherButton = new Button { Text = "Set Another", Location = new Point(150, 70), Size = new Size(85, 30) };
+        [DllImport("user32.dll")]
+        static extern IntPtr GetParent(IntPtr hWnd);
 
-            anotherButton.Click += (s, e) =>
-            {
-                anotherClicked = true;
-                form.DialogResult = DialogResult.Retry;
-                form.Close();
-            };
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
 
-            form.Controls.Add(okButton);
-            form.Controls.Add(anotherButton);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int GetWindowTextLength(IntPtr hWnd);
 
-            form.AcceptButton = okButton;
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-            var result = form.ShowDialog();
-            return (result, anotherClicked);
-        }
-
-
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
 
         /*private const int MOUSEEVENTF_LEFTDOWN = 0x02;
@@ -226,6 +219,9 @@ namespace Auto_Clicker
         private const int XBUTTON1 = 0x0001;
         private const int XBUTTON2 = 0x0002;
 
+        const int GWL_EXSTYLE = -20;
+        const int WS_EX_TOOLWINDOW = 0x00000080;
+
 
         private bool clicking = false;
         private Keys hotkey = Keys.F6;
@@ -236,6 +232,8 @@ namespace Auto_Clicker
 
         private List<Form> activeMarkers = new();
 
+        private List<string> BlacklistedWindowTitles = new List<string>();
+
         private int clickIndex = 0;
 
 
@@ -243,21 +241,21 @@ namespace Auto_Clicker
 
         private void SaveSettings()
         {
-            Properties.Settings.Default.UseMouseMode = UseMouse.Checked;
+            Properties.Settings.Default.UseMouseMode = UseMouse.Checked; // true = Maus, false = Tastatur
 
-            Properties.Settings.Default.Hotkey = hotkey.ToString();
-            Properties.Settings.Default.HoldOrSwitch = HoldToClick.Checked ? "hold" : "switch";
-            Properties.Settings.Default.PositionButton = PositionIsChecked.Checked;
+            Properties.Settings.Default.Hotkey = hotkey.ToString(); // Hotkey für den Autoclicker
+            Properties.Settings.Default.HoldOrSwitch = HoldToClick.Checked ? "hold" : "switch"; // "hold" oder "switch"
+            Properties.Settings.Default.PositionButton = PositionIsChecked.Checked; // true = Position speichern, false = keine Position speichern
 
-            Properties.Settings.Default.Clickkey = clickKey.ToString();
+            Properties.Settings.Default.Clickkey = clickKey.ToString(); // Taste für den Klick
 
-            Properties.Settings.Default.ClickMode = ClicksPersSecButton.Checked ? "cps" : "time";
-            Properties.Settings.Default.ClicksPerSec = ClickPerSecNum.Value;
-            Properties.Settings.Default.ClickTimeValue = PerTimeNum.Value;
-            Properties.Settings.Default.ClickTimeUnit = PerTimeValue.SelectedItem?.ToString() ?? "ms";
+            Properties.Settings.Default.ClickMode = ClicksPersSecButton.Checked ? "cps" : "time"; // "cps" oder "time"
+            Properties.Settings.Default.ClicksPerSec = ClickPerSecNum.Value; // Klicks pro Sekunde
+            Properties.Settings.Default.ClickTimeValue = PerTimeNum.Value; // Zeit zwischen Klicks
+            Properties.Settings.Default.ClickTimeUnit = PerTimeValue.SelectedItem?.ToString() ?? "ms"; // Einheit für die Zeit (ms, s, m, h)
 
-            Properties.Settings.Default.RepeatInfinite = RepeatUnlimited.Checked;
-            Properties.Settings.Default.RepeatCount = RepeatTimes.Value;
+            Properties.Settings.Default.RepeatInfinite = RepeatUnlimited.Checked; // true = unendlich, false = wiederholen
+            Properties.Settings.Default.RepeatCount = RepeatTimes.Value; // Anzahl der Wiederholungen
 
             var parts = SavedActions.Select(action =>
             {
@@ -267,22 +265,25 @@ namespace Auto_Clicker
                     return $"K:{action.Key}";
                 return null;
             }).Where(s => s != null);
-            Properties.Settings.Default.SavedPoints = string.Join(";", parts);
+            Properties.Settings.Default.SavedPoints = string.Join(";", parts); // Speichern der gespeicherten Punkte
 
-            Properties.Settings.Default.ShowPointCLick = ShowPointOnClick.Checked;
+            Properties.Settings.Default.ShowPointCLick = ShowPointOnClick.Checked; // true = Punkt anzeigen, false = keinen Punkt anzeigen
 
-            Properties.Settings.Default.SaveOnExit = SettingsSaveonexit.Checked;
-            Properties.Settings.Default.SetOnTop = setTopMostMenu.Checked;
-            Properties.Settings.Default.DisableWindowOnPosition = disableWindowOnPositionMenu.Checked;
-            Properties.Settings.Default.DisableredBox = disableRedBoxMenu.Checked;
+            Properties.Settings.Default.SaveOnExit = SettingsSaveonexit.Checked; // true = Einstellungen speichern beim Schließen
+            Properties.Settings.Default.SetOnTop = setTopMostMenu.Checked;  // true = Fenster immer im Vordergrund
+            Properties.Settings.Default.DisableWindowOnPosition = disableWindowOnPositionMenu.Checked; // true = Fenster deaktivieren, wenn Position gespeichert ist
+            Properties.Settings.Default.DisableredBox = disableRedBoxMenu.Checked; // true = rote Box deaktivieren
 
-            Properties.Settings.Default.Save();
+            var collection = new System.Collections.Specialized.StringCollection();
+            collection.AddRange(BlacklistedWindowTitles.ToArray());
+            Properties.Settings.Default.BlacklistedApps = collection;
+
+            Properties.Settings.Default.Save(); // Speichern der Einstellungen
         }
-
 
         private void LoadSettings()
         {
-            if (Properties.Settings.Default.UseMouseMode)
+            if (Properties.Settings.Default.UseMouseMode) // true = Maus, false =  Tastatur
             {
                 UseMouse.Checked = true;
             }
@@ -291,16 +292,7 @@ namespace Auto_Clicker
                 UseKeyboard.Checked = true;
             }
 
-            if (Properties.Settings.Default.PositionButton)
-            {
-                PositionIsChecked.Checked = true;
-            }
-            else
-            {
-                PositionIsChecked.Checked = false;
-            }
-
-            if (Properties.Settings.Default.ShowPointCLick)
+            if (Properties.Settings.Default.ShowPointCLick) // true = Punkt anzeigen, false = keinen Punkt anzeigen
             {
                 ShowPointOnClick.Checked = true;
             }
@@ -308,7 +300,7 @@ namespace Auto_Clicker
             {
                 ShowPointOnClick.Checked = false;
             }
-            if (Properties.Settings.Default.SetOnTop)
+            if (Properties.Settings.Default.SetOnTop) // true = Fenster immer im Vordergrund
             {
                 setTopMostMenu.Checked = true;
                 setTopMostMenu.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -320,7 +312,7 @@ namespace Auto_Clicker
                 setTopMostMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
                 this.TopMost = false;
             }
-            if (Properties.Settings.Default.DisableWindowOnPosition)
+            if (Properties.Settings.Default.DisableWindowOnPosition) // true = Fenster deaktivieren, wenn Position gespeichert ist
             {
                 disableWindowOnPositionMenu.Checked = true;
                 disableWindowOnPositionMenu.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -330,7 +322,7 @@ namespace Auto_Clicker
                 disableWindowOnPositionMenu.Checked = false;
                 disableWindowOnPositionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             }
-            if (Properties.Settings.Default.DisableredBox)
+            if (Properties.Settings.Default.DisableredBox) // true = rote Box deaktivieren
             {
                 disableRedBoxMenu.Checked = true;
                 disableRedBoxMenu.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -340,7 +332,7 @@ namespace Auto_Clicker
                 disableRedBoxMenu.Checked = false;
                 disableRedBoxMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             }
-            if (Properties.Settings.Default.SaveOnExit)
+            if (Properties.Settings.Default.SaveOnExit) // true = Einstellungen speichern beim Schließen
             {
                 SettingsSaveonexit.Checked = true;
                 SettingsSaveonexit.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -351,13 +343,13 @@ namespace Auto_Clicker
                 SettingsSaveonexit.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             }
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.Hotkey))
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.Hotkey)) // Hotkey für den Autoclicker
             {
                 hotkey = (Keys)Enum.Parse(typeof(Keys), Properties.Settings.Default.Hotkey);
                 Hotkeypressvalue.SelectedItem = hotkey.ToString();
             }
 
-            if (Properties.Settings.Default.HoldOrSwitch == "hold")
+            if (Properties.Settings.Default.HoldOrSwitch == "hold") // "hold" oder "switch"
             {
                 HoldToClick.Checked = true;
             }
@@ -366,18 +358,18 @@ namespace Auto_Clicker
                 SwitchToClick.Checked = true;
             }
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.Clickkey))
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.Clickkey)) // Taste für den Klick
             {
                 clickKey = (Keys)Enum.Parse(typeof(Keys), Properties.Settings.Default.Clickkey);
                 KeyToPress.SelectedItem = clickKey.ToString();
             }
 
-            if (Properties.Settings.Default.ClicksPerSec > 0)
+            if (Properties.Settings.Default.ClicksPerSec > 0) // Klicks pro Sekunde
             {
                 ClickPerSecNum.Value = Properties.Settings.Default.ClicksPerSec;
             }
 
-            if (Properties.Settings.Default.ClickMode == "cps")
+            if (Properties.Settings.Default.ClickMode == "cps") // "cps" oder "time"
             {
                 ClicksPersSecButton.Checked = true;
             }
@@ -386,7 +378,7 @@ namespace Auto_Clicker
                 PerTimeButton.Checked = true;
             }
 
-            if (Properties.Settings.Default.RepeatInfinite)
+            if (Properties.Settings.Default.RepeatInfinite) // true = unedlich, false = wiederholen
             {
                 RepeatUnlimited.Checked = true;
             }
@@ -396,7 +388,7 @@ namespace Auto_Clicker
             }
 
             PerTimeNum.Value = Properties.Settings.Default.ClickTimeValue;
-            if (PerTimeValue.Items.Contains(Properties.Settings.Default.ClickTimeUnit))
+            if (PerTimeValue.Items.Contains(Properties.Settings.Default.ClickTimeUnit)) // Einheit für die Zeit (ms, s, m, h)
                 PerTimeValue.SelectedItem = Properties.Settings.Default.ClickTimeUnit;
 
             RepeatTimes.Value = Properties.Settings.Default.RepeatCount;
@@ -444,17 +436,95 @@ namespace Auto_Clicker
                     }
                 }
             }
-            UpdateActionList();
+
+            if (Properties.Settings.Default.PositionButton) // true = Position speichern, false = keine Position speichern
+            {
+                PositionIsChecked.Checked = true;
+                if (CurserPositionList.Items.Count > 0)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                PositionIsChecked.Checked = false;
+            }
+
+            var stored = Properties.Settings.Default.BlacklistedApps;
+            if (stored != null)
+            {
+                BlacklistedWindowTitles.AddRange(stored.Cast<string>());
+            }
+            foreach (var item in BlacklistedWindowTitles)
+            {
+                int index = AllAppsList.Items.Add($"{item} - Not Found but saved!");
+                AllAppsList.SetItemChecked(index, true);
+            }
+
+            UpdateActionList(); // UI aktualisieren
         }
 
         private void ResetSettings()
         {
+            var backupBlacklist = Properties.Settings.Default.BlacklistedApps;
+            BlacklistedWindowTitles.Clear();
+
             Properties.Settings.Default.Reset();  // Setzt auf Standardwerte zurück
+            Properties.Settings.Default.Save(); // Speichern der Einstellungen
+
+            Properties.Settings.Default.BlacklistedApps = backupBlacklist;
             Properties.Settings.Default.Save();
+
+            SavedActions.Clear();
+            AllAppsList.Items.Clear();
+
             LoadSettings();         // Lade die nun zurückgesetzten Werte
-            SavedActions.Clear(); // RAM-liste leeren
             UpdateActionList();   // UI aktualisieren
 
+        }
+
+        public static (DialogResult result, bool anotherClicked) ShowCustomMessage(string message)
+        {
+            bool anotherClicked = false;
+
+            Form form = new Form
+            {
+                Text = "Info",
+                Size = new Size(300, 150),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterScreen,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            Label lbl = new Label
+            {
+                Text = message,
+                AutoSize = false,
+                Size = new Size(260, 40),
+                Location = new Point(20, 10),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            form.Controls.Add(lbl);
+
+            Button okButton = new Button { Text = "OK", DialogResult = DialogResult.OK, Location = new Point(50, 70), Size = new Size(75, 30) };
+            Button anotherButton = new Button { Text = "Set Another", Location = new Point(150, 70), Size = new Size(85, 30) };
+
+            anotherButton.Click += (s, e) =>
+            {
+                anotherClicked = true;
+                form.DialogResult = DialogResult.Retry;
+                form.Close();
+            };
+
+            form.Controls.Add(okButton);
+            form.Controls.Add(anotherButton);
+
+            form.AcceptButton = okButton;
+
+            var result = form.ShowDialog();
+            return (result, anotherClicked);
         }
 
         private void SaveMouseClick(Point pos)
@@ -530,9 +600,7 @@ namespace Auto_Clicker
             {
                 // Punkt zeichnen
                 using (Brush pointBrush = new SolidBrush(Color.Red))
-                {
                     e.Graphics.FillEllipse(pointBrush, 0, 0, size - 1, size - 1);
-                }
 
                 // Text vorbereiten
                 string text = $"{Posindex}. X={pos.X} Y={pos.Y}";
@@ -543,15 +611,11 @@ namespace Auto_Clicker
 
                     // Hintergrund (halbtransparent schwarz)
                     using (Brush bgBrush = new SolidBrush(Color.FromArgb(60, 60, 60))) // dunkelgrau
-                    {
                         e.Graphics.FillRectangle(bgBrush, textRect);
-                    }
 
                     // Text in Weiß
                     using (Brush textBrush = new SolidBrush(Color.White))
-                    {
                         e.Graphics.DrawString(text, font, textBrush, size + 4, 0);
-                    }
                 }
             };
 
@@ -566,12 +630,109 @@ namespace Auto_Clicker
                 {
                     t.Stop();
                     marker.Close();
-                    
+
                 };
                 t.Start();
             }
             return marker;
+        }
+
+        private (string processName, string windowTitle) GetActiveProcessName()
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            GetWindowThreadProcessId(hWnd, out uint processId);
+
+            try
+            {
+                Process proc = Process.GetProcessById((int)processId);
+                string processName = proc.ProcessName + ".exe";
+
+                int length = GetWindowTextLength(hWnd);
+                StringBuilder builder = new StringBuilder(length + 1);
+                GetWindowText(hWnd, builder, builder.Capacity);
+                string windowTitle = builder.ToString();
+
+                return (processName, windowTitle);
             }
+            catch
+            {
+                return (string.Empty, string.Empty);
+            }
+        }
+
+        public void btnRefreshWindows()
+        {
+            AllAppsList.Items.Clear();
+            IntPtr shellWindow = GetShellWindow();
+
+            EnumWindows((hWnd, lParam) =>
+            {
+                if (hWnd == shellWindow) return true;
+                if (!IsWindowVisible(hWnd)) return true;
+                if (GetParent(hWnd) != IntPtr.Zero) return true;
+
+                int length = GetWindowTextLength(hWnd);
+                if (length == 0) return true;
+
+                int exStyle = (int)GetWindowLong(hWnd, GWL_EXSTYLE);
+                if ((exStyle & WS_EX_TOOLWINDOW) != 0) return true;
+
+                StringBuilder builder = new StringBuilder(length + 1);
+                GetWindowText(hWnd, builder, builder.Capacity);
+                string windowTitle = builder.ToString();
+
+                // Prozess-ID herausfinden
+                GetWindowThreadProcessId(hWnd, out uint processId);
+                string processName = "unknown";
+
+                try
+                {
+                    Process proc = Process.GetProcessById((int)processId);
+                    processName = proc.ProcessName + ".exe";
+                }
+                catch { }
+
+                if (!blacklistapps.Contains(processName))
+                {
+                    int index = AllAppsList.Items.Add($"{processName} - {windowTitle}");
+                    if (BlacklistedWindowTitles.Contains(processName))
+                    {
+                        AllAppsList.SetItemChecked(index, true);
+                    }
+                }
+
+                return true;
+            }, IntPtr.Zero);
+
+            foreach (var blackitem in BlacklistedWindowTitles)
+            {
+                bool isfound = false;
+
+                foreach (var item in AllAppsList.CheckedItems)
+                {
+                    if (item == null)
+                        continue;
+                    string selectedItem = item.ToString();
+                    string[] parts = selectedItem.Split(new[] { " - " }, StringSplitOptions.None);
+                    if (parts.Length >= 2)
+                    {
+                        string processName = parts[0];
+                        string windowTitle = parts[1];
+
+                        if (blackitem == processName)
+                        {
+                            isfound = true;
+                        }
+                    }
+                }
+
+                if (!isfound)
+                {
+                    int index = AllAppsList.Items.Add($"{blackitem} - Not Found but saved!");
+                    AllAppsList.SetItemChecked(index, true);
+                }
+            }
+        }
 
         private void DoClick()
         {
@@ -624,9 +785,27 @@ namespace Auto_Clicker
             }
         }
 
+        private void Setinfotextfast(string Text = "")
+        {
+            Invoke(new Action(() =>
+            {
+                InfoLabel.Text = Text;
+            }));
+        }
+
+        private CancellationTokenSource? clickCts;
+        private readonly object clickLock = new();
+
         private void StartClicking()
         {
-            clicking = true;
+            lock (clickLock)
+            {
+                if (clicking) return;
+                clicking = true;
+                clickCts = new CancellationTokenSource();
+            }
+
+            CancellationToken token = clickCts.Token;
 
             if (ClicksPersSecButton.Checked)
             {
@@ -638,61 +817,73 @@ namespace Auto_Clicker
                 {
                     Stopwatch sw = new Stopwatch();
 
-                    while (clicking)
+                    while (!token.IsCancellationRequested)
                     {
                         sw.Restart();
-                        if (SavedActions.Count != 0 && PositionIsChecked.Checked)
+                        var (proc, _) = GetActiveProcessName();
+                        if (!BlacklistedWindowTitles.Contains(proc))
                         {
-
-                            var action = SavedActions[clickIndex];
-                            clickIndex = (clickIndex + 1) % SavedActions.Count;
-
-                            clickIndex = (clickIndex + 1) % SavedActions.Count;
-                            if (action.Type == ActionType.MouseClick)
+                            Setinfotextfast("Autoclicker running.....");
+                            if (SavedActions.Count != 0 && PositionIsChecked.Checked)
                             {
-                                if (Screen.PrimaryScreen != null)
+
+                                var action = SavedActions[clickIndex];
+                                clickIndex = (clickIndex + 1) % SavedActions.Count;
+
+                                if (action.Type == ActionType.MouseClick)
                                 {
-                                    int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-                                    int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                                    if (Screen.PrimaryScreen != null)
+                                    {
+                                        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+                                        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
-                                    double absoluteX = action.MousePosition.X * 65535.0 / (screenWidth - 1);
-                                    double absoluteY = action.MousePosition.Y * 65535.0 / (screenHeight - 1);
+                                        double absoluteX = action.MousePosition.X * 65535.0 / (screenWidth - 1);
+                                        double absoluteY = action.MousePosition.Y * 65535.0 / (screenHeight - 1);
 
-                                    new InputSimulator().Mouse.MoveMouseTo(absoluteX, absoluteY);
+                                        new InputSimulator().Mouse.MoveMouseTo(absoluteX, absoluteY);
+                                    }
+                                    new InputSimulator().Mouse
+                                        .LeftButtonClick();
                                 }
-                                new InputSimulator().Mouse
-                                    .LeftButtonClick();
+                                else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
+                                {
+                                    // Tastendruck
+                                    string keyName = action.Key.Value.ToString();
+                                    if (keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
+                                    {
+                                        new InputSimulator().Keyboard
+                                            .KeyPress(vk);
+                                    }
+                                }
                             }
-                            else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
+                            else
                             {
-                                // Tastendruck
-                                string keyName = action.Key.Value.ToString();
-                                if (keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
-                                {
-                                    new InputSimulator().Keyboard
-                                        .KeyPress(vk);
-                                }
+                                //Debug.WriteLine("is Clicking.... " + clickIndex + pos.X + " " + pos.Y);
+                                DoClick();
                             }
                         }
                         else
                         {
-                            //Debug.WriteLine("is Clicking.... " + clickIndex + pos.X + " " + pos.Y);
-                            DoClick();
+                            Setinfotextfast("Autoclicker ON: Waiting for None Blacklisted window.......");
                         }
 
-                        // Schlafen, um ungefähr das Zielintervall zu treffen
-                        int sleepTime = (int)Math.Max(0, intervalMs - 1);
-                        Thread.Sleep(sleepTime);
+                        double remaining = intervalMs - sw.Elapsed.TotalMilliseconds;
 
-                        // Feinjustierung durch aktives Warten (wenige µs)
+                        if (remaining > 2)
+                        {
+                            Thread.Sleep((int)(remaining - 1)); // Grobschlaf
+                        }
+
+                        // Feintuning mit SpinWait (nur sehr kurz)
                         while (sw.Elapsed.TotalMilliseconds < intervalMs)
                         {
-                            Thread.SpinWait(10); // sehr kleine Warteinheiten
+                            if (!clicking || token.IsCancellationRequested)
+                                break;
+
+                            Thread.SpinWait(5); // Weniger Spins reicht für 100 CPS
                         }
                     }
-                });
-
-
+                }, token);
             }
             else if (PerTimeButton.Checked)
             {
@@ -729,74 +920,94 @@ namespace Auto_Clicker
                 {
                     Stopwatch sw = new Stopwatch();
 
-                    while ((infinite || clickCount < repeatCount) && clicking)
+                    while ((infinite || clickCount < repeatCount) && !token.IsCancellationRequested)
                     {
                         sw.Restart();
-                        if (SavedActions.Count != 0 && PositionIsChecked.Checked)
+                        var (proc, _) = GetActiveProcessName();
+                        if (!BlacklistedWindowTitles.Contains(proc))
                         {
-                            foreach (var action in SavedActions)
+                            Setinfotextfast("Autoclicker running.....");
+                            if (SavedActions.Count != 0 && PositionIsChecked.Checked)
                             {
-                                if (Screen.PrimaryScreen != null)
+                                foreach (var action in SavedActions)
                                 {
-                                    if (action.Type == ActionType.MouseClick)
+                                    if (Screen.PrimaryScreen != null)
                                     {
-                                        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-                                        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
-
-                                        double absoluteX = action.MousePosition.X * 65535.0 / (screenWidth - 1);
-                                        double absoluteY = action.MousePosition.Y * 65535.0 / (screenHeight - 1);
-
-                                        new InputSimulator().Mouse.MoveMouseTo(absoluteX, absoluteY);
-
-                                        new InputSimulator().Mouse
-                                            .LeftButtonClick();
-                                    }
-                                    else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
-                                    {
-                                        string keyName = action.Key.Value.ToString();
-                                        if (keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
+                                        if (action.Type == ActionType.MouseClick)
                                         {
-                                            new InputSimulator().Keyboard
-                                                .KeyPress(vk);
+                                            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+                                            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+
+                                            double absoluteX = action.MousePosition.X * 65535.0 / (screenWidth - 1);
+                                            double absoluteY = action.MousePosition.Y * 65535.0 / (screenHeight - 1);
+
+                                            new InputSimulator().Mouse.MoveMouseTo(absoluteX, absoluteY);
+
+                                            new InputSimulator().Mouse
+                                                .LeftButtonClick();
+                                        }
+                                        else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
+                                        {
+                                            string keyName = action.Key.Value.ToString();
+                                            if (keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
+                                            {
+                                                new InputSimulator().Keyboard
+                                                    .KeyPress(vk);
+                                            }
                                         }
                                     }
+                                    Thread.Sleep(10);
                                 }
-                                Thread.Sleep(10);
                             }
+                            else
+                            {
+                                //Debug.WriteLine("is Clicking.... ");
+                                DoClick();
+                            }
+                            //Debug.WriteLine("Pause");
+
+                            clickCount++;
                         }
                         else
                         {
-                            //Debug.WriteLine("is Clicking.... ");
-                            DoClick();
+                            Setinfotextfast("Autoclicker ON: Waiting for None Blacklisted window.......");
                         }
-                        //Debug.WriteLine("Pause");
 
+                        double remaining = intervalMs - sw.Elapsed.TotalMilliseconds;
 
-                        clickCount++;
+                        if (remaining > 2)
+                        {
+                            Thread.Sleep((int)(remaining - 1)); // Grobschlaf
+                        }
 
-                        int sleepTime = (int)Math.Max(0, intervalMs - 1);
-                        Thread.Sleep(sleepTime);
-
+                        // Feintuning mit SpinWait (nur sehr kurz)
                         while (sw.Elapsed.TotalMilliseconds < intervalMs)
                         {
-                            Thread.SpinWait(10);
+                            if (!clicking || token.IsCancellationRequested)
+                                break;
+
+                            Thread.SpinWait(5); // Weniger Spins reicht für 100 CPS
                         }
                     }
-                    Invoke(new Action(() =>
+                    if (RepeatRepeat.Checked)
                     {
-                        if (RepeatRepeat.Checked)
-                        {
-                            InfoLabel.Text = "Autoclicker Stopped.....";
-                            StopClicking();
-                        }
-                    }));
-                });
+                        Setinfotextfast("Autoclicker Stopped.....");
+                        StopClicking();
+                    }
+                }, token);
             }
         }
 
         private void StopClicking()
         {
-            clicking = false;
+            lock (clickLock)
+            {
+                if (!clicking) return;
+                clicking = false;
+                clickCts?.Cancel();
+            }
+
+            Invoke(() => InfoLabel.Text = "Autoclicker Stopped.....");
         }
 
         private void AddKeysToPress(bool switchtomouse)
@@ -831,16 +1042,17 @@ namespace Auto_Clicker
             InitializeComponent();
 
             hotkeyTimer = new System.Windows.Forms.Timer();
-            hotkeyTimer.Interval = 50;
+            hotkeyTimer.Interval = 10;
             hotkeyTimer.Tick += HotkeyTimer_Tick;
             hotkeyTimer.Start();
 
-            this.KeyPreview = true;
+            this.KeyPreview = false;
             //this.KeyDown += Form1_KeyDown;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Hotkeypressvalue.Items.Add(Keys.None.ToString());
             foreach (var name in Enum.GetNames(typeof(Keys)))
             {
                 if (AllowedMouseList.Contains(name) && (name != "LButton" && name != "RButton") || AllowedKeyboardList.Contains(name))
@@ -852,15 +1064,9 @@ namespace Auto_Clicker
             PerTimeValue.Items.Add("s");
             PerTimeValue.Items.Add("m");
             PerTimeValue.Items.Add("h");
-            PerTimeValue.SelectedItem = "ms";
-
-            Hotkeypressvalue.SelectedItem = hotkey.ToString();
-            KeyToPress.SelectedItem = clickKey.ToString();
-            PerTimeValue.SelectedItem = "ms";
 
             // Lade die Einstellungen
             LoadSettings();
-
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -904,22 +1110,22 @@ namespace Auto_Clicker
                             breakloop = true; // Escape-Taste gedrückt, Schleife beenden
                             break;
                         }
-                        else if (Keypressed && detectedKey == hotkey && !isHotkey)
+                        else if (Keypressed && key == hotkey && !isHotkey)
                         {
                             ShowError = true;
-                            ErrortoShow = $"Not a Valid Key (Same as Hotkey):/ {key} / Try again after it get back Orange\nBack in: ";
+                            ErrortoShow = $"(Same as Hotkey): {key}";
                         }
                         else if (Mousefind && Keypressed && AllowedMouseList.Contains(key.ToString())) // Taste ist gedrückt
                         {
                             if (isHotkey && (key.ToString() == "LButton" || key.ToString() == "RButton"))
                             {
                                 ShowError = true;
-                                ErrortoShow = $"Not a Valid Key (Hotkey diasabled keys: LButton, RButton):/ {key} / Try again after it get back Orange\nBack in: ";
+                                ErrortoShow = $"(Hotkey diasabled keys: LButton, RButton): {key}";
                             }
                             else if (isKeypress && !UseMouse.Checked)
                             {
                                 ShowError = true;
-                                ErrortoShow = $"Not a Valid Key (You have to Check Use Mouse):/ {key} / Try again after it get back Orange\nBack in: ";
+                                ErrortoShow = $"(You have to Check Use Mouse): {key}";
                             }
                             else
                             {
@@ -932,7 +1138,7 @@ namespace Auto_Clicker
                             if (keyboardfind && isKeypress && !UseKeyboard.Checked)
                             {
                                 ShowError = true;
-                                ErrortoShow = $"Not a Valid Key (You have to Check Use Keyboard):/ {key} / Try again after it get back Orange\nBack in: ";
+                                ErrortoShow = $"(You have to Check Use Keyboard): {key}";
                             }
                             else
                             {
@@ -943,7 +1149,7 @@ namespace Auto_Clicker
                         else if (Keypressed)
                         {
                             ShowError = true;
-                            ErrortoShow = $"Not a Valid Key:/ {key} / Try again after it get back Orange\nBack in: ";
+                            ErrortoShow = $"(Not exist in list): {key}";
                         }
                     }
                     overlay.Focus();
@@ -951,12 +1157,12 @@ namespace Auto_Clicker
                     {
                         overlay.BackColor = Color.Red;
                         //overlay.SetMessage($"Not a Valid Key: {detectedKey} Try again after it get back Orange\nBack in: 3");
-                        overlay.SetMessage(ErrortoShow + TimerTogoback);
+                        overlay.SetMessage($"Not a Valid Key\n{ErrortoShow}\nTry again after it get back Orange\nBack in: {TimerTogoback}");
                         overlay.Refresh();
                         while (TimerTogoback > 0)
                         {
                             //overlay.SetMessage($"Not a Valid Key: {detectedKey} Try again after it get back Orange\nBack in: {TimerTogoback}");
-                            overlay.SetMessage(ErrortoShow + TimerTogoback);
+                            overlay.SetMessage($"Not a Valid Key\n{ErrortoShow}\nTry again after it get back Orange\nBack in: {TimerTogoback}");
                             overlay.Refresh();
                             TimerTogoback--;
                             Thread.Sleep(1000);
@@ -974,7 +1180,7 @@ namespace Auto_Clicker
                     overlay.BackColor = Color.Green;
                     overlay.SetMessage($"Key detected: {detectedKey}");
                     overlay.Refresh();
-                    Thread.Sleep(1000); // Kurze Pause, um die Anzeige zu sehen
+                    Thread.Sleep(500); // Kurze Pause, um die Anzeige zu sehen
                 }
                 else if (breakloop)
                 {
@@ -1129,19 +1335,51 @@ namespace Auto_Clicker
 
         private void button2_Click(object sender, EventArgs e)
         {
-
             this.WindowState = FormWindowState.Minimized;
 
             Keys detectedKey = Keys.None;
+
+            Form marker = new Form
+            {
+                FormBorderStyle = FormBorderStyle.None,
+                StartPosition = FormStartPosition.Manual,
+                BackColor = Color.Magenta,
+                TransparencyKey = Color.Magenta,
+                TopMost = true,
+                ShowInTaskbar = false,
+                Size = new Size(400, 200) // Platz für Text
+            };
+
+            Label coordLabel = new Label
+            {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.TopLeft,
+                Font = new Font("Segoe UI", 9),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(60, 60, 60) // halbtransparent schwarzer Hintergrund
+            };
+
+            marker.Controls.Add(coordLabel);
+            marker.Show();
 
             while (detectedKey == Keys.None)
             {
                 if ((GetAsyncKeyState(Keys.LButton) & 0x8000) != 0)
                 {
                     detectedKey = Keys.LButton;
+                    break;
                 }
-                Thread.Sleep(50); // Kurze Pause, um CPU-Last zu reduzieren
+                Point cursorPos = Cursor.Position;
+
+                // Marker neu positionieren (neben dem Cursor z. B. +20px)
+                marker.Location = new Point(cursorPos.X + 10, cursorPos.Y + 10);
+                coordLabel.Text = $"X={cursorPos.X}, Y={cursorPos.Y}";
+
+                Application.DoEvents();
+                Thread.Sleep(30); // Kurze Pause, um CPU-Last zu reduzieren
             }
+            marker.Close();
 
             if (detectedKey != Keys.None)
             {
@@ -1155,8 +1393,27 @@ namespace Auto_Clicker
                 }
                 else
                 {
-                    MessageBox.Show($"Position Saved: X={selectedPos.X}, Y={selectedPos.Y}");
+                    //MessageBox.Show($"Position Saved: X={selectedPos.X}, Y={selectedPos.Y}");
+                    var (dialogResult, another) = ShowCustomMessage($"Position Saved: X={selectedPos.X}, Y={selectedPos.Y}");
+                    InfoLabel.Text = $"Position Saved: X={selectedPos.X}, Y={selectedPos.Y}";
+
+                    if (another)
+                    {
+                        PositionSave.PerformClick();
+                    }
                 }
+            }
+
+            if (CurserPositionList.Items.Count > 0)
+            {
+                if (PositionIsChecked.Checked && GroupKeyPress.Enabled)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                GroupKeyPress.Enabled = true;
             }
 
         }
@@ -1164,21 +1421,56 @@ namespace Auto_Clicker
         private void PositionClear_Click(object sender, EventArgs e)
         {
             ClearSavedPositions();
+
+            if (CurserPositionList.Items.Count > 0)
+            {
+                if (PositionIsChecked.Checked && GroupKeyPress.Enabled)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                GroupKeyPress.Enabled = true;
+            }
         }
 
         private void PositionRemove_Click(object sender, EventArgs e)
         {
             RemoveSelectedPosition();
+
+            if (CurserPositionList.Items.Count > 0)
+            {
+                if (PositionIsChecked.Checked && GroupKeyPress.Enabled)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                GroupKeyPress.Enabled = true;
+            }
         }
 
         private void CurserPositionList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ShowPointOnClick.Checked && CurserPositionList.SelectedItem != null && !CurserPositionList.SelectedItem.ToString().Contains("Key"))
+            if (ShowPointOnClick.Checked && CurserPositionList.SelectedItem != null && !CurserPositionList.SelectedItem.ToString().Contains("Key") && !ShowAllPositionsCheck.Checked)
             {
                 int indexpos = CurserPositionList.SelectedIndex;
                 Point pos = SavedActions[indexpos].MousePosition;
-                Debug.WriteLine("Selected: " + pos.X + " " + pos.Y);
+                //Debug.WriteLine("Selected: " + pos.X + " " + pos.Y);
                 ShowPositionMarker(pos);
+            }
+            if (CurserPositionList.Items.Count > 0)
+            {
+                if (PositionIsChecked.Checked && GroupKeyPress.Enabled)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                GroupKeyPress.Enabled = true;
             }
         }
 
@@ -1243,6 +1535,18 @@ namespace Auto_Clicker
             {
                 SaveKeyPress(PressedKey);
             }
+
+            if (CurserPositionList.Items.Count > 0)
+            {
+                if (PositionIsChecked.Checked && GroupKeyPress.Enabled)
+                {
+                    GroupKeyPress.Enabled = false;
+                }
+            }
+            else
+            {
+                GroupKeyPress.Enabled = true;
+            }
         }
 
         private void disableRedBoxMenu_Click(object sender, EventArgs e)
@@ -1264,20 +1568,87 @@ namespace Auto_Clicker
             if (PositionIsChecked.Checked)
             {
                 LabelUsingActions.Visible = true;
+                if (SavedActions.Count > 0)
+                    GroupKeyPress.Enabled = false;
             }
             else
             {
                 LabelUsingActions.Visible = false;
+                GroupKeyPress.Enabled = true;
             }
         }
 
         private void ShowAllPositionsCheck_CheckedChanged(object sender, EventArgs e)
         {
+            // Erst alte Marker entfernen
+            foreach (var marker in activeMarkers)
+                marker.Close();
+            activeMarkers.Clear();
+
             if (ShowAllPositionsCheck.Checked)
             {
+                foreach (var action in SavedActions)
+                {
+                    if (action.Type == ActionType.MouseClick)
+                    {
+                        var marker = ShowPositionMarker(action.MousePosition, 0);
+                        activeMarkers.Add(marker);
+                    }
+                }
+            }
+        }
 
+        private void AllAppsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (AllAppsList.SelectedItem != null)
+            {
+                BlacklistedWindowTitles.Clear();
+
+                foreach (var item in AllAppsList.CheckedItems)
+                {
+                    if (item == null)
+                        continue;
+                    string selectedItem = item.ToString();
+                    string[] parts = selectedItem.Split(new[] { " - " }, StringSplitOptions.None);
+                    if (parts.Length >= 2)
+                    {
+                        string processName = parts[0];
+                        string windowTitle = parts[1];
+
+                        BlacklistedWindowTitles.Add(processName);
+                        //Debug.WriteLine(processName);
+                    }
+                }
             }
-            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            btnRefreshWindows();
+        }
+
+        private void SaveBlacklistList_Click(object sender, EventArgs e)
+        {
+            var collection = new System.Collections.Specialized.StringCollection();
+            collection.AddRange(BlacklistedWindowTitles.ToArray());
+            Properties.Settings.Default.BlacklistedApps = collection;
+
+            Properties.Settings.Default.Save();
+            InfoLabel.Text = "Blacklist saved.";
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            BlacklistedWindowTitles.Clear();
+
+            var collection = new System.Collections.Specialized.StringCollection();
+            collection.AddRange(BlacklistedWindowTitles.ToArray());
+            Properties.Settings.Default.BlacklistedApps = collection;
+
+            Properties.Settings.Default.Save();
+            btnRefreshWindows();
+
+            InfoLabel.Text = "Blacklist Reseted";
         }
     }
 
@@ -1296,7 +1667,7 @@ namespace Auto_Clicker
             this.TopMost = true;
 
             // Bildschirmgröße holen
-            Rectangle screen = Screen.PrimaryScreen?.WorkingArea 
+            Rectangle screen = Screen.PrimaryScreen?.WorkingArea
                                ?? new Rectangle(0, 0, 800, 600);
 
 
@@ -1314,7 +1685,7 @@ namespace Auto_Clicker
             // Label hinzufügen
             messageLabel = new Label();
             messageLabel.Text = "Press a Valid key.\nPRESS: ESC   to cancle this procces";
-            messageLabel.Font = new Font("Segoe UI", 20, FontStyle.Regular);
+            messageLabel.Font = new Font("Segoe UI", 40, FontStyle.Regular);
             messageLabel.TextAlign = ContentAlignment.MiddleCenter;
             messageLabel.Dock = DockStyle.Fill;
             messageLabel.ForeColor = Color.White;

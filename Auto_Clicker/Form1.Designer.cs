@@ -42,11 +42,12 @@
             UseKeyboard = new RadioButton();
             groupBox2 = new GroupBox();
             SwitchToClick = new RadioButton();
-            HoldToClick = new RadioButton();
             PositionIsChecked = new CheckBox();
+            ResetAllSettings = new Button();
+            HoldToClick = new RadioButton();
             HotkeyFindKey = new Button();
             Hotkeypressvalue = new ComboBox();
-            groupBox3 = new GroupBox();
+            GroupKeyPress = new GroupBox();
             KeyToPress = new ComboBox();
             ClickKeyFind = new Button();
             groupBox4 = new GroupBox();
@@ -62,7 +63,6 @@
             label1 = new Label();
             label2 = new Label();
             InfoLabel = new Label();
-            ResetAllSettings = new Button();
             groupBox5 = new GroupBox();
             ShowAllPositionsCheck = new CheckBox();
             LabelUsingActions = new Label();
@@ -85,15 +85,21 @@
             TipLabelUsingaction = new ToolTip(components);
             Showpointtip = new ToolTip(components);
             TipShowallpoints = new ToolTip(components);
+            groupBox1 = new GroupBox();
+            ResetBlacklistList = new Button();
+            SaveBlacklistList = new Button();
+            button1 = new Button();
+            AllAppsList = new CheckedListBox();
             menuStrip1.SuspendLayout();
             groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
+            GroupKeyPress.SuspendLayout();
             groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ClickPerSecNum).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PerTimeNum).BeginInit();
             ClickRepeatgroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)RepeatTimes).BeginInit();
             groupBox5.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -130,6 +136,7 @@
             // 
             // saveToolStripMenuItem
             // 
+            saveToolStripMenuItem.Image = Properties.Resources.Save_Icon;
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             resources.ApplyResources(saveToolStripMenuItem, "saveToolStripMenuItem");
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click_1;
@@ -170,8 +177,9 @@
             // groupBox2
             // 
             groupBox2.Controls.Add(SwitchToClick);
-            groupBox2.Controls.Add(HoldToClick);
             groupBox2.Controls.Add(PositionIsChecked);
+            groupBox2.Controls.Add(ResetAllSettings);
+            groupBox2.Controls.Add(HoldToClick);
             groupBox2.Controls.Add(HotkeyFindKey);
             groupBox2.Controls.Add(Hotkeypressvalue);
             resources.ApplyResources(groupBox2, "groupBox2");
@@ -187,13 +195,6 @@
             ButtonSwitch.SetToolTip(SwitchToClick, resources.GetString("SwitchToClick.ToolTip"));
             SwitchToClick.UseVisualStyleBackColor = true;
             // 
-            // HoldToClick
-            // 
-            resources.ApplyResources(HoldToClick, "HoldToClick");
-            HoldToClick.Name = "HoldToClick";
-            ButtonHold.SetToolTip(HoldToClick, resources.GetString("HoldToClick.ToolTip"));
-            HoldToClick.UseVisualStyleBackColor = true;
-            // 
             // PositionIsChecked
             // 
             resources.ApplyResources(PositionIsChecked, "PositionIsChecked");
@@ -201,6 +202,21 @@
             CheckUsePositions.SetToolTip(PositionIsChecked, resources.GetString("PositionIsChecked.ToolTip"));
             PositionIsChecked.UseVisualStyleBackColor = true;
             PositionIsChecked.CheckedChanged += PositionIsChecked_CheckedChanged;
+            // 
+            // ResetAllSettings
+            // 
+            resources.ApplyResources(ResetAllSettings, "ResetAllSettings");
+            ResetAllSettings.Name = "ResetAllSettings";
+            Reset.SetToolTip(ResetAllSettings, resources.GetString("ResetAllSettings.ToolTip"));
+            ResetAllSettings.UseVisualStyleBackColor = true;
+            ResetAllSettings.Click += ResetAllSettings_Click;
+            // 
+            // HoldToClick
+            // 
+            resources.ApplyResources(HoldToClick, "HoldToClick");
+            HoldToClick.Name = "HoldToClick";
+            ButtonHold.SetToolTip(HoldToClick, resources.GetString("HoldToClick.ToolTip"));
+            HoldToClick.UseVisualStyleBackColor = true;
             // 
             // HotkeyFindKey
             // 
@@ -222,15 +238,15 @@
             Hotkeytopresstip.SetToolTip(Hotkeypressvalue, resources.GetString("Hotkeypressvalue.ToolTip"));
             Hotkeypressvalue.SelectedIndexChanged += Hotkeypressvalue_SelectedIndexChanged;
             // 
-            // groupBox3
+            // GroupKeyPress
             // 
-            groupBox3.Controls.Add(UseMouse);
-            groupBox3.Controls.Add(UseKeyboard);
-            groupBox3.Controls.Add(KeyToPress);
-            groupBox3.Controls.Add(ClickKeyFind);
-            resources.ApplyResources(groupBox3, "groupBox3");
-            groupBox3.Name = "groupBox3";
-            groupBox3.TabStop = false;
+            GroupKeyPress.Controls.Add(UseMouse);
+            GroupKeyPress.Controls.Add(UseKeyboard);
+            GroupKeyPress.Controls.Add(KeyToPress);
+            GroupKeyPress.Controls.Add(ClickKeyFind);
+            resources.ApplyResources(GroupKeyPress, "GroupKeyPress");
+            GroupKeyPress.Name = "GroupKeyPress";
+            GroupKeyPress.TabStop = false;
             // 
             // KeyToPress
             // 
@@ -359,14 +375,6 @@
             resources.ApplyResources(InfoLabel, "InfoLabel");
             InfoLabel.Name = "InfoLabel";
             // 
-            // ResetAllSettings
-            // 
-            resources.ApplyResources(ResetAllSettings, "ResetAllSettings");
-            ResetAllSettings.Name = "ResetAllSettings";
-            Reset.SetToolTip(ResetAllSettings, resources.GetString("ResetAllSettings.ToolTip"));
-            ResetAllSettings.UseVisualStyleBackColor = true;
-            ResetAllSettings.Click += ResetAllSettings_Click;
-            // 
             // groupBox5
             // 
             groupBox5.Controls.Add(ShowAllPositionsCheck);
@@ -383,8 +391,6 @@
             // 
             // ShowAllPositionsCheck
             // 
-            ShowAllPositionsCheck.Checked = true;
-            ShowAllPositionsCheck.CheckState = CheckState.Checked;
             resources.ApplyResources(ShowAllPositionsCheck, "ShowAllPositionsCheck");
             ShowAllPositionsCheck.Name = "ShowAllPositionsCheck";
             TipShowallpoints.SetToolTip(ShowAllPositionsCheck, resources.GetString("ShowAllPositionsCheck.ToolTip"));
@@ -445,18 +451,64 @@
             Showpointtip.SetToolTip(ShowPointOnClick, resources.GetString("ShowPointOnClick.ToolTip"));
             ShowPointOnClick.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(ResetBlacklistList);
+            groupBox1.Controls.Add(SaveBlacklistList);
+            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(AllAppsList);
+            resources.ApplyResources(groupBox1, "groupBox1");
+            groupBox1.Name = "groupBox1";
+            groupBox1.TabStop = false;
+            // 
+            // ResetBlacklistList
+            // 
+            ResetBlacklistList.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(ResetBlacklistList, "ResetBlacklistList");
+            ResetBlacklistList.Name = "ResetBlacklistList";
+            ResetBlacklistList.TabStop = false;
+            ResetBlacklistList.UseVisualStyleBackColor = false;
+            ResetBlacklistList.Click += button2_Click_1;
+            // 
+            // SaveBlacklistList
+            // 
+            SaveBlacklistList.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(SaveBlacklistList, "SaveBlacklistList");
+            SaveBlacklistList.Name = "SaveBlacklistList";
+            SaveBlacklistList.TabStop = false;
+            SaveBlacklistList.UseVisualStyleBackColor = false;
+            SaveBlacklistList.Click += SaveBlacklistList_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(button1, "button1");
+            button1.Name = "button1";
+            button1.TabStop = false;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // AllAppsList
+            // 
+            AllAppsList.CheckOnClick = true;
+            AllAppsList.FormattingEnabled = true;
+            resources.ApplyResources(AllAppsList, "AllAppsList");
+            AllAppsList.Name = "AllAppsList";
+            AllAppsList.TabStop = false;
+            AllAppsList.SelectedIndexChanged += AllAppsList_SelectedIndexChanged;
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonFace;
+            Controls.Add(groupBox1);
             Controls.Add(groupBox5);
-            Controls.Add(ResetAllSettings);
             Controls.Add(InfoLabel);
             Controls.Add(label2);
             Controls.Add(ClickRepeatgroup);
             Controls.Add(groupBox4);
-            Controls.Add(groupBox3);
+            Controls.Add(GroupKeyPress);
             Controls.Add(groupBox2);
             Controls.Add(menuStrip1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -468,7 +520,7 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             groupBox2.ResumeLayout(false);
-            groupBox3.ResumeLayout(false);
+            GroupKeyPress.ResumeLayout(false);
             groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ClickPerSecNum).EndInit();
             ((System.ComponentModel.ISupportInitialize)PerTimeNum).EndInit();
@@ -476,6 +528,7 @@
             ((System.ComponentModel.ISupportInitialize)RepeatTimes).EndInit();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
+            groupBox1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
 
@@ -490,7 +543,7 @@
         private System.Windows.Forms.Button HotkeyFindKey;
         private System.Windows.Forms.RadioButton SwitchToClick;
         private System.Windows.Forms.RadioButton HoldToClick;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox GroupKeyPress;
         private System.Windows.Forms.Button ClickKeyFind;
         private System.Windows.Forms.ComboBox KeyToPress;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -537,6 +590,11 @@
         private ToolTip Showpointtip;
         private ToolTip TipShowallpoints;
         private CheckBox ShowAllPositionsCheck;
+        private GroupBox groupBox1;
+        private CheckedListBox AllAppsList;
+        private Button button1;
+        private Button SaveBlacklistList;
+        private Button ResetBlacklistList;
     }
 }
 
