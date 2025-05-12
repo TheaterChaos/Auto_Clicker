@@ -576,11 +576,44 @@
     <value>Sets the Red Box only on a 1 sec timer instead of a 3
 when assign a Key to Something</value>
   </data>
+  <data name="SaveAppsToOnExitMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="SaveAppsToOnExitMenu.Text" xml:space="preserve">
+    <value>Save Apps to on exit</value>
+  </data>
+  <data name="AddTooltipsMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="AddTooltipsMenu.Text" xml:space="preserve">
+    <value>Add Tooltips</value>
+  </data>
   <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 22</value>
   </data>
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="ShowHideMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="ShowHideMenu.Text" xml:space="preserve">
+    <value>Show / Hide</value>
+  </data>
+  <data name="custemizeCircleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="custemizeCircleToolStripMenuItem.Text" xml:space="preserve">
+    <value>Customize Circle</value>
+  </data>
+  <data name="clickCircleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 22</value>
+  </data>
+  <data name="clickCircleToolStripMenuItem.Text" xml:space="preserve">
+    <value>ClickCircle</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 6</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 22</value>
@@ -599,6 +632,9 @@ when assign a Key to Something</value>
   </data>
   <data name="SettingsSaveonexit.ToolTipText" xml:space="preserve">
     <value>When checked it save all settings on exit</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 6</value>
   </data>
   <data name="setTopMostMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 22</value>
@@ -688,6 +724,39 @@ when assign a Key to Something</value>
   <data name="&gt;&gt;UseKeyboard.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="WhitelistappsCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="WhitelistappsCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 57</value>
+  </data>
+  <data name="WhitelistappsCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 28</value>
+  </data>
+  <data name="WhitelistappsCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="WhitelistappsCheck.Text" xml:space="preserve">
+    <value>Whitelist apps</value>
+  </data>
+  <metadata name="AToolTips.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>299, 19</value>
+  </metadata>
+  <data name="WhitelistappsCheck.ToolTip" xml:space="preserve">
+    <value>if Checked it will only be clicking in the apps that are checked</value>
+  </data>
+  <data name="&gt;&gt;WhitelistappsCheck.Name" xml:space="preserve">
+    <value>WhitelistappsCheck</value>
+  </data>
+  <data name="&gt;&gt;WhitelistappsCheck.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WhitelistappsCheck.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;WhitelistappsCheck.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="SwitchToClick.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 57</value>
   </data>
@@ -700,9 +769,6 @@ when assign a Key to Something</value>
   <data name="SwitchToClick.Text" xml:space="preserve">
     <value>Switch</value>
   </data>
-  <metadata name="ButtonSwitch.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>766, 17</value>
-  </metadata>
   <data name="SwitchToClick.ToolTip" xml:space="preserve">
     <value>You can just switch by pressing the hotkey once</value>
   </data>
@@ -716,7 +782,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;SwitchToClick.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="PositionIsChecked.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -725,7 +791,7 @@ when assign a Key to Something</value>
     <value>219, 22</value>
   </data>
   <data name="PositionIsChecked.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 28</value>
+    <value>115, 28</value>
   </data>
   <data name="PositionIsChecked.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -733,9 +799,6 @@ when assign a Key to Something</value>
   <data name="PositionIsChecked.Text" xml:space="preserve">
     <value>Use Actions</value>
   </data>
-  <metadata name="CheckUsePositions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 54</value>
-  </metadata>
   <data name="PositionIsChecked.ToolTip" xml:space="preserve">
     <value>if checked it switched between the position down in the Clicker position</value>
   </data>
@@ -749,7 +812,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;PositionIsChecked.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="ResetAllSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>352, 25</value>
@@ -763,9 +826,6 @@ when assign a Key to Something</value>
   <data name="ResetAllSettings.Text" xml:space="preserve">
     <value>Reset Settings</value>
   </data>
-  <metadata name="Reset.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>294, 17</value>
-  </metadata>
   <data name="ResetAllSettings.ToolTip" xml:space="preserve">
     <value>Reset all Settings and Save them</value>
   </data>
@@ -779,7 +839,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;ResetAllSettings.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="HoldToClick.Location" type="System.Drawing.Point, System.Drawing">
     <value>143, 25</value>
@@ -793,9 +853,6 @@ when assign a Key to Something</value>
   <data name="HoldToClick.Text" xml:space="preserve">
     <value>Hold</value>
   </data>
-  <metadata name="ButtonHold.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>891, 17</value>
-  </metadata>
   <data name="HoldToClick.ToolTip" xml:space="preserve">
     <value>You have to hold the hotkey you set</value>
   </data>
@@ -809,7 +866,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;HoldToClick.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="HotkeyFindKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 52</value>
@@ -833,7 +890,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;HotkeyFindKey.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="Hotkeypressvalue.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 22</value>
@@ -844,9 +901,6 @@ when assign a Key to Something</value>
   <data name="Hotkeypressvalue.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <metadata name="Hotkeytopresstip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>303, 54</value>
-  </metadata>
   <data name="Hotkeypressvalue.ToolTip" xml:space="preserve">
     <value>Set a Hotkey you want to press to enable the autoclicker</value>
   </data>
@@ -860,7 +914,7 @@ when assign a Key to Something</value>
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;Hotkeypressvalue.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>149, 27</value>
@@ -895,9 +949,6 @@ when assign a Key to Something</value>
   <data name="KeyToPress.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <metadata name="KeytoPressinfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>171, 54</value>
-  </metadata>
   <data name="KeyToPress.ToolTip" xml:space="preserve">
     <value>Set a Key to be pressed when you press the hotkey button</value>
   </data>
@@ -965,22 +1016,16 @@ when assign a Key to Something</value>
     <value>6</value>
   </data>
   <data name="ClickPerSecNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 55</value>
+    <value>127, 55</value>
   </data>
   <data name="ClickPerSecNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 23</value>
+    <value>109, 23</value>
   </data>
   <data name="ClickPerSecNum.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="ClickPerSecNum.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
-  </data>
-  <metadata name="ValueClickspersec.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>619, 17</value>
-  </metadata>
-  <data name="ClickPerSecNum.ToolTip" xml:space="preserve">
-    <value>Set the CPS here</value>
   </data>
   <data name="&gt;&gt;ClickPerSecNum.Name" xml:space="preserve">
     <value>ClickPerSecNum</value>
@@ -1018,20 +1063,17 @@ when assign a Key to Something</value>
   <data name="&gt;&gt;ClicksPersSecButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="PerTimeValue.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="PerTimeValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>191, 27</value>
+    <value>186, 27</value>
   </data>
   <data name="PerTimeValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 24</value>
+    <value>50, 24</value>
   </data>
   <data name="PerTimeValue.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <metadata name="UnitPerTime.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>499, 17</value>
-  </metadata>
-  <data name="PerTimeValue.ToolTip" xml:space="preserve">
-    <value>Set the unit you want</value>
   </data>
   <data name="&gt;&gt;PerTimeValue.Name" xml:space="preserve">
     <value>PerTimeValue</value>
@@ -1049,13 +1091,16 @@ when assign a Key to Something</value>
     <value>6, 26</value>
   </data>
   <data name="PerTimeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
+    <value>115, 24</value>
   </data>
   <data name="PerTimeButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="PerTimeButton.Text" xml:space="preserve">
     <value>Per Time</value>
+  </data>
+  <data name="PerTimeButton.ToolTip" xml:space="preserve">
+    <value>it will Click 1 Time every value unit and how many repeats you want</value>
   </data>
   <data name="&gt;&gt;PerTimeButton.Name" xml:space="preserve">
     <value>PerTimeButton</value>
@@ -1069,23 +1114,20 @@ when assign a Key to Something</value>
   <data name="&gt;&gt;PerTimeButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="PerTimeNum.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="PerTimeNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 27</value>
+    <value>127, 27</value>
   </data>
   <data name="PerTimeNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 23</value>
+    <value>53, 23</value>
   </data>
   <data name="PerTimeNum.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="PerTimeNum.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
-  </data>
-  <metadata name="ValuePertime.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>376, 17</value>
-  </metadata>
-  <data name="PerTimeNum.ToolTip" xml:space="preserve">
-    <value>Set in what time the Key to press Like: every 2 s it will press 1 click</value>
   </data>
   <data name="&gt;&gt;PerTimeNum.Name" xml:space="preserve">
     <value>PerTimeNum</value>
@@ -1172,10 +1214,10 @@ when assign a Key to Something</value>
     <value>1</value>
   </data>
   <data name="RepeatTimes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 27</value>
+    <value>86, 27</value>
   </data>
   <data name="RepeatTimes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 23</value>
+    <value>50, 23</value>
   </data>
   <data name="RepeatTimes.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1231,9 +1273,6 @@ when assign a Key to Something</value>
   <data name="ClickRepeatgroup.Text" xml:space="preserve">
     <value>Click Repeat</value>
   </data>
-  <data name="ClickRepeatgroup.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;ClickRepeatgroup.Name" xml:space="preserve">
     <value>ClickRepeatgroup</value>
   </data>
@@ -1247,7 +1286,7 @@ when assign a Key to Something</value>
     <value>4</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 389</value>
+    <value>46, 5</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 17</value>
@@ -1270,11 +1309,14 @@ when assign a Key to Something</value>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="InfoLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
   <data name="InfoLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>46, 389</value>
+    <value>78, 5</value>
   </data>
   <data name="InfoLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 23</value>
+    <value>526, 23</value>
   </data>
   <data name="InfoLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1309,9 +1351,6 @@ when assign a Key to Something</value>
   <data name="ShowAllPositionsCheck.Text" xml:space="preserve">
     <value>Show All</value>
   </data>
-  <metadata name="TipShowallpoints.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>739, 52</value>
-  </metadata>
   <data name="ShowAllPositionsCheck.ToolTip" xml:space="preserve">
     <value>Shows all Positions with a red dot and name</value>
   </data>
@@ -1342,13 +1381,6 @@ when assign a Key to Something</value>
   <data name="LabelUsingActions.Text" xml:space="preserve">
     <value>Using Actions</value>
   </data>
-  <metadata name="TipLabelUsingaction.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>447, 54</value>
-  </metadata>
-  <data name="LabelUsingActions.ToolTip" xml:space="preserve">
-    <value>It will use the actions if there are any
-else it will use the normal Key press</value>
-  </data>
   <data name="LabelUsingActions.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1378,6 +1410,9 @@ else it will use the normal Key press</value>
   </data>
   <data name="KeySaveInList.Text" xml:space="preserve">
     <value>Save Key</value>
+  </data>
+  <data name="KeySaveInList.ToolTip" xml:space="preserve">
+    <value>Save a Key from the Keyboard you want it to Click</value>
   </data>
   <data name="&gt;&gt;KeySaveInList.Name" xml:space="preserve">
     <value>KeySaveInList</value>
@@ -1424,6 +1459,9 @@ else it will use the normal Key press</value>
   <data name="PositionSave.Text" xml:space="preserve">
     <value>Save Position</value>
   </data>
+  <data name="PositionSave.ToolTip" xml:space="preserve">
+    <value>Save the Position you want it to click</value>
+  </data>
   <data name="&gt;&gt;PositionSave.Name" xml:space="preserve">
     <value>PositionSave</value>
   </data>
@@ -1447,6 +1485,9 @@ else it will use the normal Key press</value>
   </data>
   <data name="PositionClear.Text" xml:space="preserve">
     <value>Clear List</value>
+  </data>
+  <data name="PositionClear.ToolTip" xml:space="preserve">
+    <value>Clear the whole list</value>
   </data>
   <data name="&gt;&gt;PositionClear.Name" xml:space="preserve">
     <value>PositionClear</value>
@@ -1472,6 +1513,9 @@ else it will use the normal Key press</value>
   <data name="PositionRemove.Text" xml:space="preserve">
     <value>Remove Action</value>
   </data>
+  <data name="PositionRemove.ToolTip" xml:space="preserve">
+    <value>Remove the Selected Action</value>
+  </data>
   <data name="&gt;&gt;PositionRemove.Name" xml:space="preserve">
     <value>PositionRemove</value>
   </data>
@@ -1496,9 +1540,6 @@ else it will use the normal Key press</value>
   <data name="ShowPointOnClick.Text" xml:space="preserve">
     <value>Show Point</value>
   </data>
-  <metadata name="Showpointtip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>609, 54</value>
-  </metadata>
   <data name="ShowPointOnClick.ToolTip" xml:space="preserve">
     <value>Show only the selected Position for 2 sec</value>
   </data>
@@ -1515,7 +1556,7 @@ else it will use the normal Key press</value>
     <value>7</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 216</value>
+    <value>12, 210</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
     <value>317, 170</value>
@@ -1556,6 +1597,9 @@ else it will use the normal Key press</value>
   <data name="ResetBlacklistList.Text" xml:space="preserve">
     <value>Reset List</value>
   </data>
+  <data name="ResetBlacklistList.ToolTip" xml:space="preserve">
+    <value>Resets All checked apps and refreshes the page</value>
+  </data>
   <data name="&gt;&gt;ResetBlacklistList.Name" xml:space="preserve">
     <value>ResetBlacklistList</value>
   </data>
@@ -1563,7 +1607,7 @@ else it will use the normal Key press</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ResetBlacklistList.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>BlackWhiteListAppsGroup</value>
   </data>
   <data name="&gt;&gt;ResetBlacklistList.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1583,6 +1627,10 @@ else it will use the normal Key press</value>
   <data name="SaveBlacklistList.Text" xml:space="preserve">
     <value>Save List</value>
   </data>
+  <data name="SaveBlacklistList.ToolTip" xml:space="preserve">
+    <value>Save the checked apps
+auto save not working for this</value>
+  </data>
   <data name="&gt;&gt;SaveBlacklistList.Name" xml:space="preserve">
     <value>SaveBlacklistList</value>
   </data>
@@ -1590,7 +1638,7 @@ else it will use the normal Key press</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SaveBlacklistList.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>BlackWhiteListAppsGroup</value>
   </data>
   <data name="&gt;&gt;SaveBlacklistList.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1610,6 +1658,9 @@ else it will use the normal Key press</value>
   <data name="button1.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="button1.ToolTip" xml:space="preserve">
+    <value>Refresh the Apps list</value>
+  </data>
   <data name="&gt;&gt;button1.Name" xml:space="preserve">
     <value>button1</value>
   </data>
@@ -1617,10 +1668,16 @@ else it will use the normal Key press</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;button1.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>BlackWhiteListAppsGroup</value>
   </data>
   <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="AllAppsList.ColumnWidth" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="AllAppsList.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
   </data>
   <data name="AllAppsList.HorizontalScrollbar" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1641,40 +1698,40 @@ else it will use the normal Key press</value>
     <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AllAppsList.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+    <value>BlackWhiteListAppsGroup</value>
   </data>
   <data name="&gt;&gt;AllAppsList.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>335, 216</value>
+  <data name="BlackWhiteListAppsGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>335, 210</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="BlackWhiteListAppsGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>269, 170</value>
   </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="BlackWhiteListAppsGroup.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
+  <data name="BlackWhiteListAppsGroup.Text" xml:space="preserve">
     <value>Blacklist Apps</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;BlackWhiteListAppsGroup.Name" xml:space="preserve">
+    <value>BlackWhiteListAppsGroup</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;BlackWhiteListAppsGroup.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;BlackWhiteListAppsGroup.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;BlackWhiteListAppsGroup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>122</value>
+    <value>75</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 16</value>
@@ -1683,7 +1740,7 @@ else it will use the normal Key press</value>
     <value>None</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>611, 421</value>
+    <value>611, 383</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10pt</value>
@@ -2025,6 +2082,42 @@ else it will use the normal Key press</value>
   <data name="&gt;&gt;disableRedBoxMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;SaveAppsToOnExitMenu.Name" xml:space="preserve">
+    <value>SaveAppsToOnExitMenu</value>
+  </data>
+  <data name="&gt;&gt;SaveAppsToOnExitMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AddTooltipsMenu.Name" xml:space="preserve">
+    <value>AddTooltipsMenu</value>
+  </data>
+  <data name="&gt;&gt;AddTooltipsMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clickCircleToolStripMenuItem.Name" xml:space="preserve">
+    <value>clickCircleToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;clickCircleToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ShowHideMenu.Name" xml:space="preserve">
+    <value>ShowHideMenu</value>
+  </data>
+  <data name="&gt;&gt;ShowHideMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;custemizeCircleToolStripMenuItem.Name" xml:space="preserve">
+    <value>custemizeCircleToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;custemizeCircleToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;saveToolStripMenuItem.Name" xml:space="preserve">
     <value>saveToolStripMenuItem</value>
   </data>
@@ -2036,6 +2129,12 @@ else it will use the normal Key press</value>
   </data>
   <data name="&gt;&gt;SettingsSaveonexit.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;setTopMostMenu.Name" xml:space="preserve">
     <value>setTopMostMenu</value>
@@ -2049,76 +2148,10 @@ else it will use the normal Key press</value>
   <data name="&gt;&gt;backgroundWorker1.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System.ComponentModel.EventBasedAsync, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="&gt;&gt;Reset.Name" xml:space="preserve">
-    <value>Reset</value>
+  <data name="&gt;&gt;AToolTips.Name" xml:space="preserve">
+    <value>AToolTips</value>
   </data>
-  <data name="&gt;&gt;Reset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ValuePertime.Name" xml:space="preserve">
-    <value>ValuePertime</value>
-  </data>
-  <data name="&gt;&gt;ValuePertime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;UnitPerTime.Name" xml:space="preserve">
-    <value>UnitPerTime</value>
-  </data>
-  <data name="&gt;&gt;UnitPerTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ValueClickspersec.Name" xml:space="preserve">
-    <value>ValueClickspersec</value>
-  </data>
-  <data name="&gt;&gt;ValueClickspersec.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ButtonSwitch.Name" xml:space="preserve">
-    <value>ButtonSwitch</value>
-  </data>
-  <data name="&gt;&gt;ButtonSwitch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ButtonHold.Name" xml:space="preserve">
-    <value>ButtonHold</value>
-  </data>
-  <data name="&gt;&gt;ButtonHold.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CheckUsePositions.Name" xml:space="preserve">
-    <value>CheckUsePositions</value>
-  </data>
-  <data name="&gt;&gt;CheckUsePositions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;KeytoPressinfo.Name" xml:space="preserve">
-    <value>KeytoPressinfo</value>
-  </data>
-  <data name="&gt;&gt;KeytoPressinfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Hotkeytopresstip.Name" xml:space="preserve">
-    <value>Hotkeytopresstip</value>
-  </data>
-  <data name="&gt;&gt;Hotkeytopresstip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TipLabelUsingaction.Name" xml:space="preserve">
-    <value>TipLabelUsingaction</value>
-  </data>
-  <data name="&gt;&gt;TipLabelUsingaction.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Showpointtip.Name" xml:space="preserve">
-    <value>Showpointtip</value>
-  </data>
-  <data name="&gt;&gt;Showpointtip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TipShowallpoints.Name" xml:space="preserve">
-    <value>TipShowallpoints</value>
-  </data>
-  <data name="&gt;&gt;TipShowallpoints.Type" xml:space="preserve">
+  <data name="&gt;&gt;AToolTips.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

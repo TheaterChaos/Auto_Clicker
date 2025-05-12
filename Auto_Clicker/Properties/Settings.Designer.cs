@@ -121,7 +121,7 @@ namespace Auto_Clicker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ms")]
+        [global::System.Configuration.DefaultSettingValueAttribute("s")]
         public string ClickTimeUnit {
             get {
                 return ((string)(this["ClickTimeUnit"]));
@@ -235,6 +235,89 @@ namespace Auto_Clicker.Properties {
             }
             set {
                 this["BlacklistedApps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int ClickCircleSize {
+            get {
+                return ((int)(this["ClickCircleSize"]));
+            }
+            set {
+                this["ClickCircleSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LimeGreen")]
+        public global::System.Drawing.Color ClickCircleColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ClickCircleColor"]));
+            }
+            set {
+                this["ClickCircleColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TooltipShowHide {
+            get {
+                return ((bool)(this["TooltipShowHide"]));
+            }
+            set {
+                this["TooltipShowHide"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveAppsListToo {
+            get {
+                return ((bool)(this["SaveAppsListToo"]));
+            }
+            set {
+                this["SaveAppsListToo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("125")]
+        public int ClickCircleTransparent {
+            get {
+                return ((int)(this["ClickCircleTransparent"]));
+            }
+            set {
+                this["ClickCircleTransparent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Whitlistchecked {
+            get {
+                return ((bool)(this["Whitlistchecked"]));
+            }
+            set {
+                this["Whitlistchecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection AppsChecked {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["AppsChecked"]));
+            }
+            set {
+                this["AppsChecked"] = value;
             }
         }
     }

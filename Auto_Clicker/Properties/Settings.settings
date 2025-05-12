@@ -27,7 +27,7 @@
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="ClickTimeUnit" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ms</Value>
+      <Value Profile="(Default)">s</Value>
     </Setting>
     <Setting Name="RepeatInfinite" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -54,6 +54,27 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="BlacklistedApps" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ClickCircleSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="ClickCircleColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">LimeGreen</Value>
+    </Setting>
+    <Setting Name="TooltipShowHide" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SaveAppsListToo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ClickCircleTransparent" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">125</Value>
+    </Setting>
+    <Setting Name="Whitlistchecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AppsChecked" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
