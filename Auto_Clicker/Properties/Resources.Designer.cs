@@ -63,6 +63,16 @@ namespace Auto_Clicker.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fullscreen_24dp_000000 {
+            get {
+                object obj = ResourceManager.GetObject("fullscreen_24dp_000000", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap istockphoto_1904567040_612x612 {
             get {
                 object obj = ResourceManager.GetObject("istockphoto-1904567040-612x612", resourceCulture);

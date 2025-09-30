@@ -12,7 +12,7 @@ namespace Auto_Clicker.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.13.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -61,13 +61,13 @@ namespace Auto_Clicker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool PositionButton {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int UsePageSlecter {
             get {
-                return ((bool)(this["PositionButton"]));
+                return ((int)(this["UsePageSlecter"]));
             }
             set {
-                this["PositionButton"] = value;
+                this["UsePageSlecter"] = value;
             }
         }
         
@@ -104,30 +104,6 @@ namespace Auto_Clicker.Properties {
             }
             set {
                 this["ClicksPerSec"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public decimal ClickTimeValue {
-            get {
-                return ((decimal)(this["ClickTimeValue"]));
-            }
-            set {
-                this["ClickTimeValue"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("s")]
-        public string ClickTimeUnit {
-            get {
-                return ((string)(this["ClickTimeUnit"]));
-            }
-            set {
-                this["ClickTimeUnit"] = value;
             }
         }
         
@@ -300,7 +276,7 @@ namespace Auto_Clicker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool Whitlistchecked {
             get {
                 return ((bool)(this["Whitlistchecked"]));
@@ -318,6 +294,174 @@ namespace Auto_Clicker.Properties {
             }
             set {
                 this["AppsChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SPerTimems {
+            get {
+                return ((int)(this["SPerTimems"]));
+            }
+            set {
+                this["SPerTimems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int SPerTimesec {
+            get {
+                return ((int)(this["SPerTimesec"]));
+            }
+            set {
+                this["SPerTimesec"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SPerTimemin {
+            get {
+                return ((int)(this["SPerTimemin"]));
+            }
+            set {
+                this["SPerTimemin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SPerTimehour {
+            get {
+                return ((int)(this["SPerTimehour"]));
+            }
+            set {
+                this["SPerTimehour"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int TabPagesSelected {
+            get {
+                return ((int)(this["TabPagesSelected"]));
+            }
+            set {
+                this["TabPagesSelected"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SActionRepeatTimes {
+            get {
+                return ((int)(this["SActionRepeatTimes"]));
+            }
+            set {
+                this["SActionRepeatTimes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HotkeySettingsVisible {
+            get {
+                return ((bool)(this["HotkeySettingsVisible"]));
+            }
+            set {
+                this["HotkeySettingsVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int STimeBetweenAction {
+            get {
+                return ((int)(this["STimeBetweenAction"]));
+            }
+            set {
+                this["STimeBetweenAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SIgnoreWait {
+            get {
+                return ((bool)(this["SIgnoreWait"]));
+            }
+            set {
+                this["SIgnoreWait"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SAutoUsePage {
+            get {
+                return ((bool)(this["SAutoUsePage"]));
+            }
+            set {
+                this["SAutoUsePage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\"\"")]
+        public string SRectUseArea {
+            get {
+                return ((string)(this["SRectUseArea"]));
+            }
+            set {
+                this["SRectUseArea"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color SUseScanColor {
+            get {
+                return ((global::System.Drawing.Color)(this["SUseScanColor"]));
+            }
+            set {
+                this["SUseScanColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public int SIntervalofScans {
+            get {
+                return ((int)(this["SIntervalofScans"]));
+            }
+            set {
+                this["SIntervalofScans"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int SToleranceofColors {
+            get {
+                return ((int)(this["SToleranceofColors"]));
+            }
+            set {
+                this["SToleranceofColors"] = value;
             }
         }
     }

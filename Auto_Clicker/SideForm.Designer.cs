@@ -1,0 +1,127 @@
+﻿namespace Auto_Clicker
+{
+    partial class SideForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            BlackWhiteListAppsGroup = new GroupBox();
+            ResetBlacklistList = new Button();
+            SaveBlacklistList = new Button();
+            WBRefresh = new Button();
+            AllAppsList = new CheckedListBox();
+            BlackWhiteListAppsGroup.SuspendLayout();
+            SuspendLayout();
+            // 
+            // BlackWhiteListAppsGroup
+            // 
+            BlackWhiteListAppsGroup.Controls.Add(ResetBlacklistList);
+            BlackWhiteListAppsGroup.Controls.Add(SaveBlacklistList);
+            BlackWhiteListAppsGroup.Controls.Add(WBRefresh);
+            BlackWhiteListAppsGroup.Controls.Add(AllAppsList);
+            BlackWhiteListAppsGroup.Dock = DockStyle.Top;
+            BlackWhiteListAppsGroup.Location = new Point(0, 0);
+            BlackWhiteListAppsGroup.Name = "BlackWhiteListAppsGroup";
+            BlackWhiteListAppsGroup.Size = new Size(268, 276);
+            BlackWhiteListAppsGroup.TabIndex = 13;
+            BlackWhiteListAppsGroup.TabStop = false;
+            BlackWhiteListAppsGroup.Text = "Whitelist Apps";
+            // 
+            // ResetBlacklistList
+            // 
+            ResetBlacklistList.BackColor = SystemColors.ActiveCaption;
+            ResetBlacklistList.ImeMode = ImeMode.NoControl;
+            ResetBlacklistList.Location = new Point(171, 20);
+            ResetBlacklistList.Name = "ResetBlacklistList";
+            ResetBlacklistList.Size = new Size(85, 31);
+            ResetBlacklistList.TabIndex = 3;
+            ResetBlacklistList.TabStop = false;
+            ResetBlacklistList.Text = "Reset List";
+            ResetBlacklistList.UseVisualStyleBackColor = false;
+            ResetBlacklistList.Click += ResetBlacklistList_Click;
+            // 
+            // SaveBlacklistList
+            // 
+            SaveBlacklistList.BackColor = SystemColors.ActiveCaption;
+            SaveBlacklistList.ImeMode = ImeMode.NoControl;
+            SaveBlacklistList.Location = new Point(81, 20);
+            SaveBlacklistList.Name = "SaveBlacklistList";
+            SaveBlacklistList.Size = new Size(85, 31);
+            SaveBlacklistList.TabIndex = 2;
+            SaveBlacklistList.TabStop = false;
+            SaveBlacklistList.Text = "Save List";
+            SaveBlacklistList.UseVisualStyleBackColor = false;
+            SaveBlacklistList.Click += SaveBlacklistList_Click;
+            // 
+            // WBRefresh
+            // 
+            WBRefresh.BackColor = SystemColors.ActiveCaption;
+            WBRefresh.ImeMode = ImeMode.NoControl;
+            WBRefresh.Location = new Point(5, 20);
+            WBRefresh.Name = "WBRefresh";
+            WBRefresh.Size = new Size(70, 31);
+            WBRefresh.TabIndex = 1;
+            WBRefresh.TabStop = false;
+            WBRefresh.Text = "Refresh";
+            WBRefresh.UseVisualStyleBackColor = false;
+            WBRefresh.Click += WBRefresh_Click;
+            // 
+            // AllAppsList
+            // 
+            AllAppsList.CheckOnClick = true;
+            AllAppsList.ColumnWidth = 1;
+            AllAppsList.Font = new Font("Microsoft Sans Serif", 10F);
+            AllAppsList.FormattingEnabled = true;
+            AllAppsList.HorizontalScrollbar = true;
+            AllAppsList.Location = new Point(6, 52);
+            AllAppsList.Name = "AllAppsList";
+            AllAppsList.Size = new Size(250, 220);
+            AllAppsList.TabIndex = 0;
+            AllAppsList.TabStop = false;
+            AllAppsList.SelectedIndexChanged += AllAppsList_SelectedIndexChanged;
+            // 
+            // SideForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(268, 279);
+            Controls.Add(BlackWhiteListAppsGroup);
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "SideForm";
+            Text = "SideForm";
+            BlackWhiteListAppsGroup.ResumeLayout(false);
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        public GroupBox BlackWhiteListAppsGroup;
+        public Button ResetBlacklistList;
+        public Button SaveBlacklistList;
+        public Button WBRefresh;
+        public CheckedListBox AllAppsList;
+    }
+}

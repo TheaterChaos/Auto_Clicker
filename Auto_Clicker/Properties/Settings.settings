@@ -11,8 +11,8 @@
     <Setting Name="HoldOrSwitch" Type="System.String" Scope="User">
       <Value Profile="(Default)">switch</Value>
     </Setting>
-    <Setting Name="PositionButton" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="UsePageSlecter" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Clickkey" Type="System.String" Scope="User">
       <Value Profile="(Default)">LButton</Value>
@@ -22,12 +22,6 @@
     </Setting>
     <Setting Name="ClicksPerSec" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">50</Value>
-    </Setting>
-    <Setting Name="ClickTimeValue" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="ClickTimeUnit" Type="System.String" Scope="User">
-      <Value Profile="(Default)">s</Value>
     </Setting>
     <Setting Name="RepeatInfinite" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -72,10 +66,52 @@
       <Value Profile="(Default)">125</Value>
     </Setting>
     <Setting Name="Whitlistchecked" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AppsChecked" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SPerTimems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SPerTimesec" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="SPerTimemin" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SPerTimehour" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TabPagesSelected" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SActionRepeatTimes" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="HotkeySettingsVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="STimeBetweenAction" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="SIgnoreWait" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SAutoUsePage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SRectUseArea" Type="System.String" Scope="User">
+      <Value Profile="(Default)">""</Value>
+    </Setting>
+    <Setting Name="SUseScanColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="SIntervalofScans" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="SToleranceofColors" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
     </Setting>
   </Settings>
 </SettingsFile>
