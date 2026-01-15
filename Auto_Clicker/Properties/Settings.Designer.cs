@@ -464,5 +464,101 @@ namespace Auto_Clicker.Properties {
                 this["SToleranceofColors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int SNumColorHoldTime {
+            get {
+                return ((int)(this["SNumColorHoldTime"]));
+            }
+            set {
+                this["SNumColorHoldTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SCheckIsHoldingon {
+            get {
+                return ((bool)(this["SCheckIsHoldingon"]));
+            }
+            set {
+                this["SCheckIsHoldingon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SMainFolder {
+            get {
+                return ((string)(this["SMainFolder"]));
+            }
+            set {
+                this["SMainFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SBoxSelectedindex {
+            get {
+                return ((int)(this["SBoxSelectedindex"]));
+            }
+            set {
+                this["SBoxSelectedindex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("65")]
+        public int SColorSavedClickkey {
+            get {
+                return ((int)(this["SColorSavedClickkey"]));
+            }
+            set {
+                this["SColorSavedClickkey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int SColorSavedPosClick {
+            get {
+                return ((int)(this["SColorSavedPosClick"]));
+            }
+            set {
+                this["SColorSavedPosClick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point SColorSavedPoint {
+            get {
+                return ((global::System.Drawing.Point)(this["SColorSavedPoint"]));
+            }
+            set {
+                this["SColorSavedPoint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int SNum_Randommizer {
+            get {
+                return ((int)(this["SNum_Randommizer"]));
+            }
+            set {
+                this["SNum_Randommizer"] = value;
+            }
+        }
     }
 }

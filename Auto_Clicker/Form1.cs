@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Data;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing.Drawing2D;
-using System.Reflection;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
 using WindowsInput;
-using static Auto_Clicker.ColorClickerFunc;
-using static System.Windows.Forms.DataFormats;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static Auto_Clicker.ActionsFunc;
 
 
 
@@ -18,10 +16,10 @@ namespace Auto_Clicker
 {
     public partial class Form1 : Form
     {
-        private ActionsFunc ActionsFunc;
-        public SideForm sideForm;
+        private ActionsFunc _Actions;
+        public SideForm _SideForm;
         public RecorderFunc recorderFunc;
-        public ColorClickerFunc colorClickerFunc;
+        public ColorClickerFunc _ColorClick;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
@@ -50,6 +48,11 @@ namespace Auto_Clicker
         private Keys clickKey = Keys.LButton; // Standard: Linksklick
         private bool keyWasDown = false;
 
+        private bool sidebarexpanded = false;
+        private System.Windows.Forms.Timer Sidebartimer;
+
+        List<string> _infoLogs = new();
+
         public int clickIndex = 0;
 
         private CursorOverlayForm? cursorOverlay;
@@ -62,7 +65,13 @@ namespace Auto_Clicker
 
         public System.Windows.Forms.Timer hotkeyTimer;
 
+        private static readonly ThreadLocal<Random> _rng =
+                        new(() => new Random(Guid.NewGuid().GetHashCode()));
 
+
+
+
+        //Settings
         private void SaveSettings()
         {
             Properties.Settings.Default.UseMouseMode = UseMouse.Checked; // true = Maus, false = Tastatur
@@ -76,6 +85,7 @@ namespace Auto_Clicker
 
             Properties.Settings.Default.ClickMode = ClicksPersSecButton.Checked ? "cps" : "time"; // "cps" oder "time"
             Properties.Settings.Default.ClicksPerSec = ClickPerSecNum.Value; // Klicks pro Sekunde
+            Properties.Settings.Default.SNum_Randommizer = (int)Num_Randomizer.Value; // Randomizer für Klicks pro Sekunde
 
             Properties.Settings.Default.RepeatInfinite = RepeatUnlimited.Checked; // true = unendlich, false = wiederholen
             Properties.Settings.Default.RepeatCount = RepeatTimes.Value; // Anzahl der Wiederholungen
@@ -86,12 +96,12 @@ namespace Auto_Clicker
             Properties.Settings.Default.STimeBetweenAction = (int)TimeBetweenAction.Value; // Zeit zwischen den Aktionen (in ms)
             Properties.Settings.Default.SIgnoreWait = IgnoreWaitCheck.Checked;
 
-            var parts = ActionsFunc.SavedActions.Select(action =>
+            var parts = _Actions.SavedActions.Select(action =>
             {
                 if (action.Type == ActionType.MouseClick)
-                    return $"M:{action.MousePosition.X}:{action.MousePosition.Y}:<{action.Mousepress}>";
+                    return $"M:{action.MousePosition.X}:{action.MousePosition.Y}:{action.HoldClickMS}:<{action.Mousepress}>";
                 else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
-                    return $"K:{action.Key}";
+                    return $"K:{action.Key}:{action.HoldClickMS}";
                 else if (action.Type == ActionType.Waittime && action.ToWait > 0)
                     return $"W:{action.ToWait}";
                 return null;
@@ -113,18 +123,25 @@ namespace Auto_Clicker
             if (SaveAppsToOnExitMenu.Checked)
             {
                 var Blackcollection = new System.Collections.Specialized.StringCollection();
-                Blackcollection.AddRange(sideForm.BlacklistedWindowTitles.ToArray());
+                Blackcollection.AddRange(_SideForm.BlacklistedWindowTitles.ToArray());
                 Properties.Settings.Default.BlacklistedApps = Blackcollection;
 
                 var Whitecollection = new System.Collections.Specialized.StringCollection();
-                Whitecollection.AddRange(sideForm.AppsCheckedlist.ToArray());
+                Whitecollection.AddRange(_SideForm.AppsCheckedlist.ToArray());
                 Properties.Settings.Default.AppsChecked = Whitecollection;
             }
 
-            Properties.Settings.Default.SRectUseArea = $"{colorClickerFunc.scanArea.X},{colorClickerFunc.scanArea.Y},{colorClickerFunc.scanArea.Width},{colorClickerFunc.scanArea.Height}";
+            Properties.Settings.Default.SRectUseArea = $"{_ColorClick.scanArea.X},{_ColorClick.scanArea.Y},{_ColorClick.scanArea.Width},{_ColorClick.scanArea.Height}";
+            Properties.Settings.Default.SCheckIsHoldingon = CheckIsHoldingon.Checked;
+            Properties.Settings.Default.SNumColorHoldTime = (int)ColTimeHolding.Value;
             Properties.Settings.Default.SUseScanColor = ColorSetColor.BackColor;
             Properties.Settings.Default.SIntervalofScans = (int)ColorIntervalScan.Value;
             Properties.Settings.Default.SToleranceofColors = (int)ColorToleranzenScan.Value;
+
+            Properties.Settings.Default.SBoxSelectedindex = Color_SelectActionsbox.SelectedIndex;
+            Properties.Settings.Default.SColorSavedClickkey = (int)_ColorClick.ClickaKey_Key;
+            Properties.Settings.Default.SColorSavedPosClick = (int)_ColorClick.ClickPos_Key;
+            Properties.Settings.Default.SColorSavedPoint = new Point(_ColorClick.ClickPosition.X, _ColorClick.ClickPosition.Y);
 
             Properties.Settings.Default.Save(); // Speichern der Einstellungen
         }
@@ -135,6 +152,7 @@ namespace Auto_Clicker
             UseKeyboard.Checked = !Properties.Settings.Default.UseMouseMode;
 
             ShowPointOnClick.Checked = Properties.Settings.Default.ShowPointCLick;
+
 
             if (Properties.Settings.Default.SaveAppsListToo) // true = Liste der Fenster speichern
             {
@@ -211,15 +229,6 @@ namespace Auto_Clicker
                 AutoUsePageCheck.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             }
 
-            if (!Properties.Settings.Default.HotkeySettingsVisible)
-            {
-                Settingsbartoggle();
-            }
-            else if (!Settingsbarexpanded)
-            {
-                Settingsbartoggle();
-            }
-
             if (!string.IsNullOrEmpty(Properties.Settings.Default.Hotkey)) // Hotkey für den Autoclicker
             {
                 hotkey = (Keys)Enum.Parse(typeof(Keys), Properties.Settings.Default.Hotkey);
@@ -249,6 +258,7 @@ namespace Auto_Clicker
             if (Properties.Settings.Default.ClickMode == "cps") // "cps" oder "time"
             {
                 ClicksPersSecButton.Checked = true;
+                Num_Randomizer.Enabled = true;
                 ClickRepeatgroup.Enabled = false;
                 PerTimems.Enabled = false;
                 PerTimesec.Enabled = false;
@@ -263,7 +273,10 @@ namespace Auto_Clicker
                 PerTimesec.Enabled = true;
                 PerTimemin.Enabled = true;
                 PerTimehour.Enabled = true;
+                Num_Randomizer.Enabled = false;
             }
+
+            Num_Randomizer.Value = Properties.Settings.Default.SNum_Randommizer; // Randomizer für Klicks pro Sekunde
 
             RepeatUnlimited.Checked = Properties.Settings.Default.RepeatInfinite; // true = unedlich, false = wiederholen
             RepeatRepeat.Checked = !Properties.Settings.Default.RepeatInfinite; // true = unedlich, false = wiederholen
@@ -286,31 +299,41 @@ namespace Auto_Clicker
                         if (entry.StartsWith("M:")) // Mausaktion
                         {
                             var parts = entry.Substring(2).Split(':');
-                            if (parts.Length >= 2 &&
+                            if (parts.Length >= 3 &&
                                 int.TryParse(parts[0], out int x) &&
-                                int.TryParse(parts[1], out int y))
+                                int.TryParse(parts[1], out int y) &&
+                                long.TryParse(parts[2], out long time))
                             {
                                 string keyPart = entry.Contains("<") && entry.Contains(">")
                                     ? entry.Substring(entry.IndexOf('<') + 1, entry.IndexOf('>') - entry.IndexOf('<') - 1)
                                     : null;
-                                ActionsFunc.SavedActions.Add(new ClickOrKeyAction
+                                _Actions.SavedActions.Add(new ClickOrKeyAction
                                 {
                                     Type = ActionType.MouseClick,
                                     MousePosition = new Point(x, y),
-                                    Mousepress = Enum.TryParse(keyPart, out Keys parsedKey) ? parsedKey : (Keys?)null
+                                    Mousepress = Enum.TryParse(keyPart, out Keys parsedKey) ? parsedKey : (Keys?)null,
+                                    HoldClickMS = time
 
                                 });
                             }
                         }
                         else if (entry.StartsWith("K:")) // Tastendruck
                         {
-                            string keyStr = entry.Substring(2);
-                            if (Enum.TryParse<Keys>(keyStr, out Keys key))
+                            var parts = entry.Split(":");
+
+                            if (parts.Length >= 2 &&
+                                Enum.TryParse(parts[1], out Keys key))
                             {
-                                ActionsFunc.SavedActions.Add(new ClickOrKeyAction
+                                long holdMs = 0;
+
+                                if (parts.Length >= 3)
+                                    long.TryParse(parts[2], out holdMs);
+
+                                _Actions.SavedActions.Add(new ClickOrKeyAction
                                 {
                                     Type = ActionType.KeyPress,
-                                    Key = key
+                                    Key = key,
+                                    HoldClickMS = holdMs
                                 });
                             }
 
@@ -320,7 +343,7 @@ namespace Auto_Clicker
                             string waitStr = entry.Substring(2);
                             if (long.TryParse(waitStr, out long parsedWaitTime) && parsedWaitTime > 0)
                             {
-                                ActionsFunc.SavedActions.Add(new ClickOrKeyAction
+                                _Actions.SavedActions.Add(new ClickOrKeyAction
                                 {
                                     Type = ActionType.Waittime,
                                     ToWait = parsedWaitTime
@@ -345,44 +368,35 @@ namespace Auto_Clicker
             if (Properties.Settings.Default.Whitlistchecked) // true = Whitelist, false = Blacklist
             {
                 WhitelistappsCheck.Checked = true;
-                sideForm.BlackWhiteListAppsGroup.Text = "Whitelist Apps";
+                _SideForm.BlackWhiteListAppsGroup.Text = "Whitelist Apps";
+                WhitelistappsCheck.Text = "Using Whitelist";
             }
             else
             {
                 WhitelistappsCheck.Checked = false;
-                sideForm.BlackWhiteListAppsGroup.Text = "Blacklist Apps";
+                _SideForm.BlackWhiteListAppsGroup.Text = "Blacklist Apps";
+                WhitelistappsCheck.Text = "Using Blacklist";
             }
 
             var stored = Properties.Settings.Default.BlacklistedApps;
             if (stored != null)
             {
-                sideForm.BlacklistedWindowTitles.AddRange(stored.Cast<string>());
+                _SideForm.BlacklistedWindowTitles.AddRange(stored.Cast<string>());
             }
             var stored1 = Properties.Settings.Default.AppsChecked;
             if (stored1 != null)
             {
-                sideForm.AppsCheckedlist.AddRange(stored1.Cast<string>());
+                _SideForm.AppsCheckedlist.AddRange(stored1.Cast<string>());
             }
 
-            switch (Properties.Settings.Default.TabPagesSelected)
-            {   case 0:
-                    TabPages.SelectedIndex = 0;
-                    TabPages.Size = new Size(612, 218);
-                    break;
-                case 1:
-                    TabPages.SelectedIndex = 1;
-                    TabPages.Size = new Size(612, 377);
-                    break;
-                case 2:
-                    TabPages.SelectedIndex = 2;
-                    TabPages.Size = new Size(612, 152);
-                    break;
-            }
+            TabPages.SelectedIndex = Properties.Settings.Default.TabPagesSelected;
+            setwindowsizeFunc();
+
             if (Properties.Settings.Default.SRectUseArea.Length >= 3)
             {
                 string[] Rectparts = Properties.Settings.Default.SRectUseArea.Split(',');
 
-                colorClickerFunc.scanArea = new Rectangle(
+                _ColorClick.scanArea = new Rectangle(
                     int.Parse(Rectparts[0]),
                     int.Parse(Rectparts[1]),
                     int.Parse(Rectparts[2]),
@@ -390,20 +404,47 @@ namespace Auto_Clicker
                 );
             }
             else
-                colorClickerFunc.scanArea = Rectangle.Empty;
-            UpdateColorClickAreaText(colorClickerFunc.scanArea);
+                _ColorClick.scanArea = Rectangle.Empty;
+            UpdateColorClickAreaText(_ColorClick.scanArea);
             ColorSetColor.BackColor = Properties.Settings.Default.SUseScanColor;
+            string hex = $"Hex:#{ColorSetColor.BackColor.R:X2}{ColorSetColor.BackColor.G:X2}{ColorSetColor.BackColor.B:X2}";
+            LabelColorPicked.Text = ($"{ColorSetColor.BackColor} {hex}");
             ColorIntervalScan.Value = Properties.Settings.Default.SIntervalofScans;
             ColorToleranzenScan.Value = Properties.Settings.Default.SToleranceofColors;
+            CheckIsHoldingon.Checked = Properties.Settings.Default.SCheckIsHoldingon;
+            ColTimeHolding.Value = Properties.Settings.Default.SNumColorHoldTime;
 
-            ActionsFunc.UpdateActionList(); // UI aktualisieren
+            Color_SelectActionsbox.SelectedIndex = Properties.Settings.Default.SBoxSelectedindex;
+            _ColorClick.ClickaKey_Key = (Keys)Properties.Settings.Default.SColorSavedClickkey;
+            _ColorClick.ClickPos_Key = (Keys)Properties.Settings.Default.SColorSavedPosClick;
+            _ColorClick.ClickPosition = Properties.Settings.Default.SColorSavedPoint;
+            switch (Color_SelectActionsbox.SelectedIndex)
+            {
+                case 0:
+                    Color_Clickakey_setkey.Visible = false;
+                    Color_Clickakey_setkey_Label.Visible = false;
+                    break;
+                case 1:
+                    Color_Clickakey_setkey.Visible = true;
+                    Color_Clickakey_setkey_Label.Visible = true;
+                    Color_Clickakey_setkey.Text = "Set Key";
+                    Color_Clickakey_setkey_Label.Text = "Key: " + _ColorClick.ClickaKey_Key.ToString();
+                    break;
+                case 2:
+                    Color_Clickakey_setkey.Visible = true;
+                    Color_Clickakey_setkey_Label.Visible = true;
+                    Color_Clickakey_setkey.Text = "Set Position";
+                    Color_Clickakey_setkey_Label.Text = $"X:{_ColorClick.ClickPosition.X}, Y:{_ColorClick.ClickPosition.Y} <{_ColorClick.ClickPos_Key.ToString()}>";
+                    break;
+            }
+            _Actions.UpdateActionList(); // UI aktualisieren
         }
 
         private void ResetSettings()
         {
             var backupBlacklist = Properties.Settings.Default.BlacklistedApps;
             var backupChecklist = Properties.Settings.Default.AppsChecked;
-            sideForm.BlacklistedWindowTitles.Clear();
+            _SideForm.BlacklistedWindowTitles.Clear();
 
             Properties.Settings.Default.Reset();  // Setzt auf Standardwerte zurück
             Properties.Settings.Default.Save(); // Speichern der Einstellungen
@@ -412,37 +453,40 @@ namespace Auto_Clicker
             Properties.Settings.Default.AppsChecked = backupChecklist;
             Properties.Settings.Default.Save();
 
-            ActionsFunc.SavedActions.Clear();
-            sideForm.AllAppsList.Items.Clear();
+            _Actions.SavedActions.Clear();
+            _SideForm.AllAppsList.Items.Clear();
 
             LoadSettings();         // Lade die nun zurückgesetzten Werte
-            ActionsFunc.UpdateActionList();   // UI aktualisieren
-            sideForm.btnRefreshWindows();
-            sideForm.reloadCheckedApps();
-
+            _Actions.UpdateActionList();   // UI aktualisieren
+            _SideForm.btnRefreshWindows();
+            _SideForm.reloadCheckedApps();
         }
 
+
+
+
+
+        //Form1
         public Form1()
         {
             InitializeComponent();
 
-            sideForm = new SideForm(this);
-            sideForm.FormBorderStyle = FormBorderStyle.None;
-            sideForm.ShowInTaskbar = false;
-            sideForm.TopMost = false;
-            sideForm.Show();
-            sideForm.Visible = false;
-            sideForm.Width = 0;
+            _SideForm = new SideForm(this);
+            _SideForm.FormBorderStyle = FormBorderStyle.None;
+            _SideForm.ShowInTaskbar = false;
+            _SideForm.TopMost = false;
+            _SideForm.Show();
+            _SideForm.Visible = false;
+            _SideForm.Width = 0;
 
             this.MinimumSizeChanged += MainForm_MinimizeChanged;
             this.LocationChanged += MainForm_LocationChanged;
             this.SizeChanged += MainForm_LocationChanged;
             MainForm_LocationChanged(null, null); // direkt initial setzen
 
-
-            ActionsFunc = new ActionsFunc(this);
+            _Actions = new ActionsFunc(this);
             recorderFunc = new RecorderFunc(this);
-            colorClickerFunc = new ColorClickerFunc(this);
+            _ColorClick = new ColorClickerFunc(this);
 
             hotkeyTimer = new System.Windows.Forms.Timer();
             hotkeyTimer.Interval = 10;
@@ -453,13 +497,48 @@ namespace Auto_Clicker
             Sidebartimer.Interval = 15;
             Sidebartimer.Tick += SidebarTimer_Tick;
 
-            this.KeyPreview = false;
+            this.KeyPreview = true;
             //this.KeyDown += Form1_KeyDown;
-        }
 
-        private bool sidebarexpanded = false;
-        private bool Settingsbarexpanded = true;
-        private System.Windows.Forms.Timer Sidebartimer;
+            Switch_to_SavePositon.Click += (s, e) =>
+            {
+                _Actions.Switch_To_Save_PositionFunc();
+            };
+            Switch_to_SaveKey.Click += (s, e) =>
+            {
+                _Actions.Switch_To_Save_KeyFunc();
+            };
+            Switch_to_Wait.Click += (s, e) =>
+            {
+                _Actions.Switch_To_WaitFunc();
+            };
+            ActionMenuSetHold.Click += (s, e) =>
+            {
+                int selectedIndex = CurserPositionList.SelectedIndex;
+                if (selectedIndex == -1)
+                {
+                    Setinfotextfast("No Action selected to Set Hold.");
+                    return;
+                }
+                ActionType type = _Actions.SavedActions[selectedIndex].Type;
+                _Actions.Set_Hold_MessageFunc(selectedIndex);
+            };
+            Settings_OpenInfoLog.Click += (s, e) => OpenLogWindow();
+            Color_Clickakey_setkey.Click += (s, e) =>
+            {
+                if (Color_SelectActionsbox.SelectedIndex == 1)
+                {
+                    _ColorClick.Set_Key_ButtonClick();
+                }
+                else
+                {
+                    _ColorClick.Set_Position_ButtonClick();
+                }
+            };
+            Move_MoveUP.Click += (s, e) => _Actions.MoveActions(true);
+            Move_MoveDown.Click += (s, e) => _Actions.MoveActions(false);
+            Move_MoveToPos.Click += (s, e) => _Actions.MoveToNUMFunc();
+        }
 
         public void SidebarToggle()
         {
@@ -468,44 +547,19 @@ namespace Auto_Clicker
             Sidebartimer.Start();
         }
 
-        private void Settingsbartoggle()
-        {
-            CloseOpenHotkey.Enabled = false;
-            Settingsbarexpanded = !Settingsbarexpanded;
-            if (Settingsbarexpanded)
-                HotkeyBoxOC.Visible = true;
-            for (int i = 0; i < 92; i += 1)
-            {
-                if (Settingsbarexpanded)
-                {
-                    TabPages.Location = new Point(TabPages.Location.X, TabPages.Location.Y + 1);
-                    Application.DoEvents();
-                }
-                else
-                {
-                    TabPages.Location = new Point(TabPages.Location.X, TabPages.Location.Y - 1);
-                    Application.DoEvents();
-                }
-            }
-            CloseOpenHotkey.Text = Settingsbarexpanded ? "▼" : "▶";
-            if (!Settingsbarexpanded)
-                HotkeyBoxOC.Visible = !HotkeyBoxOC.Visible;
-            CloseOpenHotkey.Enabled = true;
-        }
-
         private void SidebarTimer_Tick(object sender, EventArgs e)
         {
-            if (sidebarexpanded && sideForm.Width < 268)
+            if (sidebarexpanded && _SideForm.Width < 268)
             {
-                sideForm.Visible = true;
-                sideForm.Width += 10;
+                _SideForm.Visible = true;
+                _SideForm.Width += 10;
             }
-            else if (!sidebarexpanded && sideForm.Width > 0)
+            else if (!sidebarexpanded && _SideForm.Width > 0)
             {
-                sideForm.Width -= 10;
-                if (sideForm.Width <= 5)
+                _SideForm.Width -= 10;
+                if (_SideForm.Width <= 5)
                 {
-                    sideForm.Visible = false;
+                    _SideForm.Visible = false;
                 }
             }
             else
@@ -514,19 +568,19 @@ namespace Auto_Clicker
 
         private void MainForm_LocationChanged(object? sender, EventArgs e)
         {
-            if (sideForm != null && !sideForm.IsDisposed)
+            if (_SideForm != null && !_SideForm.IsDisposed)
             {
-                sideForm.Location = new Point(this.Right - 7, this.Top + 31);
-                sideForm.Height = 279;
+                _SideForm.Location = new Point(this.Right - 7, this.Top + 31);
+                _SideForm.Height = 279;
             }
         }
 
         private void MainForm_MinimizeChanged(object? sender, EventArgs e)
         {
-            if (sideForm != null && !sideForm.IsDisposed)
+            if (_SideForm != null && !_SideForm.IsDisposed)
             {
-                sideForm.Width = 0;
-                sideForm.Visible = false;
+                _SideForm.Width = 0;
+                _SideForm.Visible = false;
             }
         }
 
@@ -541,11 +595,20 @@ namespace Auto_Clicker
             AddKeysToPress(true);
 
             // Lade die Einstellungen
+            Color_SelectActionsbox.SelectedIndex = 0;
             LoadSettings();
-            sideForm.btnRefreshWindows();
-            sideForm.reloadCheckedApps();
+            _SideForm.btnRefreshWindows();
+            _SideForm.reloadCheckedApps();
             Setinfotextfast("Infos LOL");
 
+            ActionRightclick.Opening += (s, e) =>
+            {
+                _Actions.Menu_On_OpenFunc();
+            };
+            ActionRightclick.Closed += (s, e) =>
+            {
+                _Actions.Menu_On_CloseFunc();
+            };
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -555,79 +618,392 @@ namespace Auto_Clicker
                 if (SaveAppsToOnExitMenu.Checked)
                 {
                     var collection = new System.Collections.Specialized.StringCollection();
-                    collection.AddRange(sideForm.BlacklistedWindowTitles.ToArray());
+                    collection.AddRange(_SideForm.BlacklistedWindowTitles.ToArray());
                     Properties.Settings.Default.BlacklistedApps = collection;
                 }
                 SaveSettings();
             }
-            if (sideForm != null && !sideForm.IsDisposed)
-                sideForm.Close();
+            if (_SideForm != null && !_SideForm.IsDisposed)
+                _SideForm.Close();
         }
 
-        public void DoClick(bool mouseclick = false, bool keyclick = false, Keys toclickpress = Keys.None)
+
+
+
+
+
+        //Folder saver
+        static string GetBaseFolder(string? customPath = null)
         {
-            bool usingaction = SelectedFuncUse.Invoke(() => SelectedFuncUse.SelectedIndex == 1);
-            if (UseMouse.Checked && !usingaction || mouseclick)
+            if (!string.IsNullOrWhiteSpace(customPath))
+                return customPath;
+
+            string downloads = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "Downloads",
+                "Auto_Clicker"
+            );
+
+            Directory.CreateDirectory(downloads);
+            return downloads;
+        }
+
+        string GetPresetFolder()
+        {
+            string folder = Properties.Settings.Default.SMainFolder;
+
+            if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
             {
-                if (clickKey == Keys.LButton && !mouseclick || toclickpress == Keys.LButton)
+                Setinfotextfast("No Folder Found: Creating new Folder");
+                folder = GetBaseFolder(); // Downloads\autoclicker
+
+                MessageBox.Show(
+                            $"Preset folder was not found.\nA new folder was created:\n\n{folder}",
+                            "Folder created",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                Properties.Settings.Default.SMainFolder = folder;
+                Properties.Settings.Default.Save();
+            }
+            return folder;
+        }
+
+        void FolderSaveActions(string fileName)
+        {
+            string folder = GetPresetFolder();
+            string path = Path.Combine(folder, fileName + ".json");
+
+            var data = _Actions.SavedActions.Select(a => new ActionData
+            {
+                Type = a.Type,
+                X = a.MousePosition.X,
+                Y = a.MousePosition.Y,
+                HoldClickMS = a.HoldClickMS,
+                Mousepress = a.Mousepress,
+                Key = a.Key,
+                ToWait = a.ToWait
+            }).ToList();
+
+            File.WriteAllText(path,
+                JsonSerializer.Serialize(data, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                }));
+            Setinfotextfast("Actions Saved as file: " + fileName);
+        }
+
+        void LoadActions(string filePath)
+        {
+            var data = JsonSerializer.Deserialize<List<ActionData>>(
+                File.ReadAllText(filePath));
+
+            _Actions.SavedActions.Clear();
+
+            foreach (var d in data)
+            {
+                switch (d.Type)
+                {
+                    case ActionType.MouseClick:
+                        _Actions.SavedActions.Add(new ClickOrKeyAction
+                        {
+                            Type = ActionType.MouseClick,
+                            MousePosition = new Point(d.X, d.Y),
+                            HoldClickMS = d.HoldClickMS,
+                            Mousepress = d.Mousepress
+                        });
+                        break;
+
+                    case ActionType.KeyPress:
+                        _Actions.SavedActions.Add(new ClickOrKeyAction
+                        {
+                            Type = ActionType.KeyPress,
+                            Key = d.Key,
+                            HoldClickMS = d.HoldClickMS
+                        });
+                        break;
+
+                    case ActionType.Waittime:
+                        _Actions.SavedActions.Add(new ClickOrKeyAction
+                        {
+                            Type = ActionType.Waittime,
+                            ToWait = d.ToWait
+                        });
+                        break;
+                }
+            }
+            _Actions.UpdateActionList();
+        }
+
+        private void Actions_Set_Preset_Folder_Click(object sender, EventArgs e)
+        {
+            using var dialog = new FolderBrowserDialog
+            {
+                Description = "Preset-Ordner für Actions auswählen",
+                UseDescriptionForTitle = true
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string folder = dialog.SelectedPath;
+
+                Directory.CreateDirectory(folder);
+
+                Properties.Settings.Default.SMainFolder = folder;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void Actions_Save_List_Click(object sender, EventArgs e)
+        {
+            if (CurserPositionList.Items.Count == 0)
+            {
+                Setinfotextfast("No Actions to save");
+                return;
+            }
+            var (result, Foldername) = Save_Actions_MessageFunc();
+            if (result == DialogResult.OK)
+            {
+                FolderSaveActions(Foldername);
+            }
+
+        }
+
+        public (DialogResult Result, String Filename) Save_Actions_MessageFunc()
+        {
+            Form form = new Form
+            {
+                Text = "Save Actions in a file",
+                Size = new Size(300, 180),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            Label lbl = new Label
+            {
+                Text = "Save the Actions to a File\nSet Folder name:",
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Size = new Size(260, 60),
+                Location = new Point(20, 0),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            TextBox Filename = new TextBox
+            {
+                Location = new Point(100, 55),
+                Size = new Size(100, 35)
+            };
+            Button DoneButton = new Button
+            {
+                Text = "Done",
+                Location = new Point(60, 95),
+                Size = new Size(80, 30)
+            };
+            Button CancleButton = new Button
+            {
+                Text = "Cancle",
+                DialogResult = DialogResult.Cancel,
+                Location = new Point(160, 95),
+                Size = new Size(80, 30)
+            };
+
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            DoneButton.Click += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(Filename.Text))
+                {
+                    MessageBox.Show("Please enter a folder name.");
+                    return;
+                }
+
+                string folder = GetPresetFolder();
+                string filePath = Path.Combine(folder, Filename.Text + ".json");
+
+                if (File.Exists(filePath))
+                {
+                    var overwrite = MessageBox.Show(
+                        "A preset with this name already exists.\nDo you want to overwrite it?",
+                        "File exists",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (overwrite != DialogResult.Yes)
+                        return; // ❗ Dialog bleibt offen
+                }
+
+                form.DialogResult = DialogResult.OK;
+                form.Close();
+            };
+            CancleButton.Click += (s, e) =>
+            {
+                form.Close();
+            };
+            Filename.KeyPress += (s, e) =>
+            {
+                if (char.IsControl(e.KeyChar))
+                    return;
+
+                if (invalidChars.Contains(e.KeyChar))
+                    e.Handled = true;
+            };
+            Filename.Leave += (s, e) =>
+            {
+                foreach (char c in Path.GetInvalidFileNameChars())
+                    Filename.Text = Filename.Text.Replace(c.ToString(), "");
+            };
+
+            form.Controls.Add(lbl);
+            form.Controls.Add(Filename);
+            form.Controls.Add(DoneButton);
+            form.Controls.Add(CancleButton);
+
+            form.AcceptButton = DoneButton;
+
+            var result = form.ShowDialog();
+            return (result, Filename.Text);
+        }
+
+        private void Actions_Load_List_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog dialog = new OpenFileDialog
+            {
+                Title = "Select AutoClicker preset",
+                Filter = "AutoClicker Preset (*.json)|*.json",
+                InitialDirectory = GetPresetFolder(), // dein gespeicherter Ordner
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                LoadActions(dialog.FileName);
+                Setinfotextfast("Loaded the File: " + dialog.FileName);
+            }
+        }
+
+        private void Presets_Open_Folder_Click(object sender, EventArgs e)
+        {
+            String Folder = GetPresetFolder();
+
+            if (!Directory.Exists(Folder))
+            {
+                MessageBox.Show("Folder not found.");
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = Folder,
+                UseShellExecute = true
+            });
+        }
+
+
+
+
+        public void DoClick(Keys ToClick, long holdtime = 0)
+        {
+            if (holdtime == 0)
+            {
+                if (ToClick == Keys.LButton)
                 {
                     new InputSimulator().Mouse
                         .LeftButtonClick();
-
-                    //mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                    //mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
                 }
-                else if (clickKey == Keys.RButton && !mouseclick || toclickpress == Keys.RButton)
+                else if (ToClick == Keys.RButton)
                 {
                     new InputSimulator().Mouse
                         .RightButtonClick();
-
-                    //mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-                    //mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
                 }
-                else if (clickKey == Keys.MButton && !mouseclick || toclickpress == Keys.MButton)
+                else if (ToClick == Keys.MButton)
                 {
                     new InputSimulator().Mouse
                         .MiddleButtonClick();
-
-                    //mouse_event(0x20, 0, 0, 0, 0); // MiddleDown
-                    //mouse_event(0x40, 0, 0, 0, 0); // MiddleUp
                 }
-                else if (clickKey == Keys.XButton1 && !mouseclick || toclickpress == Keys.XButton1)
+                else if (ToClick == Keys.XButton1)
                 {
                     new InputSimulator().Mouse
                         .XButtonClick(XBUTTON1);
-
-                    //mouse_event(MOUSEEVENTF_XDOWN, 0, 0, XBUTTON1, 0);
-                    //mouse_event(MOUSEEVENTF_XUP, 0, 0, XBUTTON1, 0);
                 }
-                else if (clickKey == Keys.XButton2 && !mouseclick || toclickpress == Keys.XButton2)
+                else if (ToClick == Keys.XButton2)
                 {
                     new InputSimulator().Mouse
                         .XButtonClick(XBUTTON2);
-
-                    //mouse_event(MOUSEEVENTF_XDOWN, 0, 0, XBUTTON2, 0);
-                    //mouse_event(MOUSEEVENTF_XUP, 0, 0, XBUTTON2, 0);
-                }
-            }
-            else if (UseKeyboard.Checked && !usingaction || keyclick)
-            {
-                string keyName = "";
-                if (keyclick)
-                {
-                    keyName = toclickpress.ToString();
                 }
                 else
                 {
-                    keyName = clickKey.ToString();
+                    if (DataStings.keyMap.TryGetValue(ToClick.ToString(), out VirtualKeyCode vk))
+                    {
+                        new InputSimulator().Keyboard
+                            .KeyPress(vk);
+                    }
                 }
-
-                if (DataStings.keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
+            }
+            else
+            {
+                if (ToClick == Keys.LButton)
+                {
+                    new InputSimulator().Mouse
+                        .LeftButtonDown();
+                    waitforholding();
+                    new InputSimulator().Mouse
+                        .LeftButtonUp();
+                }
+                else if (ToClick == Keys.RButton)
+                {
+                    new InputSimulator().Mouse
+                        .RightButtonDown();
+                    waitforholding();
+                    new InputSimulator().Mouse
+                        .RightButtonUp();
+                }
+                else if (ToClick == Keys.MButton)
+                {
+                    new InputSimulator().Mouse
+                        .MiddleButtonDown();
+                    waitforholding();
+                    new InputSimulator().Mouse
+                        .MiddleButtonUp();
+                }
+                else if (ToClick == Keys.XButton1)
+                {
+                    new InputSimulator().Mouse
+                        .XButtonDown(XBUTTON1);
+                    waitforholding();
+                    new InputSimulator().Mouse
+                        .XButtonUp(XBUTTON1);
+                }
+                else if (ToClick == Keys.XButton2)
+                {
+                    new InputSimulator().Mouse
+                        .XButtonDown(XBUTTON2);
+                    waitforholding();
+                    new InputSimulator().Mouse
+                        .XButtonUp(XBUTTON2);
+                }
+                if (DataStings.keyMap.TryGetValue(ToClick.ToString(), out VirtualKeyCode vk))
                 {
                     new InputSimulator().Keyboard
-                        .KeyPress(vk);
+                        .KeyDown(vk);
+                    waitforholding();
+                    new InputSimulator().Keyboard
+                        .KeyUp(vk);
                 }
-                //SendKeys.SendWait(clickKey.ToString());
+            }
+            void waitforholding()
+            {
+                Stopwatch time = new Stopwatch();
+                time.Restart();
+                while (clicking)
+                {
+                    if (time.ElapsedMilliseconds > holdtime)
+                        break;
+                    Thread.Sleep(50);
+                }
+                time.Stop();
             }
         }
 
@@ -669,15 +1045,15 @@ namespace Auto_Clicker
                     while (!token.IsCancellationRequested)
                     {
                         sw.Restart();
-                        var (proc, _) = sideForm.GetActiveProcessName();
-                        if (WhitelistappsCheck.Checked && sideForm.AppsCheckedlist.Contains(proc) || !WhitelistappsCheck.Checked && !sideForm.AppsCheckedlist.Contains(proc)) //(!BlacklistedWindowTitles.Contains(proc))
+                        var (proc, _) = _SideForm.GetActiveProcessName();
+                        if (WhitelistappsCheck.Checked && _SideForm.AppsCheckedlist.Contains(proc) || !WhitelistappsCheck.Checked && !_SideForm.AppsCheckedlist.Contains(proc)) //(!BlacklistedWindowTitles.Contains(proc))
                         {
                             if (switchinfotext)
                                 Setinfotextfast("Auto clicker running.....", true);
                             switchinfotext = false;
 
                             //Debug.WriteLine("is Clicking.... " + clickIndex + pos.X + " " + pos.Y);
-                            DoClick();
+                            DoClick(clickKey);
                         }
                         else
                         {
@@ -686,20 +1062,33 @@ namespace Auto_Clicker
                             switchinfotext = true;
                         }
 
-                        double remaining = intervalMs - sw.Elapsed.TotalMilliseconds;
+                        // 🔀 ZUFÄLLIGES INTERVALL
+                        double jitterPercent = (double)Num_Randomizer.Value / 100; // ±10 %
+                        double randomizedInterval = intervalMs;
 
-                        if (remaining > 2)
+                        if (jitterPercent > 0)
                         {
-                            Thread.Sleep((int)(remaining - 1)); // Grobschlaf
+                            double jitter = intervalMs * jitterPercent;
+                            randomizedInterval += (_rng.Value!.NextDouble() * 2 - 1) * jitter;
+
+                            // Micro-Pause NUR dann
+                            if (_rng.Value.Next(0, 100) == 0)
+                                randomizedInterval += _rng.Value.Next(30, 120);
                         }
 
-                        // Feintuning mit SpinWait (nur sehr kurz)
-                        while (sw.Elapsed.TotalMilliseconds < intervalMs)
+                        double remaining = randomizedInterval - sw.Elapsed.TotalMilliseconds;
+
+                        Debug.WriteLine(intervalMs+"  "+randomizedInterval);
+
+                        if (remaining > 2)
+                            Thread.Sleep((int)(remaining - 1));
+
+                        while (sw.Elapsed.TotalMilliseconds < randomizedInterval)
                         {
                             if (!clicking || token.IsCancellationRequested)
                                 break;
 
-                            Thread.SpinWait(5); // Weniger Spins reicht für 100 CPS
+                            Thread.SpinWait(5);
                         }
                     }
                 }, token);
@@ -730,15 +1119,15 @@ namespace Auto_Clicker
                     while ((infinite || clickCount < repeatCount) && !token.IsCancellationRequested)
                     {
                         sw.Restart();
-                        var (proc, _) = sideForm.GetActiveProcessName();
-                        if (WhitelistappsCheck.Checked && sideForm.AppsCheckedlist.Contains(proc) || !WhitelistappsCheck.Checked && !sideForm.AppsCheckedlist.Contains(proc))//(!BlacklistedWindowTitles.Contains(proc))
+                        var (proc, _) = _SideForm.GetActiveProcessName();
+                        if (WhitelistappsCheck.Checked && _SideForm.AppsCheckedlist.Contains(proc) || !WhitelistappsCheck.Checked && !_SideForm.AppsCheckedlist.Contains(proc))//(!BlacklistedWindowTitles.Contains(proc))
                         {
                             if (switchinfotext)
                                 Setinfotextfast("Auto clicker running.....", true);
                             switchinfotext = false;
 
                             //Debug.WriteLine("is Clicking.... ");
-                            DoClick();
+                            DoClick(clickKey);
                             //Debug.WriteLine("Pause");
                             if (!infinite)
                             {
@@ -772,8 +1161,8 @@ namespace Auto_Clicker
                     }
                     if (RepeatRepeat.Checked)
                     {
-                        Setinfotextfast("Auto clicker Stopped.....", true);
-                        StopClicking();
+                        BeginInvoke(new Action(StopClicking));
+                        return;
                     }
                 }, token);
             }
@@ -790,14 +1179,80 @@ namespace Auto_Clicker
             if (Clickoverlay != null && !Clickoverlay.IsDisposed)
             {
                 Clickoverlay.Close();
-                //Clickoverlay = null;
+                Clickoverlay = null;
             }
+            if (InvokeRequired)
+                Setinfotextfast("Auto clicker Stopped.....", true);
+            else
+                Setinfotextfast("Auto clicker Stopped.....");
+        }
 
-            Setinfotextfast("Auto clicker Stopped.....", true);
+        private void HotkeyTimer_Tick(object? sender, EventArgs e)
+        {
+            bool keyDown = (GetAsyncKeyState(hotkey) & 0x8000) != 0;
+
+            if (HoldToClick.Checked)
+            {
+                if (keyDown && !clicking)
+                {
+                    Setinfotextfast("Auto clicker running.....");
+                    
+                    switch (SelectedFuncUse.SelectedIndex)
+                    {
+                        case 0:
+                            StartClicking();
+                            break;
+                        case 1:
+                            _Actions.StartClickingAction();
+                            break;
+                        case 2:
+                            _ColorClick.StartClickingColor();
+                            break;
+                    }
+
+                }
+                else if (!keyDown && clicking)
+                {
+                    Setinfotextfast("Auto clicker Stopped.....");
+                    StopClicking();
+                }
+            }
+            else if (SwitchToClick.Checked)
+            {
+                if (keyDown && !keyWasDown)
+                {
+                    if (!clicking)
+                    {
+                        Setinfotextfast("Auto clicker running.....");
+                        switch (SelectedFuncUse.SelectedIndex)
+                        {
+                            case 0:
+                                StartClicking();
+                                break;
+                            case 1:
+                                _Actions.StartClickingAction();
+                                break;
+                            case 2:
+                                _ColorClick.StartClickingColor();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Setinfotextfast("Auto clicker Stopped.....");
+                        StopClicking();
+                    }
+                }
+            }
+            keyWasDown = keyDown;
         }
 
 
 
+
+
+
+        //Helper
         private void ImageAndTextSwitch(ToolStripMenuItem Item)
         {
             if (Item.Checked)
@@ -812,9 +1267,47 @@ namespace Auto_Clicker
             }
         }
 
+        void OpenLogWindow()
+        {
+            Form logForm = new Form
+            {
+                Text = "Logs",
+                Size = new Size(500, 400),
+                StartPosition = FormStartPosition.CenterParent
+            };
+
+            TextBox logBox = new TextBox
+            {
+                Multiline = true,
+                ReadOnly = true,
+                ScrollBars = ScrollBars.Vertical,
+                Dock = DockStyle.Fill,
+                Font = new Font("Consolas", 9f)
+            };
+
+            logBox.Text = string.Join(Environment.NewLine, _infoLogs);
+
+            logForm.Controls.Add(logBox);
+            logForm.Show(this);
+        }
+
+        public void UpdateColorClickAreaText(Rectangle bounds)
+        {
+            if (bounds.IsEmpty)
+            {
+                ColorAreaRecText.Text = "Area: None";
+                return;
+            }
+            String areaText = $"Area: {bounds}";
+            Size textSize = TextRenderer.MeasureText(areaText, ColorAreaRecText.Font);
+            ColorAreaRecText.Size = new Size(textSize.Width + 10, ColorAreaRecText.Height);
+            ColorAreaRecText.Text = areaText;
+        }
 
         public void Setinfotextfast(string Text = "", bool isinvoke = false)
         {
+            string line = $"[{DateTime.Now:HH:mm:ss}] {Text}";
+            _infoLogs.Add(line);
             if (isinvoke)
             {
                 if (!clicking)
@@ -828,7 +1321,6 @@ namespace Auto_Clicker
             {
                 InfoLabel.Text = Text;
             }
-
         }
 
         private void OpenOverlaySettings()
@@ -921,12 +1413,14 @@ namespace Auto_Clicker
             }
         }
 
-        public Keys RecordKeysSend(bool Mousefind, bool keyboardfind, bool isHotkey = false, bool isKeypress = false, bool isAction = false)
+        public (Keys, long) RecordKeysSend(bool Mousefind, bool keyboardfind, bool isHotkey = false, bool isKeypress = false, bool isAction = false, bool recHold = false)
         {
             bool breakloop = false;
             Keys detectedKey = Keys.None;
             bool ShowError = false;
             string ErrortoShow = "";
+            long washolding = 0;
+            Stopwatch sw = new Stopwatch();
 
             hotkeyTimer.Stop();
             TabPages.Enabled = false;
@@ -1047,6 +1541,24 @@ namespace Auto_Clicker
                     overlay.BackColor = Color.Green;
                     overlay.SetMessage($"Key detected: {detectedKey}");
                     overlay.Refresh();
+                    if (recHold && CheckAddHold.Checked)
+                    {
+                        sw.Restart();
+                        while ((GetAsyncKeyState(detectedKey) & 0x8000) != 0)
+                        {
+                            long swtime = sw.ElapsedMilliseconds;
+                            List<String> parts = _Actions.Ms_to_PartsString(swtime);
+                            if (swtime > 50)
+                                overlay.SetMessage($"Key detected: {detectedKey}\nRecoding of Holding: " + string.Join(" ", parts));
+                            overlay.Refresh();
+                            Thread.Sleep(10);
+                        }
+                        sw.Stop();
+                        if (sw.ElapsedMilliseconds > 50)
+                        {
+                            washolding = sw.ElapsedMilliseconds;
+                        }
+                    }
                     Thread.Sleep(500); // Kurze Pause, um die Anzeige zu sehen
                 }
                 else if (breakloop)
@@ -1061,80 +1573,14 @@ namespace Auto_Clicker
             }
             hotkeyTimer.Start();
             TabPages.Enabled = true;
-            return detectedKey;
+            return (detectedKey, washolding);
         }
 
-        private void HotkeyTimer_Tick(object? sender, EventArgs e)
-        {
-            bool keyDown = (GetAsyncKeyState(hotkey) & 0x8000) != 0;
 
-            if (HoldToClick.Checked)
-            {
-                if (keyDown && !clicking)
-                {
-                    Setinfotextfast("Auto clicker running.....");
-                    switch (SelectedFuncUse.SelectedIndex)
-                    {
-                        case 0:
-                            StartClicking();
-                            break;
-                        case 1:
-                            ActionsFunc.StartClickingAction();
-                            break;
-                        case 2:
-                            colorClickerFunc.StartClickingColor();
-                            break;
-                    }
 
-                }
-                else if (!keyDown && clicking)
-                {
-                    Setinfotextfast("Auto clicker Stopped.....");
-                    StopClicking();
-                }
-            }
-            else if (SwitchToClick.Checked)
-            {
-                if (keyDown && !keyWasDown)
-                {
-                    if (!clicking)
-                    {
-                        Setinfotextfast("Auto clicker running.....");
-                        switch (SelectedFuncUse.SelectedIndex)
-                        {
-                            case 0:
-                                StartClicking();
-                                break;
-                            case 1:
-                                ActionsFunc.StartClickingAction();
-                                break;
-                            case 2:
-                                colorClickerFunc.StartClickingColor();
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        Setinfotextfast("Auto clicker Stopped.....");
-                        StopClicking();
-                    }
-                }
-            }
-            keyWasDown = keyDown;
-        }
 
-        public void UpdateColorClickAreaText(Rectangle bounds)
-        {
-            if (bounds.IsEmpty)
-            {
-                ColorAreaRecText.Text = "Area: None";
-                return;
-            }
-            String areaText = $"Area: {bounds}";
-            Size textSize = TextRenderer.MeasureText(areaText, ColorAreaRecText.Font);
-            ColorAreaRecText.Size = new Size(textSize.Width + 10, ColorAreaRecText.Height);
-            ColorAreaRecText.Text = areaText;
-        }
+
+
 
         private void UseMouse_CheckedChanged(object sender, EventArgs e)
         {
@@ -1154,7 +1600,7 @@ namespace Auto_Clicker
 
         private void HotkeyFindKey_Click(object sender, EventArgs e)
         {
-            Keys PressedKey = RecordKeysSend(true, true, true);
+            (Keys PressedKey, long holding) = RecordKeysSend(true, true, true);
             if (PressedKey == Keys.None)
             {
                 Setinfotextfast("No Key found or it got canceled");
@@ -1169,7 +1615,7 @@ namespace Auto_Clicker
 
         private void ClickKeyFind_Click(object sender, EventArgs e)
         {
-            Keys PressedKey = RecordKeysSend(true, true, false, true);
+            (Keys PressedKey, long holding) = RecordKeysSend(true, true, false, true);
             if (PressedKey == Keys.None)
             {
                 Setinfotextfast("No Key found or it got canceled");
@@ -1207,6 +1653,7 @@ namespace Auto_Clicker
         {
             ClickPerSecNum.Enabled = true;
             HoldToClick.Enabled = true;
+            Num_Randomizer.Enabled = true;
             ClickRepeatgroup.Enabled = false;
             PerTimems.Enabled = false;
             PerTimesec.Enabled = false;
@@ -1218,15 +1665,19 @@ namespace Auto_Clicker
 
         private void PerTimeButton_CheckedChanged(object sender, EventArgs e)
         {
+
             PerTimems.Enabled = true;
             PerTimesec.Enabled = true;
             PerTimemin.Enabled = true;
             PerTimehour.Enabled = true;
             ClickRepeatgroup.Enabled = true;
-            HoldToClick.Enabled = false;
-            SwitchToClick.Checked = true;
-            ClickPerSecNum.Enabled = false;
             ResetPerTime.Enabled = true;
+            SwitchToClick.Checked = true;
+
+            HoldToClick.Enabled = false;
+            ClickPerSecNum.Enabled = false;
+            Num_Randomizer.Enabled = false;
+
         }
 
         private void RepeatUnlimited_CheckedChanged(object sender, EventArgs e)
@@ -1293,22 +1744,20 @@ namespace Auto_Clicker
             }
         }
 
-
-
         private void WhitelistappsCheck_CheckedChanged(object sender, EventArgs e)
         {
-            sideForm.btnRefreshWindows();
-            sideForm.reloadCheckedApps();
+            _SideForm.btnRefreshWindows();
+            _SideForm.reloadCheckedApps();
             if (WhitelistappsCheck.Checked)
             {
                 Setinfotextfast("Whitelist mode enabled");
-                sideForm.BlackWhiteListAppsGroup.Text = "Whitelist Apps";
+                _SideForm.BlackWhiteListAppsGroup.Text = "Whitelist Apps";
                 WhitelistappsCheck.Text = "Using Whitelist";
             }
             else
             {
                 Setinfotextfast("Blacklist mode enabled");
-                sideForm.BlackWhiteListAppsGroup.Text = "Blacklist Apps";
+                _SideForm.BlackWhiteListAppsGroup.Text = "Blacklist Apps";
                 WhitelistappsCheck.Text = "Using Blacklist";
             }
         }
@@ -1341,95 +1790,81 @@ namespace Auto_Clicker
             }
         }
 
-        private void TabPages_SelectedIndexChanged(object sender, EventArgs e)
+        public void setwindowsizeFunc()
         {
-            if (TabPages.SelectedTab == PageMain)
-            {
-                TabPages.Size = new Size(612, 218);
-                if (AutoUsePageCheck.Checked)
-                    SelectedFuncUse.SelectedIndex = 0;
-            }
-            else if (TabPages.SelectedTab == PageActions)
-            {
-                TabPages.Size = new Size(612, 377);
-                if (AutoUsePageCheck.Checked)
-                    SelectedFuncUse.SelectedIndex = 1;
-            }
-            else if (TabPages.SelectedTab == PageColorClick)
-            {
-                TabPages.Size = new Size(612, 152);
-                if (AutoUsePageCheck.Checked)
-                    SelectedFuncUse.SelectedIndex = 2;
-            }
+            var tab = TabPages.SelectedTab;
+
+            // Größe basierend auf Inhalt
+            Size needed = tab.PreferredSize;
+
+            // + TopBars berücksichtigen
+            int extraHeight =
+                panelTopInfo.Height +
+                panelHotkey.Height +
+                menuStrip1.Height;
+
+            this.ClientSize = new Size(
+                Math.Max(this.ClientSize.Width, needed.Width),
+                needed.Height + extraHeight + 10
+            );
         }
 
+        private void TabPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setwindowsizeFunc();
+            if (AutoUsePageCheck.Checked)
+                SelectedFuncUse.SelectedIndex = TabPages.SelectedIndex;
+        }
 
         private void ShowAllPositionsCheck_CheckedChanged(object sender, EventArgs e)
         {
-            ActionsFunc.ShowAllPositionens();
+            _Actions.ShowAllPositionens();
         }
 
         private void PositionSave_Click(object sender, EventArgs e)
         {
-            ActionsFunc.PositionSave();
+            _Actions.PositionSave();
         }
 
         private void KeySaveInList_Click(object sender, EventArgs e)
         {
-            ActionsFunc.KeySaveInAction();
+            _Actions.KeySaveInAction();
         }
 
         private void PositionClear_Click(object sender, EventArgs e)
         {
-            ActionsFunc.ClearSavedActions();
+            _Actions.ClearSavedActions();
         }
-
 
         private void PositionRemove_Click(object sender, EventArgs e)
         {
-            ActionsFunc.RemoveSelectedActions();
+            _Actions.RemoveSelectedActions();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActionsFunc.RemoveSelectedActions();
-        }
-
-        private void moveUToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ActionsFunc.MoveActions(true);
-        }
-
-        private void pToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            ActionsFunc.MoveActions(false);
+            _Actions.RemoveSelectedActions();
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActionsFunc.EditActionsSelected();
+            _Actions.EditActionsSelected();
         }
 
         private void CurserPositionList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ActionsFunc.SelectedAction();
+            _Actions.SelectedAction();
         }
 
         private void WaitAddButton_Click(object sender, EventArgs e)
         {
-            ActionsFunc.AddWaitTime();
-        }
-
-        private void CloseOpenHotkey_Click(object sender, EventArgs e)
-        {
-            Settingsbartoggle();
+            _Actions.AddWaitTime();
         }
 
         private void SideBarOC_Click(object sender, EventArgs e)
         {
-            sideForm.btnRefreshWindows();
-            sideForm.reloadCheckedApps();
+            _SideForm.btnRefreshWindows();
+            _SideForm.reloadCheckedApps();
             SidebarToggle();
         }
 
@@ -1475,7 +1910,7 @@ namespace Auto_Clicker
             if (wasChecked)
                 ColorShowAreaCheck.Checked = false; // Deaktivieren, um Konflikte zu vermeiden
             this.WindowState = FormWindowState.Minimized;
-            var result = colorClickerFunc.SelectRectangle();
+            var result = _ColorClick.SelectRectangle();
 
             if (!result.Area.IsEmpty)
             {
@@ -1484,7 +1919,7 @@ namespace Auto_Clicker
 
                 // Falls du die Koordinaten brauchst:
                 Setinfotextfast($"Area Saved: {result.Area}");
-                colorClickerFunc.scanArea = result.Area;
+                _ColorClick.scanArea = result.Area;
                 this.WindowState = FormWindowState.Normal;
             }
             else
@@ -1503,12 +1938,12 @@ namespace Auto_Clicker
         {
             if (ColorShowAreaCheck.Checked)
             {
-                Form marker = colorClickerFunc.ShowAreaMarker(colorClickerFunc.scanArea);
-                colorClickerFunc.ActiveMarker = marker;
+                Form marker = _ColorClick.ShowAreaMarker(_ColorClick.scanArea);
+                _ColorClick.ActiveMarker = marker;
             }
             else
             {
-                colorClickerFunc.ActiveMarker?.Close();
+                _ColorClick.ActiveMarker?.Close();
             }
         }
 
@@ -1521,7 +1956,7 @@ namespace Auto_Clicker
             if (screen != null)
             {
                 Rectangle bounds = screen.Bounds;
-                colorClickerFunc.scanArea = bounds;
+                _ColorClick.scanArea = bounds;
                 Setinfotextfast($"Area set to full screen: {bounds}");
                 UpdateColorClickAreaText(bounds);
             }
@@ -1547,6 +1982,9 @@ namespace Auto_Clicker
                     Color selectedColor = colorDialog.Color;
                     // Beispiel: Hintergrundfarbe eines Panels setzen
                     ColorSetColor.BackColor = selectedColor;
+                    string hex = $"Hex:#{selectedColor.R:X2}{selectedColor.G:X2}{selectedColor.B:X2}";
+                    Setinfotextfast($"Gewählte Farbe: {selectedColor} {hex}");
+                    LabelColorPicked.Text = ($"{selectedColor} {hex}");
                 }
             }
         }
@@ -1557,8 +1995,35 @@ namespace Auto_Clicker
             var picker = new ColorClickerFunc.ColorPicker();
             Color picked = picker.Show();
             ColorSetColor.BackColor = picked;
-            Setinfotextfast($"Gewählte Farbe: {picked}");
+            string hex = $"Hex:#{picked.R:X2}{picked.G:X2}{picked.B:X2}";
+            Setinfotextfast($"Gewählte Farbe: {picked} {hex}");
+            LabelColorPicked.Text = ($"{picked} {hex}");
             this.WindowState = FormWindowState.Normal;
+        }
+
+
+
+        private void Color_SelectActionsbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (Color_SelectActionsbox.SelectedIndex)
+            {
+                case 0:
+                    Color_Clickakey_setkey.Visible = false;
+                    Color_Clickakey_setkey_Label.Visible = false;
+                    break;
+                case 1:
+                    Color_Clickakey_setkey.Visible = true;
+                    Color_Clickakey_setkey_Label.Visible = true;
+                    Color_Clickakey_setkey.Text = "Set Key";
+                    Color_Clickakey_setkey_Label.Text = "Key: " + _ColorClick.ClickaKey_Key.ToString();
+                    break;
+                case 2:
+                    Color_Clickakey_setkey.Visible = true;
+                    Color_Clickakey_setkey_Label.Visible = true;
+                    Color_Clickakey_setkey.Text = "Set Position";
+                    Color_Clickakey_setkey_Label.Text = $"X:{_ColorClick.ClickPosition.X}, Y:{_ColorClick.ClickPosition.Y} <{_ColorClick.ClickPos_Key.ToString()}>";
+                    break;
+            }
         }
     }
 
@@ -1646,6 +2111,8 @@ namespace Auto_Clicker
             TopMost = true;
 
             var _ = Handle;
+
+            SetWindowDisplayAffinity(Handle, WDA_EXCLUDEFROMCAPTURE);
 
             Size = new Size(circleSize, circleSize); // garantiert quadratisch
 
@@ -1750,6 +2217,8 @@ namespace Auto_Clicker
         private const int WS_EX_LAYERED = 0x80000;
         private const int WS_EX_TRANSPARENT = 0x20;
         private const int GWL_EXSTYLE = -20;
+        const uint WDA_NONE = 0x0;
+        const uint WDA_EXCLUDEFROMCAPTURE = 0x11;
 
         [DllImport("user32.dll")] private static extern int GetWindowLong(IntPtr hwnd, int index);
         [DllImport("user32.dll")] private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
@@ -1765,6 +2234,8 @@ namespace Auto_Clicker
         [DllImport("gdi32.dll")] private static extern bool DeleteDC(IntPtr hdc);
         [DllImport("gdi32.dll")] private static extern IntPtr SelectObject(IntPtr hdc, IntPtr h);
         [DllImport("gdi32.dll")] private static extern bool DeleteObject(IntPtr ho);
+        [DllImport("user32.dll")]
+        static extern bool SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
         private struct POINT { public int X; public int Y; public POINT(int x, int y) { X = x; Y = y; } }
         private struct SIZE { public int cx; public int cy; public SIZE(int w, int h) { cx = w; cy = h; } }
@@ -1879,6 +2350,21 @@ namespace Auto_Clicker
             Controls.Add(sizeBar);
             Controls.Add(sizeLabel);
         }
+    }
+
+    public class ActionData
+    {
+        public ActionType Type { get; set; }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        public long HoldClickMS { get; set; }
+        public Keys? Mousepress { get; set; }
+
+        public Keys? Key { get; set; }
+
+        public long ToWait { get; set; }
     }
 
     public static class DataStings

@@ -1,4 +1,6 @@
-﻿namespace Auto_Clicker
+﻿using System.Windows.Forms;
+
+namespace Auto_Clicker
 {
     partial class Form1
     {
@@ -43,6 +45,10 @@
             clickCircleToolStripMenuItem = new ToolStripMenuItem();
             ShowHideMenu = new ToolStripMenuItem();
             custemizeCircleToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem2 = new ToolStripMenuItem();
+            Presets_Open_Folder = new ToolStripMenuItem();
+            Actions_Set_Preset_Folder = new ToolStripMenuItem();
+            Settings_OpenInfoLog = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             saveToolStripMenuItem = new ToolStripMenuItem();
             SettingsSaveonexit = new ToolStripMenuItem();
@@ -53,10 +59,17 @@
             label2 = new Label();
             InfoLabel = new Label();
             ActionRightclick = new ContextMenuStrip(components);
-            moveUToolStripMenuItem = new ToolStripMenuItem();
-            pToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem3 = new ToolStripMenuItem();
+            Move_MoveUP = new ToolStripMenuItem();
+            Move_MoveDown = new ToolStripMenuItem();
+            Move_MoveToPos = new ToolStripMenuItem();
             deleteToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
+            ActionMenuSetHold = new ToolStripMenuItem();
+            Switch_to_Actions = new ToolStripMenuItem();
+            Switch_to_SavePositon = new ToolStripMenuItem();
+            Switch_to_SaveKey = new ToolStripMenuItem();
+            Switch_to_Wait = new ToolStripMenuItem();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             AToolTips = new ToolTip(components);
             KeyToPress = new ComboBox();
@@ -78,7 +91,6 @@
             PerTimesec = new NumericUpDown();
             ActionRepeatTimes = new NumericUpDown();
             ResetPerTime = new Button();
-            CloseOpenHotkey = new Button();
             SideBarOC = new Button();
             ActionResetTime = new Button();
             TimeBetweenAction = new NumericUpDown();
@@ -93,9 +105,20 @@
             ColorToleranzenScan = new NumericUpDown();
             ColorSetColor = new Button();
             ColorPickFromScreen = new Button();
+            CheckIsHoldingon = new CheckBox();
+            ColTimeHolding = new NumericUpDown();
+            label15 = new Label();
+            CheckAddHold = new CheckBox();
+            Actions_Save_List = new Button();
+            Actions_Load_List = new Button();
+            Color_SelectActionsbox = new ComboBox();
+            Num_Randomizer = new NumericUpDown();
+            Color_Clickakey_setkey = new Button();
             TabPages = new TabControl();
             PageMain = new TabPage();
             groupBox4 = new GroupBox();
+            label17 = new Label();
+            label16 = new Label();
             label7 = new Label();
             label8 = new Label();
             label9 = new Label();
@@ -124,11 +147,16 @@
             WaitTimeSec = new NumericUpDown();
             WaitTimeMs = new NumericUpDown();
             PageColorClick = new TabPage();
+            Color_Clickakey_setkey_Label = new Label();
+            LabelColorPicked = new Label();
             label14 = new Label();
             label13 = new Label();
             ColorAreaRecText = new Label();
             HotkeyBoxOC = new GroupBox();
             HotkeyFindKey = new Button();
+            panelTopInfo = new Panel();
+            panelHotkey = new Panel();
+            panelContent = new Panel();
             menuStrip1.SuspendLayout();
             ActionRightclick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PerTimems).BeginInit();
@@ -139,6 +167,8 @@
             ((System.ComponentModel.ISupportInitialize)TimeBetweenAction).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ColorIntervalScan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ColorToleranzenScan).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ColTimeHolding).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Randomizer).BeginInit();
             TabPages.SuspendLayout();
             PageMain.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -153,6 +183,9 @@
             ((System.ComponentModel.ISupportInitialize)WaitTimeMs).BeginInit();
             PageColorClick.SuspendLayout();
             HotkeyBoxOC.SuspendLayout();
+            panelTopInfo.SuspendLayout();
+            panelHotkey.SuspendLayout();
+            panelContent.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -163,7 +196,7 @@
             // 
             // toolStripMenuItem1
             // 
-            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { settingsToolStripMenuItem, clickCircleToolStripMenuItem, toolStripSeparator2, saveToolStripMenuItem, SettingsSaveonexit, toolStripSeparator3, setTopMostMenu, toolStripSeparator1, madeByToolStripMenuItem });
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { settingsToolStripMenuItem, clickCircleToolStripMenuItem, toolStripMenuItem2, Settings_OpenInfoLog, toolStripSeparator2, saveToolStripMenuItem, SettingsSaveonexit, toolStripSeparator3, setTopMostMenu, toolStripSeparator1, madeByToolStripMenuItem });
             resources.ApplyResources(toolStripMenuItem1, "toolStripMenuItem1");
             toolStripMenuItem1.MergeIndex = 1;
             toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -247,6 +280,29 @@
             resources.ApplyResources(custemizeCircleToolStripMenuItem, "custemizeCircleToolStripMenuItem");
             custemizeCircleToolStripMenuItem.Click += custemizeCircleToolStripMenuItem_Click;
             // 
+            // toolStripMenuItem2
+            // 
+            toolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { Presets_Open_Folder, Actions_Set_Preset_Folder });
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            resources.ApplyResources(toolStripMenuItem2, "toolStripMenuItem2");
+            // 
+            // Presets_Open_Folder
+            // 
+            Presets_Open_Folder.Name = "Presets_Open_Folder";
+            resources.ApplyResources(Presets_Open_Folder, "Presets_Open_Folder");
+            Presets_Open_Folder.Click += Presets_Open_Folder_Click;
+            // 
+            // Actions_Set_Preset_Folder
+            // 
+            Actions_Set_Preset_Folder.Name = "Actions_Set_Preset_Folder";
+            resources.ApplyResources(Actions_Set_Preset_Folder, "Actions_Set_Preset_Folder");
+            Actions_Set_Preset_Folder.Click += Actions_Set_Preset_Folder_Click;
+            // 
+            // Settings_OpenInfoLog
+            // 
+            Settings_OpenInfoLog.Name = "Settings_OpenInfoLog";
+            resources.ApplyResources(Settings_OpenInfoLog, "Settings_OpenInfoLog");
+            // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
@@ -304,20 +360,29 @@
             // ActionRightclick
             // 
             resources.ApplyResources(ActionRightclick, "ActionRightclick");
-            ActionRightclick.Items.AddRange(new ToolStripItem[] { moveUToolStripMenuItem, pToolStripMenuItem, deleteToolStripMenuItem, editToolStripMenuItem });
+            ActionRightclick.Items.AddRange(new ToolStripItem[] { toolStripMenuItem3, deleteToolStripMenuItem, editToolStripMenuItem, ActionMenuSetHold, Switch_to_Actions });
             ActionRightclick.Name = "ActionRightclick";
             // 
-            // moveUToolStripMenuItem
+            // toolStripMenuItem3
             // 
-            moveUToolStripMenuItem.Name = "moveUToolStripMenuItem";
-            resources.ApplyResources(moveUToolStripMenuItem, "moveUToolStripMenuItem");
-            moveUToolStripMenuItem.Click += moveUToolStripMenuItem_Click;
+            toolStripMenuItem3.DropDownItems.AddRange(new ToolStripItem[] { Move_MoveUP, Move_MoveDown, Move_MoveToPos });
+            toolStripMenuItem3.Name = "toolStripMenuItem3";
+            resources.ApplyResources(toolStripMenuItem3, "toolStripMenuItem3");
             // 
-            // pToolStripMenuItem
+            // Move_MoveUP
             // 
-            pToolStripMenuItem.Name = "pToolStripMenuItem";
-            resources.ApplyResources(pToolStripMenuItem, "pToolStripMenuItem");
-            pToolStripMenuItem.Click += pToolStripMenuItem_Click;
+            Move_MoveUP.Name = "Move_MoveUP";
+            resources.ApplyResources(Move_MoveUP, "Move_MoveUP");
+            // 
+            // Move_MoveDown
+            // 
+            Move_MoveDown.Name = "Move_MoveDown";
+            resources.ApplyResources(Move_MoveDown, "Move_MoveDown");
+            // 
+            // Move_MoveToPos
+            // 
+            Move_MoveToPos.Name = "Move_MoveToPos";
+            resources.ApplyResources(Move_MoveToPos, "Move_MoveToPos");
             // 
             // deleteToolStripMenuItem
             // 
@@ -330,6 +395,32 @@
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             resources.ApplyResources(editToolStripMenuItem, "editToolStripMenuItem");
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            // 
+            // ActionMenuSetHold
+            // 
+            ActionMenuSetHold.Name = "ActionMenuSetHold";
+            resources.ApplyResources(ActionMenuSetHold, "ActionMenuSetHold");
+            // 
+            // Switch_to_Actions
+            // 
+            Switch_to_Actions.DropDownItems.AddRange(new ToolStripItem[] { Switch_to_SavePositon, Switch_to_SaveKey, Switch_to_Wait });
+            Switch_to_Actions.Name = "Switch_to_Actions";
+            resources.ApplyResources(Switch_to_Actions, "Switch_to_Actions");
+            // 
+            // Switch_to_SavePositon
+            // 
+            Switch_to_SavePositon.Name = "Switch_to_SavePositon";
+            resources.ApplyResources(Switch_to_SavePositon, "Switch_to_SavePositon");
+            // 
+            // Switch_to_SaveKey
+            // 
+            Switch_to_SaveKey.Name = "Switch_to_SaveKey";
+            resources.ApplyResources(Switch_to_SaveKey, "Switch_to_SaveKey");
+            // 
+            // Switch_to_Wait
+            // 
+            Switch_to_Wait.Name = "Switch_to_Wait";
+            resources.ApplyResources(Switch_to_Wait, "Switch_to_Wait");
             // 
             // KeyToPress
             // 
@@ -504,18 +595,6 @@
             ResetPerTime.UseVisualStyleBackColor = false;
             ResetPerTime.Click += ResetPerTime_Click;
             // 
-            // CloseOpenHotkey
-            // 
-            CloseOpenHotkey.BackColor = Color.Transparent;
-            CloseOpenHotkey.FlatAppearance.BorderSize = 0;
-            CloseOpenHotkey.FlatAppearance.MouseOverBackColor = Color.Silver;
-            resources.ApplyResources(CloseOpenHotkey, "CloseOpenHotkey");
-            CloseOpenHotkey.Name = "CloseOpenHotkey";
-            CloseOpenHotkey.TabStop = false;
-            AToolTips.SetToolTip(CloseOpenHotkey, resources.GetString("CloseOpenHotkey.ToolTip"));
-            CloseOpenHotkey.UseVisualStyleBackColor = false;
-            CloseOpenHotkey.Click += CloseOpenHotkey_Click;
-            // 
             // SideBarOC
             // 
             SideBarOC.BackColor = Color.Transparent;
@@ -545,7 +624,7 @@
             TimeBetweenAction.Increment = new decimal(new int[] { 10, 0, 0, 0 });
             resources.ApplyResources(TimeBetweenAction, "TimeBetweenAction");
             TimeBetweenAction.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            TimeBetweenAction.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            TimeBetweenAction.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             TimeBetweenAction.Name = "TimeBetweenAction";
             TimeBetweenAction.TabStop = false;
             TimeBetweenAction.Tag = "";
@@ -625,10 +704,10 @@
             // 
             // ColorIntervalScan
             // 
-            ColorIntervalScan.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            ColorIntervalScan.Increment = new decimal(new int[] { 100, 0, 0, 0 });
             resources.ApplyResources(ColorIntervalScan, "ColorIntervalScan");
-            ColorIntervalScan.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            ColorIntervalScan.Minimum = new decimal(new int[] { 50, 0, 0, 0 });
+            ColorIntervalScan.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            ColorIntervalScan.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
             ColorIntervalScan.Name = "ColorIntervalScan";
             ColorIntervalScan.TabStop = false;
             ColorIntervalScan.Tag = "";
@@ -638,7 +717,7 @@
             // ColorToleranzenScan
             // 
             resources.ApplyResources(ColorToleranzenScan, "ColorToleranzenScan");
-            ColorToleranzenScan.Minimum = new decimal(new int[] { 15, 0, 0, 0 });
+            ColorToleranzenScan.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             ColorToleranzenScan.Name = "ColorToleranzenScan";
             ColorToleranzenScan.TabStop = false;
             ColorToleranzenScan.Tag = "";
@@ -668,6 +747,90 @@
             ColorPickFromScreen.UseVisualStyleBackColor = false;
             ColorPickFromScreen.Click += ColorPickFromScreen_Click;
             // 
+            // CheckIsHoldingon
+            // 
+            resources.ApplyResources(CheckIsHoldingon, "CheckIsHoldingon");
+            CheckIsHoldingon.Name = "CheckIsHoldingon";
+            CheckIsHoldingon.TabStop = false;
+            AToolTips.SetToolTip(CheckIsHoldingon, resources.GetString("CheckIsHoldingon.ToolTip"));
+            CheckIsHoldingon.UseVisualStyleBackColor = true;
+            // 
+            // ColTimeHolding
+            // 
+            ColTimeHolding.Increment = new decimal(new int[] { 100, 0, 0, 0 });
+            resources.ApplyResources(ColTimeHolding, "ColTimeHolding");
+            ColTimeHolding.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            ColTimeHolding.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            ColTimeHolding.Name = "ColTimeHolding";
+            ColTimeHolding.TabStop = false;
+            ColTimeHolding.Tag = "";
+            AToolTips.SetToolTip(ColTimeHolding, resources.GetString("ColTimeHolding.ToolTip"));
+            ColTimeHolding.Value = new decimal(new int[] { 500, 0, 0, 0 });
+            // 
+            // label15
+            // 
+            resources.ApplyResources(label15, "label15");
+            label15.Name = "label15";
+            AToolTips.SetToolTip(label15, resources.GetString("label15.ToolTip"));
+            // 
+            // CheckAddHold
+            // 
+            resources.ApplyResources(CheckAddHold, "CheckAddHold");
+            CheckAddHold.Name = "CheckAddHold";
+            CheckAddHold.TabStop = false;
+            AToolTips.SetToolTip(CheckAddHold, resources.GetString("CheckAddHold.ToolTip"));
+            CheckAddHold.UseVisualStyleBackColor = true;
+            // 
+            // Actions_Save_List
+            // 
+            Actions_Save_List.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(Actions_Save_List, "Actions_Save_List");
+            Actions_Save_List.Name = "Actions_Save_List";
+            Actions_Save_List.TabStop = false;
+            AToolTips.SetToolTip(Actions_Save_List, resources.GetString("Actions_Save_List.ToolTip"));
+            Actions_Save_List.UseVisualStyleBackColor = false;
+            Actions_Save_List.Click += Actions_Save_List_Click;
+            // 
+            // Actions_Load_List
+            // 
+            Actions_Load_List.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(Actions_Load_List, "Actions_Load_List");
+            Actions_Load_List.Name = "Actions_Load_List";
+            Actions_Load_List.TabStop = false;
+            AToolTips.SetToolTip(Actions_Load_List, resources.GetString("Actions_Load_List.ToolTip"));
+            Actions_Load_List.UseVisualStyleBackColor = false;
+            Actions_Load_List.Click += Actions_Load_List_Click;
+            // 
+            // Color_SelectActionsbox
+            // 
+            Color_SelectActionsbox.BackColor = SystemColors.ScrollBar;
+            Color_SelectActionsbox.DropDownStyle = ComboBoxStyle.DropDownList;
+            Color_SelectActionsbox.FormattingEnabled = true;
+            Color_SelectActionsbox.Items.AddRange(new object[] { resources.GetString("Color_SelectActionsbox.Items"), resources.GetString("Color_SelectActionsbox.Items1"), resources.GetString("Color_SelectActionsbox.Items2") });
+            resources.ApplyResources(Color_SelectActionsbox, "Color_SelectActionsbox");
+            Color_SelectActionsbox.Name = "Color_SelectActionsbox";
+            Color_SelectActionsbox.TabStop = false;
+            AToolTips.SetToolTip(Color_SelectActionsbox, resources.GetString("Color_SelectActionsbox.ToolTip"));
+            Color_SelectActionsbox.SelectedIndexChanged += Color_SelectActionsbox_SelectedIndexChanged;
+            // 
+            // Num_Randomizer
+            // 
+            Num_Randomizer.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            resources.ApplyResources(Num_Randomizer, "Num_Randomizer");
+            Num_Randomizer.Maximum = new decimal(new int[] { 90, 0, 0, 0 });
+            Num_Randomizer.Name = "Num_Randomizer";
+            Num_Randomizer.TabStop = false;
+            AToolTips.SetToolTip(Num_Randomizer, resources.GetString("Num_Randomizer.ToolTip"));
+            Num_Randomizer.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            // 
+            // Color_Clickakey_setkey
+            // 
+            Color_Clickakey_setkey.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(Color_Clickakey_setkey, "Color_Clickakey_setkey");
+            Color_Clickakey_setkey.Name = "Color_Clickakey_setkey";
+            Color_Clickakey_setkey.TabStop = false;
+            Color_Clickakey_setkey.UseVisualStyleBackColor = false;
+            // 
             // TabPages
             // 
             TabPages.Controls.Add(PageMain);
@@ -689,6 +852,9 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(label17);
+            groupBox4.Controls.Add(label16);
+            groupBox4.Controls.Add(Num_Randomizer);
             groupBox4.Controls.Add(ResetPerTime);
             groupBox4.Controls.Add(label7);
             groupBox4.Controls.Add(label8);
@@ -705,6 +871,16 @@
             resources.ApplyResources(groupBox4, "groupBox4");
             groupBox4.Name = "groupBox4";
             groupBox4.TabStop = false;
+            // 
+            // label17
+            // 
+            resources.ApplyResources(label17, "label17");
+            label17.Name = "label17";
+            // 
+            // label16
+            // 
+            resources.ApplyResources(label16, "label16");
+            label16.Name = "label16";
             // 
             // label7
             // 
@@ -821,6 +997,9 @@
             // 
             // PageActions
             // 
+            PageActions.Controls.Add(Actions_Load_List);
+            PageActions.Controls.Add(Actions_Save_List);
+            PageActions.Controls.Add(CheckAddHold);
             PageActions.Controls.Add(IgnoreWaitCheck);
             PageActions.Controls.Add(label12);
             PageActions.Controls.Add(TimeBetweenAction);
@@ -915,6 +1094,13 @@
             // 
             // PageColorClick
             // 
+            PageColorClick.Controls.Add(Color_Clickakey_setkey_Label);
+            PageColorClick.Controls.Add(Color_Clickakey_setkey);
+            PageColorClick.Controls.Add(Color_SelectActionsbox);
+            PageColorClick.Controls.Add(LabelColorPicked);
+            PageColorClick.Controls.Add(label15);
+            PageColorClick.Controls.Add(ColTimeHolding);
+            PageColorClick.Controls.Add(CheckIsHoldingon);
             PageColorClick.Controls.Add(label14);
             PageColorClick.Controls.Add(label13);
             PageColorClick.Controls.Add(ColorPickFromScreen);
@@ -928,6 +1114,16 @@
             resources.ApplyResources(PageColorClick, "PageColorClick");
             PageColorClick.Name = "PageColorClick";
             PageColorClick.UseVisualStyleBackColor = true;
+            // 
+            // Color_Clickakey_setkey_Label
+            // 
+            resources.ApplyResources(Color_Clickakey_setkey_Label, "Color_Clickakey_setkey_Label");
+            Color_Clickakey_setkey_Label.Name = "Color_Clickakey_setkey_Label";
+            // 
+            // LabelColorPicked
+            // 
+            resources.ApplyResources(LabelColorPicked, "LabelColorPicked");
+            LabelColorPicked.Name = "LabelColorPicked";
             // 
             // label14
             // 
@@ -946,6 +1142,7 @@
             // 
             // HotkeyBoxOC
             // 
+            resources.ApplyResources(HotkeyBoxOC, "HotkeyBoxOC");
             HotkeyBoxOC.Controls.Add(SelectedFuncUse);
             HotkeyBoxOC.Controls.Add(PlayRecord);
             HotkeyBoxOC.Controls.Add(RecordButton);
@@ -954,7 +1151,6 @@
             HotkeyBoxOC.Controls.Add(HoldToClick);
             HotkeyBoxOC.Controls.Add(HotkeyFindKey);
             HotkeyBoxOC.Controls.Add(Hotkeypressvalue);
-            resources.ApplyResources(HotkeyBoxOC, "HotkeyBoxOC");
             HotkeyBoxOC.Name = "HotkeyBoxOC";
             HotkeyBoxOC.TabStop = false;
             // 
@@ -968,22 +1164,40 @@
             HotkeyFindKey.UseVisualStyleBackColor = false;
             HotkeyFindKey.Click += HotkeyFindKey_Click;
             // 
+            // panelTopInfo
+            // 
+            panelTopInfo.Controls.Add(label2);
+            panelTopInfo.Controls.Add(InfoLabel);
+            panelTopInfo.Controls.Add(SideBarOC);
+            panelTopInfo.Controls.Add(menuStrip1);
+            resources.ApplyResources(panelTopInfo, "panelTopInfo");
+            panelTopInfo.Name = "panelTopInfo";
+            // 
+            // panelHotkey
+            // 
+            resources.ApplyResources(panelHotkey, "panelHotkey");
+            panelHotkey.Controls.Add(HotkeyBoxOC);
+            panelHotkey.Name = "panelHotkey";
+            // 
+            // panelContent
+            // 
+            resources.ApplyResources(panelContent, "panelContent");
+            panelContent.Controls.Add(TabPages);
+            panelContent.Name = "panelContent";
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonFace;
-            Controls.Add(SideBarOC);
-            Controls.Add(CloseOpenHotkey);
-            Controls.Add(TabPages);
-            Controls.Add(InfoLabel);
-            Controls.Add(label2);
-            Controls.Add(menuStrip1);
-            Controls.Add(HotkeyBoxOC);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Controls.Add(panelContent);
+            Controls.Add(panelHotkey);
+            Controls.Add(panelTopInfo);
+            KeyPreview = true;
             MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             Name = "Form1";
+            TopMost = true;
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
             menuStrip1.ResumeLayout(false);
@@ -997,6 +1211,8 @@
             ((System.ComponentModel.ISupportInitialize)TimeBetweenAction).EndInit();
             ((System.ComponentModel.ISupportInitialize)ColorIntervalScan).EndInit();
             ((System.ComponentModel.ISupportInitialize)ColorToleranzenScan).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ColTimeHolding).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Num_Randomizer).EndInit();
             TabPages.ResumeLayout(false);
             PageMain.ResumeLayout(false);
             groupBox4.ResumeLayout(false);
@@ -1013,6 +1229,10 @@
             ((System.ComponentModel.ISupportInitialize)WaitTimeMs).EndInit();
             PageColorClick.ResumeLayout(false);
             HotkeyBoxOC.ResumeLayout(false);
+            panelTopInfo.ResumeLayout(false);
+            panelTopInfo.PerformLayout();
+            panelHotkey.ResumeLayout(false);
+            panelContent.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
 
@@ -1041,8 +1261,6 @@
         public ToolStripSeparator toolStripSeparator1;
         public ToolStripMenuItem madeByToolStripMenuItem;
         public ContextMenuStrip ActionRightclick;
-        public ToolStripMenuItem moveUToolStripMenuItem;
-        public ToolStripMenuItem pToolStripMenuItem;
         public ToolStripMenuItem editToolStripMenuItem;
         public TabControl TabPages;
         public TabPage PageMain;
@@ -1083,7 +1301,6 @@
         public NumericUpDown WaitTimeMin;
         public NumericUpDown WaitTimeSec;
         public NumericUpDown WaitTimeMs;
-        public Button CloseOpenHotkey;
         public Button SideBarOC;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem resetSettingsToolStripMenuItem;
@@ -1118,6 +1335,35 @@
         public Button ColorPickFromScreen;
         public Label label14;
         public Label label13;
+        public Label label15;
+        public NumericUpDown ColTimeHolding;
+        public CheckBox CheckIsHoldingon;
+        public Label LabelColorPicked;
+        public ToolStripMenuItem Switch_to_Actions;
+        public ToolStripMenuItem Switch_to_SavePositon;
+        public ToolStripMenuItem Switch_to_SaveKey;
+        public ToolStripMenuItem Switch_to_Wait;
+        public CheckBox CheckAddHold;
+        public ToolStripMenuItem ActionMenuSetHold;
+        public Button Actions_Save_List;
+        private ToolStripMenuItem toolStripMenuItem2;
+        public ToolStripMenuItem Actions_Set_Preset_Folder;
+        public Button Actions_Load_List;
+        private ToolStripMenuItem Presets_Open_Folder;
+        private ToolStripMenuItem Settings_OpenInfoLog;
+        public ComboBox Color_SelectActionsbox;
+        public Button Color_Clickakey_setkey;
+        public Label Color_Clickakey_setkey_Label;
+        private Panel panelTopInfo;
+        private Panel panelHotkey;
+        private Panel panelContent;
+        private ToolStripMenuItem toolStripMenuItem3;
+        private ToolStripMenuItem Move_MoveUP;
+        private ToolStripMenuItem Move_MoveDown;
+        private ToolStripMenuItem Move_MoveToPos;
+        public NumericUpDown Num_Randomizer;
+        public Label label16;
+        public Label label17;
     }
 }
 

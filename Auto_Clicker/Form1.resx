@@ -120,6 +120,10 @@
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="menuStrip1.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="menuStrip1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
@@ -643,6 +647,36 @@ when assign a Key to Something</value>
   <data name="clickCircleToolStripMenuItem.Text" xml:space="preserve">
     <value>ClickCircle</value>
   </data>
+  <data name="Presets_Open_Folder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 22</value>
+  </data>
+  <data name="Presets_Open_Folder.Text" xml:space="preserve">
+    <value>Open Folder</value>
+  </data>
+  <data name="Presets_Open_Folder.ToolTipText" xml:space="preserve">
+    <value>Open the Actions Preset Folder</value>
+  </data>
+  <data name="Actions_Set_Preset_Folder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 22</value>
+  </data>
+  <data name="Actions_Set_Preset_Folder.Text" xml:space="preserve">
+    <value>Set Preset Folder</value>
+  </data>
+  <data name="Actions_Set_Preset_Folder.ToolTipText" xml:space="preserve">
+    <value>Set the Actions Preset Folder</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="toolStripMenuItem2.Text" xml:space="preserve">
+    <value>Actions Presets</value>
+  </data>
+  <data name="Settings_OpenInfoLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 22</value>
+  </data>
+  <data name="Settings_OpenInfoLog.Text" xml:space="preserve">
+    <value>Open Info Log</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 6</value>
   </data>
@@ -689,7 +723,7 @@ when assign a Key to Something</value>
     <value>Microsoft Sans Serif, 10pt</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 21</value>
+    <value>36, 24</value>
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>⚙️</value>
@@ -698,12 +732,11 @@ when assign a Key to Something</value>
     <value>MiddleLeft</value>
   </data>
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>4, 5</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
+    <value>44, 28</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
@@ -714,16 +747,25 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelTopInfo</value>
   </data>
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>3</value>
+  </data>
+  <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 10pt</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>43, 4</value>
+    <value>41, 8</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 24</value>
+    <value>40, 19</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -738,19 +780,25 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelTopInfo</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>0</value>
+  </data>
+  <data name="InfoLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="InfoLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="InfoLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 10pt</value>
   </data>
   <data name="InfoLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 5</value>
+    <value>78, 10</value>
   </data>
   <data name="InfoLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 23</value>
+    <value>69, 17</value>
   </data>
   <data name="InfoLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -765,10 +813,10 @@ when assign a Key to Something</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;InfoLabel.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelTopInfo</value>
   </data>
   <data name="&gt;&gt;InfoLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>1</value>
   </data>
   <metadata name="ActionRightclick.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>405, 19</value>
@@ -776,32 +824,77 @@ when assign a Key to Something</value>
   <data name="ActionRightclick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="moveUToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
+  <data name="Move_MoveUP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
   </data>
-  <data name="moveUToolStripMenuItem.Text" xml:space="preserve">
+  <data name="Move_MoveUP.Text" xml:space="preserve">
     <value>Move Up</value>
   </data>
-  <data name="pToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
+  <data name="Move_MoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
   </data>
-  <data name="pToolStripMenuItem.Text" xml:space="preserve">
+  <data name="Move_MoveDown.Text" xml:space="preserve">
     <value>Move Down</value>
   </data>
+  <data name="Move_MoveToPos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="Move_MoveToPos.Text" xml:space="preserve">
+    <value>Move to Pos</value>
+  </data>
+  <data name="toolStripMenuItem3.ShortcutKeyDisplayString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 22</value>
+  </data>
+  <data name="toolStripMenuItem3.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
+    <value>126, 22</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
+    <value>126, 22</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ActionMenuSetHold.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 22</value>
+  </data>
+  <data name="ActionMenuSetHold.Text" xml:space="preserve">
+    <value>Set Hold</value>
+  </data>
+  <data name="Switch_to_SavePositon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="Switch_to_SavePositon.Text" xml:space="preserve">
+    <value>Save Position</value>
+  </data>
+  <data name="Switch_to_SaveKey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="Switch_to_SaveKey.Text" xml:space="preserve">
+    <value>Save Key</value>
+  </data>
+  <data name="Switch_to_Wait.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="Switch_to_Wait.Text" xml:space="preserve">
+    <value>Wait</value>
+  </data>
+  <data name="Switch_to_Actions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 22</value>
+  </data>
+  <data name="Switch_to_Actions.Text" xml:space="preserve">
+    <value>Switch to:</value>
+  </data>
   <data name="ActionRightclick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 92</value>
+    <value>127, 114</value>
   </data>
   <data name="&gt;&gt;ActionRightclick.Name" xml:space="preserve">
     <value>ActionRightclick</value>
@@ -816,7 +909,7 @@ when assign a Key to Something</value>
     <value>299, 19</value>
   </metadata>
   <data name="KeyToPress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 104</value>
+    <value>4, 118</value>
   </data>
   <data name="KeyToPress.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 24</value>
@@ -843,10 +936,10 @@ when assign a Key to Something</value>
     <value>NoControl</value>
   </data>
   <data name="WhitelistappsCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>219, 52</value>
+    <value>219, 59</value>
   </data>
   <data name="WhitelistappsCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 28</value>
+    <value>120, 32</value>
   </data>
   <data name="WhitelistappsCheck.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -873,10 +966,10 @@ when assign a Key to Something</value>
     <value>NoControl</value>
   </data>
   <data name="SwitchToClick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 57</value>
+    <value>143, 65</value>
   </data>
   <data name="SwitchToClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>70, 27</value>
   </data>
   <data name="SwitchToClick.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -903,10 +996,10 @@ when assign a Key to Something</value>
     <value>NoControl</value>
   </data>
   <data name="HoldToClick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>143, 25</value>
+    <value>143, 28</value>
   </data>
   <data name="HoldToClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="HoldToClick.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -930,10 +1023,10 @@ when assign a Key to Something</value>
     <value>5</value>
   </data>
   <data name="Hotkeypressvalue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 22</value>
+    <value>6, 25</value>
   </data>
   <data name="Hotkeypressvalue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 24</value>
+    <value>121, 25</value>
   </data>
   <data name="Hotkeypressvalue.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -957,10 +1050,10 @@ when assign a Key to Something</value>
     <value>NoControl</value>
   </data>
   <data name="PerTimeButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 133</value>
+    <value>6, 151</value>
   </data>
   <data name="PerTimeButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 24</value>
+    <value>115, 27</value>
   </data>
   <data name="PerTimeButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -982,16 +1075,16 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;PerTimeButton.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
   </data>
   <data name="ShowAllPositionsCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ShowAllPositionsCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 38</value>
+    <value>236, 61</value>
   </data>
   <data name="ShowAllPositionsCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
+    <value>80, 24</value>
   </data>
   <data name="ShowAllPositionsCheck.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1012,22 +1105,22 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;ShowAllPositionsCheck.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>22</value>
   </data>
   <data name="KeySaveInList.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="KeySaveInList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 47</value>
+    <value>8, 53</value>
   </data>
   <data name="KeySaveInList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="KeySaveInList.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="KeySaveInList.Text" xml:space="preserve">
-    <value>Save Key</value>
+    <value>Set Key</value>
   </data>
   <data name="KeySaveInList.ToolTip" xml:space="preserve">
     <value>Save a Key from the Keyboard you want it to Click</value>
@@ -1042,22 +1135,22 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;KeySaveInList.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>20</value>
   </data>
   <data name="PositionSave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="PositionSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 12</value>
+    <value>8, 14</value>
   </data>
   <data name="PositionSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="PositionSave.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="PositionSave.Text" xml:space="preserve">
-    <value>Save Position</value>
+    <value>Set Position</value>
   </data>
   <data name="PositionSave.ToolTip" xml:space="preserve">
     <value>Save the Position you want it to click</value>
@@ -1072,16 +1165,16 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;PositionSave.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="PositionClear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="PositionClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 117</value>
+    <value>7, 133</value>
   </data>
   <data name="PositionClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="PositionClear.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1102,16 +1195,16 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;PositionClear.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="PositionRemove.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="PositionRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 82</value>
+    <value>7, 93</value>
   </data>
   <data name="PositionRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="PositionRemove.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1132,16 +1225,16 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;PositionRemove.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="ShowPointOnClick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ShowPointOnClick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 12</value>
+    <value>236, 31</value>
   </data>
   <data name="ShowPointOnClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 21</value>
+    <value>100, 24</value>
   </data>
   <data name="ShowPointOnClick.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1162,16 +1255,16 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;ShowPointOnClick.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="WaitAddButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="WaitAddButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 319</value>
+    <value>271, 382</value>
   </data>
   <data name="WaitAddButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 29</value>
+    <value>59, 33</value>
   </data>
   <data name="WaitAddButton.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1192,13 +1285,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;WaitAddButton.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>17</value>
   </data>
   <data name="PerTimems.Location" type="System.Drawing.Point, System.Drawing">
-    <value>391, 135</value>
+    <value>391, 153</value>
   </data>
   <data name="PerTimems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="PerTimems.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -1216,13 +1309,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;PerTimems.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="PerTimehour.Location" type="System.Drawing.Point, System.Drawing">
-    <value>190, 135</value>
+    <value>190, 153</value>
   </data>
   <data name="PerTimehour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="PerTimehour.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -1240,13 +1333,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;PerTimehour.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="PerTimemin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 135</value>
+    <value>257, 153</value>
   </data>
   <data name="PerTimemin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="PerTimemin.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1264,13 +1357,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;PerTimemin.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="PerTimesec.Location" type="System.Drawing.Point, System.Drawing">
-    <value>324, 135</value>
+    <value>324, 153</value>
   </data>
   <data name="PerTimesec.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="PerTimesec.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1288,13 +1381,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;PerTimesec.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="ActionRepeatTimes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 152</value>
+    <value>11, 172</value>
   </data>
   <data name="ActionRepeatTimes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 23</value>
+    <value>75, 25</value>
   </data>
   <data name="ActionRepeatTimes.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1315,7 +1408,7 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;ActionRepeatTimes.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="ResetPerTime.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -1327,13 +1420,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>NoControl</value>
   </data>
   <data name="ResetPerTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 123</value>
+    <value>152, 139</value>
   </data>
   <data name="ResetPerTime.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="ResetPerTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 41</value>
+    <value>32, 46</value>
   </data>
   <data name="ResetPerTime.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1354,40 +1447,7 @@ how long to Repeat you can set in Click Repeat</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;ResetPerTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="CloseOpenHotkey.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="CloseOpenHotkey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="CloseOpenHotkey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 0</value>
-  </data>
-  <data name="CloseOpenHotkey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
-  </data>
-  <data name="CloseOpenHotkey.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="CloseOpenHotkey.Text" xml:space="preserve">
-    <value>▼</value>
-  </data>
-  <data name="CloseOpenHotkey.ToolTip" xml:space="preserve">
-    <value>Open Hotkey / Settings Bar</value>
-  </data>
-  <data name="&gt;&gt;CloseOpenHotkey.Name" xml:space="preserve">
-    <value>CloseOpenHotkey</value>
-  </data>
-  <data name="&gt;&gt;CloseOpenHotkey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CloseOpenHotkey.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CloseOpenHotkey.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="SideBarOC.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -1396,10 +1456,10 @@ how long to Repeat you can set in Click Repeat</value>
     <value>NoControl</value>
   </data>
   <data name="SideBarOC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>590, 0</value>
+    <value>589, 5</value>
   </data>
   <data name="SideBarOC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
+    <value>23, 26</value>
   </data>
   <data name="SideBarOC.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1418,10 +1478,10 @@ how long to Repeat you can set in Click Repeat</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SideBarOC.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelTopInfo</value>
   </data>
   <data name="&gt;&gt;SideBarOC.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="ActionResetTime.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -1433,13 +1493,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>NoControl</value>
   </data>
   <data name="ActionResetTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 272</value>
+    <value>284, 329</value>
   </data>
   <data name="ActionResetTime.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="ActionResetTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 41</value>
+    <value>32, 46</value>
   </data>
   <data name="ActionResetTime.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -1460,13 +1520,13 @@ how long to Repeat you can set in Click Repeat</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;ActionResetTime.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="TimeBetweenAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 181</value>
+    <value>11, 205</value>
   </data>
   <data name="TimeBetweenAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 23</value>
+    <value>75, 25</value>
   </data>
   <data name="TimeBetweenAction.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1488,16 +1548,16 @@ Standard: 10</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;TimeBetweenAction.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="IgnoreWaitCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="IgnoreWaitCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 210</value>
+    <value>11, 238</value>
   </data>
   <data name="IgnoreWaitCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 28</value>
+    <value>120, 32</value>
   </data>
   <data name="IgnoreWaitCheck.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -1518,7 +1578,7 @@ Standard: 10</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;IgnoreWaitCheck.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="RecordButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1527,10 +1587,10 @@ Standard: 10</value>
     <value>NoControl</value>
   </data>
   <data name="RecordButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 17</value>
+    <value>479, 19</value>
   </data>
   <data name="RecordButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="RecordButton.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1563,10 +1623,10 @@ Standard: 10</value>
     <value>NoControl</value>
   </data>
   <data name="PlayRecord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 51</value>
+    <value>479, 58</value>
   </data>
   <data name="PlayRecord.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
+    <value>122, 33</value>
   </data>
   <data name="PlayRecord.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1602,10 +1662,10 @@ Standard: 10</value>
     <value>ColorClick</value>
   </data>
   <data name="SelectedFuncUse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 25</value>
+    <value>218, 28</value>
   </data>
   <data name="SelectedFuncUse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 24</value>
+    <value>113, 25</value>
   </data>
   <data name="SelectedFuncUse.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1630,10 +1690,10 @@ The ⬤ show the aktive Clicker</value>
     <value>NoControl</value>
   </data>
   <data name="ColorShowAreaCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 28</value>
+    <value>118, 32</value>
   </data>
   <data name="ColorShowAreaCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 28</value>
+    <value>95, 32</value>
   </data>
   <data name="ColorShowAreaCheck.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1654,7 +1714,7 @@ The ⬤ show the aktive Clicker</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorShowAreaCheck.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>15</value>
   </data>
   <data name="ColorFullScreenButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 25world</value>
@@ -1663,10 +1723,10 @@ The ⬤ show the aktive Clicker</value>
     <value>NoControl</value>
   </data>
   <data name="ColorFullScreenButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 26</value>
+    <value>79, 29</value>
   </data>
   <data name="ColorFullScreenButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 31</value>
+    <value>34, 35</value>
   </data>
   <data name="ColorFullScreenButton.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1685,16 +1745,16 @@ Drag the app to the monitor you want it to Search in than Click it</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorFullScreenButton.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>13</value>
   </data>
   <data name="ColorSetArea.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ColorSetArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 24</value>
+    <value>3, 27</value>
   </data>
   <data name="ColorSetArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 34</value>
+    <value>75, 39</value>
   </data>
   <data name="ColorSetArea.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1717,13 +1777,13 @@ it dont go through screen only 1 screen
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorSetArea.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>16</value>
   </data>
   <data name="ColorIntervalScan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 64</value>
+    <value>8, 105</value>
   </data>
   <data name="ColorIntervalScan.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>80, 25</value>
   </data>
   <data name="ColorIntervalScan.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
@@ -1745,13 +1805,13 @@ Standard 500ms</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorIntervalScan.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>12</value>
   </data>
   <data name="ColorToleranzenScan.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 93</value>
+    <value>8, 138</value>
   </data>
   <data name="ColorToleranzenScan.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 23</value>
+    <value>80, 25</value>
   </data>
   <data name="ColorToleranzenScan.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -1773,7 +1833,7 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorToleranzenScan.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>11</value>
   </data>
   <data name="ColorSetColor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
@@ -1782,10 +1842,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="ColorSetColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>354, 29</value>
+    <value>354, 60</value>
   </data>
   <data name="ColorSetColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 87</value>
+    <value>231, 99</value>
   </data>
   <data name="ColorSetColor.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -1803,16 +1863,16 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorSetColor.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>10</value>
   </data>
   <data name="ColorPickFromScreen.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ColorPickFromScreen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 28</value>
+    <value>249, 60</value>
   </data>
   <data name="ColorPickFromScreen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 88</value>
+    <value>99, 100</value>
   </data>
   <data name="ColorPickFromScreen.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -1833,7 +1893,343 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorPickFromScreen.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="CheckIsHoldingon.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CheckIsHoldingon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 67</value>
+  </data>
+  <data name="CheckIsHoldingon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 32</value>
+  </data>
+  <data name="CheckIsHoldingon.TabIndex" type="System.Int32, mscorlib">
+    <value>40</value>
+  </data>
+  <data name="CheckIsHoldingon.Text" xml:space="preserve">
+    <value>Hold Click</value>
+  </data>
+  <data name="CheckIsHoldingon.ToolTip" xml:space="preserve">
+    <value>If checked it will Hold the Left Mouse Button in ms set it at Time Holding</value>
+  </data>
+  <data name="&gt;&gt;CheckIsHoldingon.Name" xml:space="preserve">
+    <value>CheckIsHoldingon</value>
+  </data>
+  <data name="&gt;&gt;CheckIsHoldingon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CheckIsHoldingon.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;CheckIsHoldingon.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="ColTimeHolding.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 171</value>
+  </data>
+  <data name="ColTimeHolding.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="ColTimeHolding.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="ColTimeHolding.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="ColTimeHolding.ToolTip" xml:space="preserve">
+    <value>Time how long to Hold the left Mouse Button in MS</value>
+  </data>
+  <data name="&gt;&gt;ColTimeHolding.Name" xml:space="preserve">
+    <value>ColTimeHolding</value>
+  </data>
+  <data name="&gt;&gt;ColTimeHolding.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ColTimeHolding.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;ColTimeHolding.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>94, 173</value>
+  </data>
+  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 19</value>
+  </data>
+  <data name="label15.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>Time Holding</value>
+  </data>
+  <data name="label15.ToolTip" xml:space="preserve">
+    <value>Time how long to Hold the left Mouse Button in MS</value>
+  </data>
+  <data name="&gt;&gt;label15.Name" xml:space="preserve">
+    <value>label15</value>
+  </data>
+  <data name="&gt;&gt;label15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="CheckAddHold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CheckAddHold.Location" type="System.Drawing.Point, System.Drawing">
+    <value>136, 31</value>
+  </data>
+  <data name="CheckAddHold.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 32</value>
+  </data>
+  <data name="CheckAddHold.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="CheckAddHold.Text" xml:space="preserve">
+    <value>Rec Hold</value>
+  </data>
+  <data name="CheckAddHold.ToolTip" xml:space="preserve">
+    <value>if checked you can set a key or a position and hold the button 
+how long you want it to hold it will start recording after 50ms
+below 50ms it will handle it just as a click</value>
+  </data>
+  <data name="&gt;&gt;CheckAddHold.Name" xml:space="preserve">
+    <value>CheckAddHold</value>
+  </data>
+  <data name="&gt;&gt;CheckAddHold.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CheckAddHold.Parent" xml:space="preserve">
+    <value>PageActions</value>
+  </data>
+  <data name="&gt;&gt;CheckAddHold.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="Actions_Save_List.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
+  <data name="Actions_Save_List.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Actions_Save_List.Location" type="System.Drawing.Point, System.Drawing">
+    <value>334, 0</value>
+  </data>
+  <data name="Actions_Save_List.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 28</value>
+  </data>
+  <data name="Actions_Save_List.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="Actions_Save_List.Text" xml:space="preserve">
+    <value>Save List</value>
+  </data>
+  <data name="Actions_Save_List.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="Actions_Save_List.ToolTip" xml:space="preserve">
+    <value>Save the current Actions List in a file</value>
+  </data>
+  <data name="&gt;&gt;Actions_Save_List.Name" xml:space="preserve">
+    <value>Actions_Save_List</value>
+  </data>
+  <data name="&gt;&gt;Actions_Save_List.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Actions_Save_List.Parent" xml:space="preserve">
+    <value>PageActions</value>
+  </data>
+  <data name="&gt;&gt;Actions_Save_List.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Actions_Load_List.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
+  <data name="Actions_Load_List.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Actions_Load_List.Location" type="System.Drawing.Point, System.Drawing">
+    <value>519, 0</value>
+  </data>
+  <data name="Actions_Load_List.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 28</value>
+  </data>
+  <data name="Actions_Load_List.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="Actions_Load_List.Text" xml:space="preserve">
+    <value>Load List</value>
+  </data>
+  <data name="Actions_Load_List.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="Actions_Load_List.ToolTip" xml:space="preserve">
+    <value>Load a actions list from a file</value>
+  </data>
+  <data name="&gt;&gt;Actions_Load_List.Name" xml:space="preserve">
+    <value>Actions_Load_List</value>
+  </data>
+  <data name="&gt;&gt;Actions_Load_List.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Actions_Load_List.Parent" xml:space="preserve">
+    <value>PageActions</value>
+  </data>
+  <data name="&gt;&gt;Actions_Load_List.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Color_SelectActionsbox.Items" xml:space="preserve">
+    <value>Click on Color</value>
+  </data>
+  <data name="Color_SelectActionsbox.Items1" xml:space="preserve">
+    <value>Click a Key</value>
+  </data>
+  <data name="Color_SelectActionsbox.Items2" xml:space="preserve">
+    <value>Click on Position</value>
+  </data>
+  <data name="Color_SelectActionsbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>249, 170</value>
+  </data>
+  <data name="Color_SelectActionsbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 25</value>
+  </data>
+  <data name="Color_SelectActionsbox.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="Color_SelectActionsbox.ToolTip" xml:space="preserve">
+    <value>Select the Action you want it to do if the color was found</value>
+  </data>
+  <data name="&gt;&gt;Color_SelectActionsbox.Name" xml:space="preserve">
+    <value>Color_SelectActionsbox</value>
+  </data>
+  <data name="&gt;&gt;Color_SelectActionsbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Color_SelectActionsbox.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;Color_SelectActionsbox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Num_Randomizer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>126, 62</value>
+  </data>
+  <data name="Num_Randomizer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 25</value>
+  </data>
+  <data name="Num_Randomizer.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="Num_Randomizer.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="Num_Randomizer.ToolTip" xml:space="preserve">
+    <value>Adds random variation to the click interval.
+0% = off · 5–15% recommended.</value>
+  </data>
+  <data name="&gt;&gt;Num_Randomizer.Name" xml:space="preserve">
+    <value>Num_Randomizer</value>
+  </data>
+  <data name="&gt;&gt;Num_Randomizer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Num_Randomizer.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;Num_Randomizer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Color_Clickakey_setkey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Color_Clickakey_setkey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>387, 167</value>
+  </data>
+  <data name="Color_Clickakey_setkey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 33</value>
+  </data>
+  <data name="Color_Clickakey_setkey.TabIndex" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="Color_Clickakey_setkey.Text" xml:space="preserve">
+    <value>Set Key</value>
+  </data>
+  <data name="Color_Clickakey_setkey.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey.Name" xml:space="preserve">
+    <value>Color_Clickakey_setkey</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label17.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>226, 64</value>
+  </data>
+  <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 19</value>
+  </data>
+  <data name="label17.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="label17.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="&gt;&gt;label17.Name" xml:space="preserve">
+    <value>label17</value>
+  </data>
+  <data name="&gt;&gt;label17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label17.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;label17.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 64</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 19</value>
+  </data>
+  <data name="label16.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>Randomizer</value>
+  </data>
+  <data name="&gt;&gt;label16.Name" xml:space="preserve">
+    <value>label16</value>
+  </data>
+  <data name="&gt;&gt;label16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1842,10 +2238,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 115</value>
+    <value>197, 130</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 17</value>
+    <value>38, 19</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -1863,7 +2259,7 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1872,10 +2268,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>267, 115</value>
+    <value>267, 130</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 17</value>
+    <value>32, 19</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1893,7 +2289,7 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1902,10 +2298,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>339, 115</value>
+    <value>339, 130</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 17</value>
+    <value>28, 19</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -1923,7 +2319,7 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1932,10 +2328,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 115</value>
+    <value>408, 130</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 17</value>
+    <value>27, 19</value>
   </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -1953,16 +2349,16 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="RepeatUnlimited.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="RepeatUnlimited.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 56</value>
+    <value>6, 63</value>
   </data>
   <data name="RepeatUnlimited.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 21</value>
+    <value>84, 24</value>
   </data>
   <data name="RepeatUnlimited.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1986,10 +2382,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="RepeatRepeat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 27</value>
+    <value>8, 31</value>
   </data>
   <data name="RepeatRepeat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 21</value>
+    <value>72, 24</value>
   </data>
   <data name="RepeatRepeat.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2010,10 +2406,10 @@ More value = more colors that gets triggered</value>
     <value>1</value>
   </data>
   <data name="RepeatTimes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 27</value>
+    <value>86, 31</value>
   </data>
   <data name="RepeatTimes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 23</value>
+    <value>50, 25</value>
   </data>
   <data name="RepeatTimes.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2037,10 +2433,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 29</value>
+    <value>142, 33</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 17</value>
+    <value>46, 19</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2061,10 +2457,10 @@ More value = more colors that gets triggered</value>
     <value>3</value>
   </data>
   <data name="ClickRepeatgroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>251, 17</value>
+    <value>251, 19</value>
   </data>
   <data name="ClickRepeatgroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 91</value>
+    <value>201, 103</value>
   </data>
   <data name="ClickRepeatgroup.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -2082,13 +2478,13 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;ClickRepeatgroup.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="ClickPerSecNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 27</value>
+    <value>127, 31</value>
   </data>
   <data name="ClickPerSecNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 23</value>
+    <value>109, 25</value>
   </data>
   <data name="ClickPerSecNum.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2106,16 +2502,16 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;ClickPerSecNum.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="ClicksPersSecButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ClicksPersSecButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 28</value>
   </data>
   <data name="ClicksPersSecButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 24</value>
+    <value>115, 27</value>
   </data>
   <data name="ClicksPersSecButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2133,13 +2529,13 @@ More value = more colors that gets triggered</value>
     <value>groupBox4</value>
   </data>
   <data name="&gt;&gt;ClicksPersSecButton.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
     <value>140, 2</value>
   </data>
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>458, 184</value>
+    <value>458, 209</value>
   </data>
   <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -2163,10 +2559,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="UseMouse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 21</value>
+    <value>10, 24</value>
   </data>
   <data name="UseMouse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>91, 24</value>
+    <value>91, 27</value>
   </data>
   <data name="UseMouse.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2190,10 +2586,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="UseKeyboard.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 51</value>
+    <value>10, 58</value>
   </data>
   <data name="UseKeyboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 21</value>
+    <value>87, 24</value>
   </data>
   <data name="UseKeyboard.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2217,10 +2613,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="ClickKeyFind.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 134</value>
+    <value>4, 152</value>
   </data>
   <data name="ClickKeyFind.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 34</value>
+    <value>121, 39</value>
   </data>
   <data name="ClickKeyFind.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2247,7 +2643,7 @@ More value = more colors that gets triggered</value>
     <value>3, 3</value>
   </data>
   <data name="GroupKeyPress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 183</value>
+    <value>131, 207</value>
   </data>
   <data name="GroupKeyPress.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -2268,14 +2664,14 @@ More value = more colors that gets triggered</value>
     <value>1</value>
   </data>
   <data name="PageMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
+    <value>4, 26</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="PageMain.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+    <value>6, 7, 6, 7</value>
   </data>
   <data name="PageMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 355</value>
+    <value>605, 464</value>
   </data>
   <data name="PageMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2299,10 +2695,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 183</value>
+    <value>92, 207</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 17</value>
+    <value>152, 19</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
@@ -2320,16 +2716,16 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 154</value>
+    <value>92, 175</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 17</value>
+    <value>98, 19</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -2347,7 +2743,7 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2356,10 +2752,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 303</value>
+    <value>13, 367</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 17</value>
+    <value>38, 19</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -2377,7 +2773,7 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2386,10 +2782,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 303</value>
+    <value>83, 367</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 17</value>
+    <value>32, 19</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -2407,7 +2803,7 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2416,10 +2812,10 @@ More value = more colors that gets triggered</value>
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 303</value>
+    <value>155, 367</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 17</value>
+    <value>28, 19</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -2437,16 +2833,16 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>219, 303</value>
+    <value>224, 367</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 17</value>
+    <value>27, 19</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -2464,13 +2860,16 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
+  </data>
+  <data name="CurserPositionList.ItemHeight" type="System.Int32, mscorlib">
+    <value>17</value>
   </data>
   <data name="CurserPositionList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 6</value>
+    <value>337, 31</value>
   </data>
   <data name="CurserPositionList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 340</value>
+    <value>267, 378</value>
   </data>
   <data name="CurserPositionList.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2485,16 +2884,19 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;CurserPositionList.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>18</value>
   </data>
   <data name="WaitTimeHour.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 323</value>
+    <value>3, 386</value>
   </data>
   <data name="WaitTimeHour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="WaitTimeHour.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
+  </data>
+  <data name="WaitTimeHour.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
   </data>
   <data name="&gt;&gt;WaitTimeHour.Name" xml:space="preserve">
     <value>WaitTimeHour</value>
@@ -2506,16 +2908,19 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;WaitTimeHour.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>19</value>
   </data>
   <data name="WaitTimeMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 323</value>
+    <value>70, 386</value>
   </data>
   <data name="WaitTimeMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="WaitTimeMin.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
+  </data>
+  <data name="WaitTimeMin.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
   </data>
   <data name="&gt;&gt;WaitTimeMin.Name" xml:space="preserve">
     <value>WaitTimeMin</value>
@@ -2527,16 +2932,19 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;WaitTimeMin.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>21</value>
   </data>
   <data name="WaitTimeSec.Location" type="System.Drawing.Point, System.Drawing">
-    <value>135, 323</value>
+    <value>137, 386</value>
   </data>
   <data name="WaitTimeSec.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="WaitTimeSec.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
+  </data>
+  <data name="WaitTimeSec.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
   </data>
   <data name="&gt;&gt;WaitTimeSec.Name" xml:space="preserve">
     <value>WaitTimeSec</value>
@@ -2548,16 +2956,19 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;WaitTimeSec.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>23</value>
   </data>
   <data name="WaitTimeMs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>202, 323</value>
+    <value>204, 386</value>
   </data>
   <data name="WaitTimeMs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 23</value>
+    <value>61, 25</value>
   </data>
   <data name="WaitTimeMs.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
+  </data>
+  <data name="WaitTimeMs.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
   </data>
   <data name="&gt;&gt;WaitTimeMs.Name" xml:space="preserve">
     <value>WaitTimeMs</value>
@@ -2569,16 +2980,16 @@ More value = more colors that gets triggered</value>
     <value>PageActions</value>
   </data>
   <data name="&gt;&gt;WaitTimeMs.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>24</value>
   </data>
   <data name="PageActions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
+    <value>4, 26</value>
   </data>
   <data name="PageActions.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+    <value>6, 7, 6, 7</value>
   </data>
   <data name="PageActions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 355</value>
+    <value>605, 464</value>
   </data>
   <data name="PageActions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2598,14 +3009,74 @@ More value = more colors that gets triggered</value>
   <data name="&gt;&gt;PageActions.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Color_Clickakey_setkey_Label.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Color_Clickakey_setkey_Label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>387, 203</value>
+  </data>
+  <data name="Color_Clickakey_setkey_Label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 26</value>
+  </data>
+  <data name="Color_Clickakey_setkey_Label.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="Color_Clickakey_setkey_Label.Text" xml:space="preserve">
+    <value>Key:</value>
+  </data>
+  <data name="Color_Clickakey_setkey_Label.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey_Label.Name" xml:space="preserve">
+    <value>Color_Clickakey_setkey_Label</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey_Label.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey_Label.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;Color_Clickakey_setkey_Label.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="LabelColorPicked.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
+  <data name="LabelColorPicked.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="LabelColorPicked.Location" type="System.Drawing.Point, System.Drawing">
+    <value>249, 37</value>
+  </data>
+  <data name="LabelColorPicked.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 26</value>
+  </data>
+  <data name="LabelColorPicked.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="LabelColorPicked.Text" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="&gt;&gt;LabelColorPicked.Name" xml:space="preserve">
+    <value>LabelColorPicked</value>
+  </data>
+  <data name="&gt;&gt;LabelColorPicked.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LabelColorPicked.Parent" xml:space="preserve">
+    <value>PageColorClick</value>
+  </data>
+  <data name="&gt;&gt;LabelColorPicked.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 95</value>
+    <value>94, 141</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 17</value>
+    <value>134, 19</value>
   </data>
   <data name="label14.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
@@ -2623,16 +3094,16 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>7</value>
   </data>
   <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 66</value>
+    <value>94, 108</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 17</value>
+    <value>119, 19</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -2650,13 +3121,13 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>8</value>
   </data>
   <data name="ColorAreaRecText.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 2</value>
   </data>
   <data name="ColorAreaRecText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
+    <value>100, 26</value>
   </data>
   <data name="ColorAreaRecText.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -2674,13 +3145,16 @@ More value = more colors that gets triggered</value>
     <value>PageColorClick</value>
   </data>
   <data name="&gt;&gt;ColorAreaRecText.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>14</value>
   </data>
   <data name="PageColorClick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
+    <value>4, 26</value>
+  </data>
+  <data name="PageColorClick.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 7, 6, 7</value>
   </data>
   <data name="PageColorClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 355</value>
+    <value>605, 464</value>
   </data>
   <data name="PageColorClick.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2701,10 +3175,10 @@ More value = more colors that gets triggered</value>
     <value>2</value>
   </data>
   <data name="TabPages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 123</value>
+    <value>0, 0</value>
   </data>
   <data name="TabPages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>612, 384</value>
+    <value>613, 494</value>
   </data>
   <data name="TabPages.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -2716,19 +3190,22 @@ More value = more colors that gets triggered</value>
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;TabPages.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelContent</value>
   </data>
   <data name="&gt;&gt;TabPages.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>0</value>
+  </data>
+  <data name="HotkeyBoxOC.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="HotkeyFindKey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="HotkeyFindKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 52</value>
+    <value>6, 59</value>
   </data>
   <data name="HotkeyFindKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 34</value>
+    <value>121, 39</value>
   </data>
   <data name="HotkeyFindKey.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2749,10 +3226,10 @@ More value = more colors that gets triggered</value>
     <value>6</value>
   </data>
   <data name="HotkeyBoxOC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 28</value>
+    <value>3, 3</value>
   </data>
   <data name="HotkeyBoxOC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>604, 91</value>
+    <value>607, 122</value>
   </data>
   <data name="HotkeyBoxOC.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2767,10 +3244,94 @@ More value = more colors that gets triggered</value>
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;HotkeyBoxOC.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>panelHotkey</value>
   </data>
   <data name="&gt;&gt;HotkeyBoxOC.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>0</value>
+  </data>
+  <data name="panelTopInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panelTopInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelTopInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>614, 34</value>
+  </data>
+  <data name="panelTopInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;panelTopInfo.Name" xml:space="preserve">
+    <value>panelTopInfo</value>
+  </data>
+  <data name="&gt;&gt;panelTopInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelTopInfo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelTopInfo.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panelHotkey.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="panelHotkey.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="panelHotkey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panelHotkey.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 34</value>
+  </data>
+  <data name="panelHotkey.Size" type="System.Drawing.Size, System.Drawing">
+    <value>614, 128</value>
+  </data>
+  <data name="panelHotkey.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;panelHotkey.Name" xml:space="preserve">
+    <value>panelHotkey</value>
+  </data>
+  <data name="&gt;&gt;panelHotkey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelHotkey.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelHotkey.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="panelContent.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="panelContent.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="panelContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panelContent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 162</value>
+  </data>
+  <data name="panelContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>614, 605</value>
+  </data>
+  <data name="panelContent.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;panelContent.Name" xml:space="preserve">
+    <value>panelContent</value>
+  </data>
+  <data name="&gt;&gt;panelContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelContent.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelContent.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2779,22 +3340,16 @@ More value = more colors that gets triggered</value>
     <value>75</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
-  </data>
-  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>7, 17</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>None</value>
-  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>791, 565</value>
+    <value>614, 767</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10pt</value>
+    <value>Segoe UI, 10pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -3099,15 +3654,6 @@ More value = more colors that gets triggered</value>
         YII=
 </value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="$this.RightToLeftLayout" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value> Auto Clicker</value>
-  </data>
   <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
     <value>toolStripMenuItem1</value>
   </data>
@@ -3180,6 +3726,30 @@ More value = more colors that gets triggered</value>
   <data name="&gt;&gt;custemizeCircleToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
+    <value>toolStripMenuItem2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Presets_Open_Folder.Name" xml:space="preserve">
+    <value>Presets_Open_Folder</value>
+  </data>
+  <data name="&gt;&gt;Presets_Open_Folder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Actions_Set_Preset_Folder.Name" xml:space="preserve">
+    <value>Actions_Set_Preset_Folder</value>
+  </data>
+  <data name="&gt;&gt;Actions_Set_Preset_Folder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Settings_OpenInfoLog.Name" xml:space="preserve">
+    <value>Settings_OpenInfoLog</value>
+  </data>
+  <data name="&gt;&gt;Settings_OpenInfoLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
     <value>toolStripSeparator2</value>
   </data>
@@ -3222,16 +3792,28 @@ More value = more colors that gets triggered</value>
   <data name="&gt;&gt;madeByToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;moveUToolStripMenuItem.Name" xml:space="preserve">
-    <value>moveUToolStripMenuItem</value>
+  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
+    <value>toolStripMenuItem3</value>
   </data>
-  <data name="&gt;&gt;moveUToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;pToolStripMenuItem.Name" xml:space="preserve">
-    <value>pToolStripMenuItem</value>
+  <data name="&gt;&gt;Move_MoveUP.Name" xml:space="preserve">
+    <value>Move_MoveUP</value>
   </data>
-  <data name="&gt;&gt;pToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;Move_MoveUP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Move_MoveDown.Name" xml:space="preserve">
+    <value>Move_MoveDown</value>
+  </data>
+  <data name="&gt;&gt;Move_MoveDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Move_MoveToPos.Name" xml:space="preserve">
+    <value>Move_MoveToPos</value>
+  </data>
+  <data name="&gt;&gt;Move_MoveToPos.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;deleteToolStripMenuItem.Name" xml:space="preserve">
@@ -3244,6 +3826,36 @@ More value = more colors that gets triggered</value>
     <value>editToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ActionMenuSetHold.Name" xml:space="preserve">
+    <value>ActionMenuSetHold</value>
+  </data>
+  <data name="&gt;&gt;ActionMenuSetHold.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_Actions.Name" xml:space="preserve">
+    <value>Switch_to_Actions</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_Actions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_SavePositon.Name" xml:space="preserve">
+    <value>Switch_to_SavePositon</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_SavePositon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_SaveKey.Name" xml:space="preserve">
+    <value>Switch_to_SaveKey</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_SaveKey.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_Wait.Name" xml:space="preserve">
+    <value>Switch_to_Wait</value>
+  </data>
+  <data name="&gt;&gt;Switch_to_Wait.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;backgroundWorker1.Name" xml:space="preserve">

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography.Pkcs;
+using System.Windows.Forms;
 using WindowsInput;
 
 namespace Auto_Clicker
 {
     public class ActionsFunc
     {
-        private Form1 mainForm;
+        private Form1 _Main;
 
 
         [DllImport("user32.dll")]
@@ -33,15 +33,15 @@ namespace Auto_Clicker
 
         public ActionsFunc(Form1 form)
         {
-            mainForm = form;
+            _Main = form;
         }
 
 
 
-        public (Point, Keys, bool) SavePositionInList_Click(bool Edit = false)
+        public (Point, Keys, long, bool) SavePositionInList_Click(bool Edit = false)
         {
-            mainForm.hotkeyTimer.Stop();
-            mainForm.WindowState = FormWindowState.Minimized;
+            _Main.hotkeyTimer.Stop();
+            _Main.WindowState = FormWindowState.Minimized;
 
             Point selectedPos = Point.Empty;
             Keys detectedKey = Keys.None;
@@ -81,6 +81,8 @@ namespace Auto_Clicker
                 Keys.XButton2
             };
 
+            Stopwatch sw = new Stopwatch();
+
             while (detectedKey == Keys.None)
             {
                 foreach (var key in mouseKeys)
@@ -101,49 +103,49 @@ namespace Auto_Clicker
                 Application.DoEvents();
                 Thread.Sleep(30); // Kurze Pause, um CPU-Last zu reduzieren
             }
-            int TimerCounter = 0;
-
-            if (detectedKey == Keys.LButton)
+            sw.Restart();
+            if (_Main.CheckAddHold.Checked)
             {
-                while ((GetAsyncKeyState(Keys.LButton) & 0x8000) != 0)
+                while ((GetAsyncKeyState(detectedKey) & 0x8000) != 0)
                 {
-                    Thread.Sleep(10); // Warten, bis die Taste losgelassen wird
-                    TimerCounter += 1;
-                    if (TimerCounter >= 70)
+                    if (sw.ElapsedMilliseconds > 50)
                     {
-                        break;
+                        List<String> parts = Ms_to_PartsString(sw.ElapsedMilliseconds);
+                        coordLabel.Text = $"Rec: "+ string.Join(" ", parts);
+                        Application.DoEvents();
                     }
+                    Thread.Sleep(10); // Warten, bis die Taste losgelassen wird
                 }
             }
+            sw.Stop();
+            long washolding = sw.ElapsedMilliseconds;
 
             marker.Close();
-
-            if (TimerCounter >= 70)
-            {
-                detectedKey = Keys.Modifiers;
-            }
 
             if (detectedKey != Keys.None)
             {
                 selectedPos = Cursor.Position;
                 //SaveMouseClick(selectedPos, detectedKey);
-                mainForm.WindowState = FormWindowState.Normal;
-                mainForm.Activate(); // In den Vordergrund holen
-                string infotextmessage = $"Position Saved: X={selectedPos.X}, Y={selectedPos.Y} <{detectedKey.ToString()}>";
-                if (detectedKey == Keys.Modifiers)
+                string infotextmessage = "";
+                if (washolding > 50)
                 {
-                    infotextmessage = $"Position Saved: X={selectedPos.X}, Y={selectedPos.Y} <Move>";
+                    infotextmessage = $"Position Saved: X={selectedPos.X}, Y={selectedPos.Y} <{detectedKey.ToString()}> Hold({washolding})";
+                }
+                else
+                {
+                    washolding = 0;
+                    infotextmessage = $"Position Saved: X={selectedPos.X}, Y={selectedPos.Y} <{detectedKey.ToString()}>";
                 }
 
-                if (mainForm.disableWindowOnPositionMenu.Checked || Edit)
+                if (_Main.disableWindowOnPositionMenu.Checked || Edit)
                 {
-                    mainForm.Setinfotextfast(infotextmessage + " (Window Disabled)");
+                    _Main.Setinfotextfast(infotextmessage + " (Window Disabled)");
                 }
                 else
                 {
                     //MessageBox.Show($"Position Saved: X={selectedPos.X}, Y={selectedPos.Y}");
                     var (dialogResult, another) = ShowCustomMessage(infotextmessage);
-                    mainForm.Setinfotextfast(infotextmessage);
+                    _Main.Setinfotextfast(infotextmessage);
 
                     if (another)
                     {
@@ -156,8 +158,10 @@ namespace Auto_Clicker
             {
                 Thread.Sleep(10); // Warten, bis die Taste losgelassen wird
             }
-            mainForm.hotkeyTimer.Start();
-            return (selectedPos, detectedKey, setanother);
+            _Main.WindowState = FormWindowState.Normal;
+            _Main.Activate(); // In den Vordergrund holen
+            _Main.hotkeyTimer.Start();
+            return (selectedPos, detectedKey, washolding, setanother);
         }
 
         public static (DialogResult result, bool anotherClicked) ShowCustomMessage(string message)
@@ -169,7 +173,7 @@ namespace Auto_Clicker
                 Text = "Info",
                 Size = new Size(300, 150),
                 FormBorderStyle = FormBorderStyle.FixedDialog,
-                StartPosition = FormStartPosition.CenterScreen,
+                StartPosition = FormStartPosition.CenterParent,
                 MinimizeBox = false,
                 MaximizeBox = false,
                 TopMost = true
@@ -204,38 +208,201 @@ namespace Auto_Clicker
             return (result, anotherClicked);
         }
 
+        public void Set_Hold_MessageFunc(int index)
+        {
+            Form form = new Form
+            {
+                Text = "Set Hold or Remove it",
+                Size = new Size(300, 180),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            Label lbl = new Label
+            {
+                Text = "Set the Hold amount in Ms\neverything under 50ms\nwill remove Hold",
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Size = new Size(260, 60),
+                Location = new Point(20, 0),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            NumericUpDown Holdtimems = new NumericUpDown 
+            { 
+                Minimum = 0, 
+                Maximum = 1000000, 
+                Value = 100, 
+                Location = new Point(100, 65), 
+                Size = new Size(100, 25) 
+            };
+            Button DoneButton = new Button 
+            { 
+                Text = "Done", 
+                Location = new Point(60, 95), 
+                Size = new Size(80, 30) 
+            };
+            Button CancleButton = new Button 
+            { 
+                Text = "Cancle", 
+                Location = new Point(160, 95), 
+                Size = new Size(80, 30) 
+            };
+
+            DoneButton.Click += (s, e) =>
+            {
+                var a = SavedActions[index];
+                ActionType type = a.Type;
+                Point pos = a.MousePosition;
+                Keys? press = a.Mousepress;
+                Keys? Keypress = a.Key;
+                long holding = 0;
+                if (Holdtimems.Value > 50)
+                {
+                    holding = (long)Holdtimems.Value;
+                }
+
+                if (type == ActionType.MouseClick)
+                {
+                    SavedActions.RemoveAt(index);
+                    SavedActions.Insert(index, new ClickOrKeyAction
+                    {
+                        Type = ActionType.MouseClick,
+                        MousePosition = pos,
+                        Mousepress = press,
+                        HoldClickMS = holding
+                    });
+                }
+                else
+                {
+                    SavedActions.RemoveAt(index);
+                    SavedActions.Insert(index, new ClickOrKeyAction
+                    {
+                        Type = ActionType.KeyPress,
+                        Key = Keypress,
+                        HoldClickMS = holding
+                    });
+                }
+                UpdateActionList();
+                form.Close();
+            };
+
+            CancleButton.Click += (s, e) =>
+            {
+                form.Close();
+            };
+
+            form.Controls.Add(lbl);
+            form.Controls.Add(Holdtimems);
+            form.Controls.Add(DoneButton);
+            form.Controls.Add(CancleButton);
+
+            form.AcceptButton = DoneButton;
+
+            var result = form.ShowDialog();
+        }
+
+        public void Move_To_PositionMessage(int index)
+        {
+            Form form = new Form
+            {
+                Text = "Move To Window",
+                Size = new Size(300, 180),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            Label lbl = new Label
+            {
+                Text = "Set the Position you want it to be",
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Size = new Size(260, 60),
+                Location = new Point(20, 0),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            NumericUpDown Positiontoset = new NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = _Main.CurserPositionList.Items.Count,
+                Value = 1,
+                Location = new Point(100, 65),
+                Size = new Size(100, 25)
+            };
+            Button DoneButton = new Button
+            {
+                Text = "Done",
+                Location = new Point(60, 95),
+                Size = new Size(80, 30)
+            };
+            Button CancleButton = new Button
+            {
+                Text = "Cancle",
+                Location = new Point(160, 95),
+                Size = new Size(80, 30)
+            };
+
+            DoneButton.Click += (s, e) =>
+            {
+                var item = SavedActions[index];
+                SavedActions.RemoveAt(index);
+                SavedActions.Insert((int)Positiontoset.Value -1, item);
+                UpdateActionList();
+                form.Close();
+            };
+
+            CancleButton.Click += (s, e) =>
+            {
+                form.Close();
+            };
+
+            form.Controls.Add(lbl);
+            form.Controls.Add(Positiontoset);
+            form.Controls.Add(DoneButton);
+            form.Controls.Add(CancleButton);
+
+            form.AcceptButton = DoneButton;
+
+            var result = form.ShowDialog();
+        }
+
 
         public void StartClickingAction()
         {
-            lock (mainForm.clickLock)
+            lock (_Main.clickLock)
             {
-                if (mainForm.clicking) return;
-                mainForm.clicking = true;
-                mainForm.clickCts = new CancellationTokenSource();
+                if (_Main.clicking) return;
+                _Main.clicking = true;
+                _Main.clickCts = new CancellationTokenSource();
             }
 
-            if (mainForm.ShowHideMenu.Checked)
+            if (_Main.ShowHideMenu.Checked)
             {
-                if (mainForm.Clickoverlay == null || mainForm.Clickoverlay.IsDisposed)
+                if (_Main.Clickoverlay == null || _Main.Clickoverlay.IsDisposed)
                 {
-                    mainForm.Clickoverlay = new CursorOverlayForm();
-                    mainForm.Clickoverlay.Show();
+                    _Main.Clickoverlay = new CursorOverlayForm();
+                    _Main.Clickoverlay.Show();
                 }
             }
 
-            CancellationToken token = mainForm.clickCts.Token;
+            CancellationToken token = _Main.clickCts.Token;
 
             bool switchinfotext = false;
-            mainForm.clickIndex = 0;
+            _Main.clickIndex = 0;
             var TextActionShow = "";
 
-            int repeatCount = (int)mainForm.ActionRepeatTimes.Value; // wie oft klicken
+            int repeatCount = (int)_Main.ActionRepeatTimes.Value; // wie oft klicken
 
             long waitTime = 0;
 
             // Klick-Intervall berechnen
-            bool infinity = mainForm.ActionRepeatTimes.Value == 0;
-            int clickCount = 1;
+            bool infinity = _Main.ActionRepeatTimes.Value == 0;
+            int clickCount = 0;
 
             Task.Run(() =>
             {
@@ -243,18 +410,21 @@ namespace Auto_Clicker
 
                 while ((infinity || clickCount < repeatCount) && !token.IsCancellationRequested)
                 {
+                    clickCount++;
                     sw.Restart();
-                    var (proc, _) = mainForm.sideForm.GetActiveProcessName();
-                    if (mainForm.WhitelistappsCheck.Checked && mainForm.sideForm.AppsCheckedlist.Contains(proc) || !mainForm.WhitelistappsCheck.Checked && !mainForm.sideForm.AppsCheckedlist.Contains(proc))//(!BlacklistedWindowTitles.Contains(proc))
+                    var (proc, _) = _Main._SideForm.GetActiveProcessName();
+                    if (_Main.WhitelistappsCheck.Checked && _Main._SideForm.AppsCheckedlist.Contains(proc) || !_Main.WhitelistappsCheck.Checked && !_Main._SideForm.AppsCheckedlist.Contains(proc))//(!BlacklistedWindowTitles.Contains(proc))
                     {
                         if (switchinfotext)
-                            mainForm.Setinfotextfast("Auto clicker running.....", true);
+                            _Main.Setinfotextfast("Auto clicker running.....", true);
                         switchinfotext = false;
 
-                        int i = 1;
+                        int i = 0;
                         foreach (var action in SavedActions)
                         {
-                            if (!mainForm.clicking || token.IsCancellationRequested)
+                            i++;
+                            sw.Restart();
+                            if (!_Main.clicking || token.IsCancellationRequested)
                                 break;
 
                             waitTime = 0;
@@ -272,9 +442,19 @@ namespace Auto_Clicker
 
                                     if (action.Mousepress != null && action.Mousepress.Value != Keys.Modifiers)
                                     {
-                                        if (action.Mousepress.Value != mainForm.hotkey)
+                                        _Main.Setinfotextfast($"Auto clicker ON   Count: {clickCount} Working on: {i} {action.Mousepress.Value.ToString()}", true);
+                                        if (action.Mousepress.Value != _Main.hotkey)
                                         {
-                                            mainForm.DoClick(true, false, action.Mousepress.Value);
+                                            if (action.HoldClickMS > 0)
+                                            {
+                                                sw.Stop();
+                                                _Main.DoClick(action.Mousepress.Value, action.HoldClickMS);
+                                                sw.Start();
+                                            }
+                                            else
+                                            {
+                                                _Main.DoClick(action.Mousepress.Value);
+                                            }
                                             TextActionShow = action.Mousepress.Value.ToString();
                                         }
                                     }
@@ -283,18 +463,32 @@ namespace Auto_Clicker
                                 }
                                 else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
                                 {
+                                    _Main.Setinfotextfast($"Auto clicker ON   Count: {clickCount} Working on: {i} {action.Key.Value.ToString()}", true);
                                     string keyName = action.Key.Value.ToString();
                                     if (DataStings.keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
                                     {
-                                        new InputSimulator().Keyboard
-                                            .KeyPress(vk);
+                                        if (action.HoldClickMS > 0)
+                                        {
+                                            sw.Stop();
+                                            _Main.DoClick(action.Key.Value, action.HoldClickMS);
+                                            sw.Start();
+                                        }
+                                        else
+                                        {
+                                            _Main.DoClick(action.Key.Value);
+                                        }        
                                     }
                                     else if (DataStings.AllowedMouseList.Contains(action.Key.Value.ToString()))
                                     {
-                                        if (action.Key.Value != mainForm.hotkey)
+                                        if (action.HoldClickMS > 0)
                                         {
-                                            //Debug.WriteLine(action.Key.Value.ToString());
-                                            mainForm.DoClick(true, false, action.Key.Value);
+                                            sw.Stop();
+                                            _Main.DoClick(action.Key.Value, action.HoldClickMS);
+                                            sw.Start();
+                                        }
+                                        else
+                                        {
+                                            _Main.DoClick(action.Key.Value);
                                         }
                                     }
                                     TextActionShow = action.Key.Value.ToString();
@@ -307,79 +501,89 @@ namespace Auto_Clicker
                                 }
                             }
                             String Texttoshow = $"Auto clicker ON   Count: {clickCount}";
+                            long timetowait = 0;
+                            if (waitTime > 0)
+                            {
+                                timetowait = (long)waitTime;
+                            }
+                            if (_Main.IgnoreWaitCheck.Checked && waitTime == 0)
+                            {
+                                timetowait = (long)_Main.TimeBetweenAction.Value;
+                            }
+                            else if (!_Main.IgnoreWaitCheck.Checked)
+                            {
+                                timetowait += (long)_Main.TimeBetweenAction.Value;
+                            }
+                            if (timetowait < 5)
+                            {
+                                timetowait = 5;
+                            }
+                            long updateInterval = timetowait >= 100 ? 100 : timetowait;
                             long nextUpdate = 0;
 
-                            while (sw.ElapsedMilliseconds < waitTime)
+
+                            while (sw.ElapsedMilliseconds < timetowait)
                             {
-                                if (!mainForm.clicking || token.IsCancellationRequested)
+                                if (!_Main.clicking || token.IsCancellationRequested)
                                     break;
 
-                                if (sw.ElapsedMilliseconds >= nextUpdate)
+                                long elapsed = sw.ElapsedMilliseconds;
+                                long remaining = timetowait - elapsed;
+
+                                if (elapsed >= nextUpdate && timetowait > 100)
                                 {
-                                    TimeParts waitTimeParts = new TimeParts();
+                                    string Timestring;
 
-                                    if (waitTime < 1000)
-                                        waitTimeParts = MsToParts(waitTime - (sw.ElapsedMilliseconds + 50) / 100 * 100);
+                                    if (remaining > 1000)
+                                    {
+                                        // ⏱ über 1 Sekunde → Sekunden-Anzeige
+                                        long seconds = remaining / 1000;
+                                        Timestring = $"{seconds}s";
+                                    }
                                     else
-                                        waitTimeParts = MsToParts(waitTime - (sw.ElapsedMilliseconds + 500) / 1000 * 1000);
-                                    String Timestring =
-                                        (waitTimeParts.Hours > 0 ? $"{waitTimeParts.Hours}h " : "") +
-                                        (waitTimeParts.Minutes > 0 ? $"{waitTimeParts.Minutes}min " : "") +
-                                        (waitTimeParts.Seconds > 0 ? $"{waitTimeParts.Seconds}s " : "") +
-                                        (waitTime < 1000 ? $"{waitTimeParts.Milliseconds}ms" : "");
+                                    {
+                                        // 🔢 auf 100ms runden
+                                        long roundedMs = (remaining / 100) * 100;
 
-                                    if (nextUpdate < 100)
-                                        TextActionShow = $"Wait {Timestring}";
+                                        // optional: nie 0 anzeigen, solange noch gewartet wird
+                                        if (roundedMs == 0 && remaining > 0)
+                                            roundedMs = 100;
 
-                                    mainForm.Setinfotextfast(Texttoshow + $" Actions: Wait {Timestring}", true);
-                                    //Debug.WriteLine($"Update time {Timestring}");
+                                        Timestring = $"{roundedMs}ms";
+                                    }
 
-                                    if (waitTime < 1000)
-                                        nextUpdate += 100;
-                                    else
-                                        nextUpdate += 1000;
+                                    _Main.Setinfotextfast(
+                                        $"{Texttoshow} Last Actions {i} <{TextActionShow}>. Waiting: {Timestring}",
+                                        true
+                                    );
+
+                                    nextUpdate += updateInterval;
                                 }
-                                //Debug.WriteLine($"Wait {sw.ElapsedMilliseconds}");
-                                double remaining = nextUpdate - sw.ElapsedMilliseconds;
+                                Debug.WriteLine($"{remaining}  {timetowait}  {nextUpdate}");
                                 if (remaining > 2)
-                                    Thread.Sleep((int)(remaining - 1));
+                                    Thread.Sleep(1);
                                 else
                                     Thread.SpinWait(5);
                             }
-                            Texttoshow = Texttoshow + $" Last Actions {i}. {TextActionShow}";
-                            mainForm.Setinfotextfast(Texttoshow, true);
-                            if (!mainForm.IgnoreWaitCheck.Checked)
-                                Thread.Sleep((int)mainForm.TimeBetweenAction.Value);
-                            else
-                            {
-                                if (waitTime != 0)
-                                    Thread.Sleep(10);
-                                else
-                                    Thread.Sleep((int)mainForm.TimeBetweenAction.Value);
-                            }
-                            i++;
                         }
-
-                        //Debug.WriteLine("Pause");
-                        clickCount++;
                     }
                     else
                     {
                         if (!switchinfotext)
-                            mainForm.Setinfotextfast("Auto clicker ON: Waiting for None Blacklisted window.......", true);
+                            _Main.Setinfotextfast("Auto clicker ON: Waiting for None Blacklisted window.......", true);
                         switchinfotext = true;
                     }
                 }
                 if (!infinity)
                 {
-                    mainForm.Setinfotextfast("Auto clicker Stopped.....", true);
-                    mainForm.StopClicking();
+                    _Main.BeginInvoke(new Action(_Main.StopClicking));
+                    return;
                 }
             }, token);
         }
 
 
-        public void SaveMouseClick(Point pos, Keys Pressed = Keys.None)
+        public void SaveMouseClick(Point pos, Keys Pressed = Keys.None, long holding = 0)
         {
             if (pos == Point.Empty)
                 pos = Cursor.Position;
@@ -388,19 +592,20 @@ namespace Auto_Clicker
             {
                 Type = ActionType.MouseClick,
                 MousePosition = pos,
-                Mousepress = Pressed
-
+                Mousepress = Pressed,
+                HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
             });
 
             UpdateActionList();
         }
 
-        public void SaveKeyPress(Keys key)
+        public void SaveKeyPress(Keys key, long holding)
         {
             SavedActions.Add(new ClickOrKeyAction
             {
                 Type = ActionType.KeyPress,
-                Key = key
+                Key = key,
+                HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
             });
 
             UpdateActionList();
@@ -419,18 +624,23 @@ namespace Auto_Clicker
 
         public void AddWaitTime()
         {
-            if (mainForm.WaitTimeMs.Value == 0 && mainForm.WaitTimeSec.Value == 0 && mainForm.WaitTimeMin.Value == 0 && mainForm.WaitTimeHour.Value == 0)
+            if (_Main.WaitTimeMs.Value == 0 && _Main.WaitTimeSec.Value == 0 && _Main.WaitTimeMin.Value == 0 && _Main.WaitTimeHour.Value == 0)
+            {
+                _Main.Setinfotextfast("No time to add Everything: 0");
                 return;
+            }
+
             TimeParts got = new TimeParts();
-            got.Milliseconds = (long)mainForm.WaitTimeMs.Value;
-            got.Seconds = (long)mainForm.WaitTimeSec.Value;
-            got.Minutes = (long)mainForm.WaitTimeMin.Value;
-            got.Hours = (long)mainForm.WaitTimeHour.Value;
+            got.Milliseconds = (long)_Main.WaitTimeMs.Value;
+            got.Seconds = (long)_Main.WaitTimeSec.Value;
+            got.Minutes = (long)_Main.WaitTimeMin.Value;
+            got.Hours = (long)_Main.WaitTimeHour.Value;
             long totalMs = PartsToMs(got);
             SaveWaitTime(totalMs);
+            _Main.Setinfotextfast("Wait Added: "+string.Join(" ", Ms_to_PartsString(totalMs)));
         }
 
-        public static TimeParts MsToParts(long ms)
+        public TimeParts MsToParts(long ms)
         {
             TimeParts t = new TimeParts();
             t.Milliseconds = ms % 1000;
@@ -440,7 +650,7 @@ namespace Auto_Clicker
             return t;
         }
 
-        public static long PartsToMs(TimeParts t)
+        public long PartsToMs(TimeParts t)
         {
             return t.Milliseconds +
                    t.Seconds * 1000 +
@@ -448,14 +658,30 @@ namespace Auto_Clicker
                    t.Hours * 60 * 60 * 1000;
         }
 
+        public List<string> Ms_to_PartsString(long ms)
+        {
+            long milliseconds = ms % 1000;
+            long seconds = (ms / 1000) % 60;
+            long minutes = (ms / (1000 * 60)) % 60;
+            long hours = ms / (1000 * 60 * 60);
+
+            var parts = new List<string>();
+            if (hours > 0) parts.Add($"{hours}h");
+            if (minutes > 0) parts.Add($"{minutes}m");
+            if (seconds > 0) parts.Add($"{seconds}s");
+            if (milliseconds > 0) parts.Add($"{milliseconds}ms");
+
+            return parts;
+        }
+
         public void SelectedAction()
         {
-            if (mainForm.CurserPositionList.SelectedItem == null)
+            if (_Main.CurserPositionList.SelectedItem == null)
                 return;
 
-            if (mainForm.ShowPointOnClick.Checked && !mainForm.CurserPositionList.SelectedItem.ToString().Contains("Key") && !mainForm.ShowAllPositionsCheck.Checked && !mainForm.CurserPositionList.SelectedItem.ToString().Contains("Wait"))
+            if (_Main.ShowPointOnClick.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Key") && !_Main.ShowAllPositionsCheck.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Wait"))
             {
-                int indexpos = mainForm.CurserPositionList.SelectedIndex;
+                int indexpos = _Main.CurserPositionList.SelectedIndex;
                 Point pos = SavedActions[indexpos].MousePosition;
                 Keys presskey = SavedActions[indexpos].Mousepress ?? Keys.None;
                 //Debug.WriteLine("Selected: " + pos.X + " " + pos.Y);
@@ -465,12 +691,12 @@ namespace Auto_Clicker
 
         public void MoveActions(bool Direction)
         {
-            if (mainForm.CurserPositionList.SelectedIndex == -1)
+            if (_Main.CurserPositionList.SelectedIndex == -1)
             {
-                mainForm.Setinfotextfast("No Action selected to move.");
+                _Main.Setinfotextfast("No Action selected to move.");
                 return;
             }
-            int selectedIndex = mainForm.CurserPositionList.SelectedIndex;
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
             if (Direction)
             {
                 if (selectedIndex > 0)
@@ -479,51 +705,172 @@ namespace Auto_Clicker
                     SavedActions.RemoveAt(selectedIndex);
                     SavedActions.Insert(selectedIndex - 1, item);
                     UpdateActionList();
-                    mainForm.CurserPositionList.SelectedIndex = selectedIndex - 1;
+                    _Main.CurserPositionList.SelectedIndex = selectedIndex - 1;
                 }
             }
             else
             {
-                if (selectedIndex < mainForm.CurserPositionList.Items.Count - 1 && selectedIndex != -1)
+                if (selectedIndex < _Main.CurserPositionList.Items.Count - 1 && selectedIndex != -1)
                 {
                     var item = SavedActions[selectedIndex];
                     SavedActions.RemoveAt(selectedIndex);
                     SavedActions.Insert(selectedIndex + 1, item);
                     UpdateActionList();
-                    mainForm.CurserPositionList.SelectedIndex = selectedIndex + 1;
+                    _Main.CurserPositionList.SelectedIndex = selectedIndex + 1;
                 }
             }
         }
 
-        public void EditActionsSelected()
+        public void MoveToNUMFunc()
         {
-            int selectedIndex = mainForm.CurserPositionList.SelectedIndex;
+            if (_Main.CurserPositionList.SelectedIndex == -1)
+            {
+                _Main.Setinfotextfast("No Action selected to move.");
+                return;
+            }
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
+            Move_To_PositionMessage(selectedIndex);
+
+        }
+
+        public void Menu_On_OpenFunc()
+        {
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
             if (selectedIndex == -1)
             {
-                mainForm.Setinfotextfast("No Action selected to Edit.");
+                return;
+            }
+            ActionType type = SavedActions[selectedIndex].Type;
+
+            if (type == ActionType.MouseClick)
+            {
+                _Main.Switch_to_SavePositon.Visible = false;
+            }
+            else if (type == ActionType.KeyPress)
+            {
+                _Main.Switch_to_SaveKey.Visible = false;
+            }
+            else if (type == ActionType.Waittime)
+            {
+                _Main.Switch_to_Wait.Visible = false;
+                _Main.ActionMenuSetHold.Visible = false;
+            }
+        }
+
+        public void Menu_On_CloseFunc()
+        {
+            _Main.Switch_to_SaveKey.Visible = true;
+            _Main.Switch_to_SavePositon.Visible = true;
+            _Main.Switch_to_Wait.Visible = true;
+            _Main.ActionMenuSetHold.Visible = true;
+        }
+
+        public void Switch_To_Save_PositionFunc()
+        {
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                _Main.Setinfotextfast("No Action selected to Edit.");
+                return;
+            }
+
+            (Point Pos, Keys KeyPress, long holding, bool another) = SavePositionInList_Click(true);
+
+            SavedActions.RemoveAt(selectedIndex);
+            SavedActions.Insert(selectedIndex, new ClickOrKeyAction
+            {
+                Type = ActionType.MouseClick,
+                MousePosition = Pos,
+                Mousepress = KeyPress,
+                HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
+            });
+            UpdateActionList();
+        }
+        public void Switch_To_Save_KeyFunc()
+        {
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                _Main.Setinfotextfast("No Action selected to Edit.");
+                return;
+            }
+
+            (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
+            if (PressedKey == Keys.None)
+            {
+                _Main.Setinfotextfast("No Key found or it got canceled");
+            }
+            else
+            {
+                SavedActions.RemoveAt(selectedIndex);
+                SavedActions.Insert(selectedIndex, new ClickOrKeyAction
+                {
+                    Type = ActionType.KeyPress,
+                    Key = PressedKey,
+                    HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
+                });
+            }
+            UpdateActionList();
+        }
+        public void Switch_To_WaitFunc()
+        {
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                _Main.Setinfotextfast("No Action selected to Edit.");
+                return;
+            }
+
+            if (_Main.WaitTimeMs.Value == 0 && _Main.WaitTimeSec.Value == 0 && _Main.WaitTimeMin.Value == 0 && _Main.WaitTimeHour.Value == 0)
+            {
+                _Main.Setinfotextfast("No Wait time set to Edit.");
+                return;
+            }
+            TimeParts got = new TimeParts();
+            got.Milliseconds = (long)_Main.WaitTimeMs.Value;
+            got.Seconds = (long)_Main.WaitTimeSec.Value;
+            got.Minutes = (long)_Main.WaitTimeMin.Value;
+            got.Hours = (long)_Main.WaitTimeHour.Value;
+            long totalMs = PartsToMs(got);
+            SavedActions.RemoveAt(selectedIndex);
+            SavedActions.Insert(selectedIndex, new ClickOrKeyAction
+            {
+                Type = ActionType.Waittime,
+                ToWait = totalMs
+            });
+            UpdateActionList();
+        }
+
+        public void EditActionsSelected()
+        {
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                _Main.Setinfotextfast("No Action selected to Edit.");
                 return;
             }
 
             ActionType MouseKey = SavedActions[selectedIndex].Type;
             if (MouseKey == ActionType.MouseClick)
             {
-                (Point Pos, Keys KeyPress, bool another) = SavePositionInList_Click(true);
+                (Point Pos, Keys KeyPress, long holding, bool another) = SavePositionInList_Click(true);
 
                 SavedActions.RemoveAt(selectedIndex);
                 SavedActions.Insert(selectedIndex, new ClickOrKeyAction
                 {
                     Type = ActionType.MouseClick,
                     MousePosition = Pos,
-                    Mousepress = KeyPress
+                    Mousepress = KeyPress,
+                    HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
                 });
 
             }
             else if (MouseKey == ActionType.KeyPress)
             {
-                Keys PressedKey = mainForm.RecordKeysSend(true, true, false, false, true);
+                (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
                 if (PressedKey == Keys.None)
                 {
-                    mainForm.Setinfotextfast("No Key found or it got canceled");
+                    _Main.Setinfotextfast("No Key found or it got canceled");
                 }
                 else
                 {
@@ -531,22 +878,23 @@ namespace Auto_Clicker
                     SavedActions.Insert(selectedIndex, new ClickOrKeyAction
                     {
                         Type = ActionType.KeyPress,
-                        Key = PressedKey
+                        Key = PressedKey,
+                        HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
                     });
                 }
             }
             else if (MouseKey == ActionType.Waittime)
             {
-                if (mainForm.WaitTimeMs.Value == 0 && mainForm.WaitTimeSec.Value == 0 && mainForm.WaitTimeMin.Value == 0 && mainForm.WaitTimeHour.Value == 0)
+                if (_Main.WaitTimeMs.Value == 0 && _Main.WaitTimeSec.Value == 0 && _Main.WaitTimeMin.Value == 0 && _Main.WaitTimeHour.Value == 0)
                 {
-                    mainForm.Setinfotextfast("No Wait time set to Edit.");
+                    _Main.Setinfotextfast("No Wait time set to Edit.");
                     return;
                 }
                 TimeParts got = new TimeParts();
-                got.Milliseconds = (long)mainForm.WaitTimeMs.Value;
-                got.Seconds = (long)mainForm.WaitTimeSec.Value;
-                got.Minutes = (long)mainForm.WaitTimeMin.Value;
-                got.Hours = (long)mainForm.WaitTimeHour.Value;
+                got.Milliseconds = (long)_Main.WaitTimeMs.Value;
+                got.Seconds = (long)_Main.WaitTimeSec.Value;
+                got.Minutes = (long)_Main.WaitTimeMin.Value;
+                got.Hours = (long)_Main.WaitTimeHour.Value;
                 long totalMs = PartsToMs(got);
                 SavedActions.RemoveAt(selectedIndex);
                 SavedActions.Insert(selectedIndex, new ClickOrKeyAction
@@ -562,57 +910,64 @@ namespace Auto_Clicker
 
         public void PositionSave()
         {
-            (Point selectedPos, Keys detectedKey, bool another) = SavePositionInList_Click();
-            SaveMouseClick(selectedPos, detectedKey);
+            (Point selectedPos, Keys detectedKey, long holding, bool another) = SavePositionInList_Click();
+            SaveMouseClick(selectedPos, detectedKey, holding);
             if (another)
             {
-                mainForm.PositionSave.PerformClick();
+                _Main.PositionSave.PerformClick();
             }
         }
 
         public void KeySaveInAction()
         {
-            Keys PressedKey = mainForm.RecordKeysSend(true, true, false, false, true);
+            (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
             if (PressedKey == Keys.None)
             {
-                mainForm.Setinfotextfast("No Key found or it got canceled");
+                _Main.Setinfotextfast("No Key found or it got canceled");
             }
             else
             {
-                mainForm.Setinfotextfast($"Action Saved: Key {PressedKey}");
-                SaveKeyPress(PressedKey);
+                _Main.Setinfotextfast($"Action Saved: Key {PressedKey}");
+                SaveKeyPress(PressedKey, holding);
             }
         }
 
         public void RemoveSelectedActions()
         {
-            if (mainForm.CurserPositionList.SelectedIndex == -1)
+            if (_Main.CurserPositionList.SelectedIndex == -1)
             {
-                mainForm.Setinfotextfast("No Action selected to Remove.");
+                _Main.Setinfotextfast("No Action selected to Remove.");
                 return;
             }
-            int selectedIndex = mainForm.CurserPositionList.SelectedIndex;
+            int selectedIndex = _Main.CurserPositionList.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < SavedActions.Count)
             {
+                _Main.Setinfotextfast("Removed Action: "+_Main.CurserPositionList.Items[selectedIndex].ToString());
                 SavedActions.RemoveAt(selectedIndex);
                 UpdateActionList();
+                if (_Main.CurserPositionList.Items.Count > 0)
+                    if (_Main.CurserPositionList.Items.Count > selectedIndex)
+                        _Main.CurserPositionList.SelectedIndex = selectedIndex;
+                    else
+                        _Main.CurserPositionList.SelectedIndex = selectedIndex -1;
+
             }
         }
 
         public void ClearSavedActions()
         {
             SavedActions.Clear();
-            mainForm.CurserPositionList.Items.Clear();
-            mainForm.Setinfotextfast(("All saved Actions deleted."));
+            _Main.CurserPositionList.Items.Clear();
+            _Main.Setinfotextfast(("All saved Actions deleted."));
             ReloadMarkers();
         }
 
         public void UpdateActionList()
         {
-            mainForm.CurserPositionList.Items.Clear();
+            _Main.CurserPositionList.Items.Clear();
             for (int i = 0; i < SavedActions.Count; i++)
             {
-                mainForm.CurserPositionList.Items.Add($"{i + 1}. {SavedActions[i]}");
+                _Main.CurserPositionList.Items.Add($"{i + 1}. {SavedActions[i]}");
             }
             ReloadMarkers();
         }
@@ -687,8 +1042,8 @@ namespace Auto_Clicker
             backgroundform.Show();
             marker.Show();
 
-            mainForm.MakeClickThrough(backgroundform);
-            mainForm.MakeClickThrough(marker);
+            _Main.MakeClickThrough(backgroundform);
+            _Main.MakeClickThrough(marker);
 
             var handle = new MarkerHandle(backgroundform, marker);
 
@@ -710,7 +1065,7 @@ namespace Auto_Clicker
 
         public void ReloadMarkers()
         {
-            if (mainForm.ShowAllPositionsCheck.Checked)
+            if (_Main.ShowAllPositionsCheck.Checked)
             {
                 ShowAllPositionens();
             }
@@ -723,7 +1078,7 @@ namespace Auto_Clicker
                 marker.Close();
             activeMarkers.Clear();
 
-            if (mainForm.ShowAllPositionsCheck.Checked)
+            if (_Main.ShowAllPositionsCheck.Checked)
             {
                 foreach (var action in SavedActions)
                 {
@@ -772,13 +1127,13 @@ namespace Auto_Clicker
         public Keys? Mousepress { get; set; }
         public Keys? Key { get; set; }
         public long ToWait { get; set; }
+        public long HoldClickMS { get; set; }
 
 
         public override string ToString()
         {
-            if (ToWait > 0)
+            List<string> tranformtoparts(long ms)
             {
-                long ms = ToWait;
                 long milliseconds = ms % 1000;
                 long seconds = (ms / 1000) % 60;
                 long minutes = (ms / (1000 * 60)) % 60;
@@ -790,22 +1145,28 @@ namespace Auto_Clicker
                 if (seconds > 0) parts.Add($"{seconds}s");
                 if (milliseconds > 0) parts.Add($"{milliseconds}ms");
 
-                string waitText = "Wait: " + string.Join(" ", parts);
+                return parts;
+            }
 
+            if (ToWait > 0)
+            {
+                var parts = tranformtoparts(ToWait);
+                string waitText = "Wait: " + string.Join(" ", parts);
                 return Environment.NewLine + waitText;
             }
 
-            if (Mousepress != null && Mousepress.Value == Keys.Modifiers)
+            if (HoldClickMS > 0)
             {
+                var parts = tranformtoparts(HoldClickMS);
                 return Type == ActionType.MouseClick
-                    ? $"X:{MousePosition.X}, Y:{MousePosition.Y} <Move>"
-                    : "Key: Move";
+                    ? $"X:{MousePosition.X}, Y:{MousePosition.Y} <{Mousepress}> Hold(" + string.Join(" ", parts) + ")"
+                    : $"Key: <{Key}> Hold(" + string.Join(" ", parts) + ")";
             }
             else
             {
                 return Type == ActionType.MouseClick
                     ? $"X:{MousePosition.X}, Y:{MousePosition.Y} <{Mousepress}>"
-                    : $"Key: {Key}";
+                    : $"Key: <{Key}>";
             }
 
         }
