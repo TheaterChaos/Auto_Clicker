@@ -960,7 +960,7 @@ when assign a Key to Something</value>
     <value>HotkeyBoxOC</value>
   </data>
   <data name="&gt;&gt;WhitelistappsCheck.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="SwitchToClick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -990,7 +990,7 @@ when assign a Key to Something</value>
     <value>HotkeyBoxOC</value>
   </data>
   <data name="&gt;&gt;SwitchToClick.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="HoldToClick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1020,7 +1020,7 @@ when assign a Key to Something</value>
     <value>HotkeyBoxOC</value>
   </data>
   <data name="&gt;&gt;HoldToClick.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="Hotkeypressvalue.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 25</value>
@@ -1044,7 +1044,7 @@ when assign a Key to Something</value>
     <value>HotkeyBoxOC</value>
   </data>
   <data name="&gt;&gt;Hotkeypressvalue.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="PerTimeButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1580,14 +1580,11 @@ Standard: 10</value>
   <data name="&gt;&gt;IgnoreWaitCheck.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="RecordButton.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="RecordButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="RecordButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 19</value>
+    <value>5, 10</value>
   </data>
   <data name="RecordButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 33</value>
@@ -1601,9 +1598,6 @@ Standard: 10</value>
   <data name="RecordButton.ToolTip" xml:space="preserve">
     <value>Save the Position you want it to click</value>
   </data>
-  <data name="RecordButton.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;RecordButton.Name" xml:space="preserve">
     <value>RecordButton</value>
   </data>
@@ -1611,19 +1605,16 @@ Standard: 10</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;RecordButton.Parent" xml:space="preserve">
-    <value>HotkeyBoxOC</value>
+    <value>PageRecPlay</value>
   </data>
   <data name="&gt;&gt;RecordButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="PlayRecord.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+    <value>4</value>
   </data>
   <data name="PlayRecord.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="PlayRecord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 58</value>
+    <value>5, 49</value>
   </data>
   <data name="PlayRecord.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 33</value>
@@ -1637,9 +1628,6 @@ Standard: 10</value>
   <data name="PlayRecord.ToolTip" xml:space="preserve">
     <value>Save the Position you want it to click</value>
   </data>
-  <data name="PlayRecord.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;PlayRecord.Name" xml:space="preserve">
     <value>PlayRecord</value>
   </data>
@@ -1647,10 +1635,10 @@ Standard: 10</value>
     <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;PlayRecord.Parent" xml:space="preserve">
-    <value>HotkeyBoxOC</value>
+    <value>PageRecPlay</value>
   </data>
   <data name="&gt;&gt;PlayRecord.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="SelectedFuncUse.Items" xml:space="preserve">
     <value>Main</value>
@@ -1660,6 +1648,9 @@ Standard: 10</value>
   </data>
   <data name="SelectedFuncUse.Items2" xml:space="preserve">
     <value>ColorClick</value>
+  </data>
+  <data name="SelectedFuncUse.Items3" xml:space="preserve">
+    <value>Rec / Play</value>
   </data>
   <data name="SelectedFuncUse.Location" type="System.Drawing.Point, System.Drawing">
     <value>218, 28</value>
@@ -2147,6 +2138,78 @@ below 50ms it will handle it just as a click</value>
   <data name="&gt;&gt;Num_Randomizer.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="button1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
+  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 3</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 28</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Save List</value>
+  </data>
+  <data name="button1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="button1.ToolTip" xml:space="preserve">
+    <value>Save the current Actions List in a file</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>PageRecPlay</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="button2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 10pt</value>
+  </data>
+  <data name="button2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>523, 3</value>
+  </data>
+  <data name="button2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 28</value>
+  </data>
+  <data name="button2.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>Load List</value>
+  </data>
+  <data name="button2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="button2.ToolTip" xml:space="preserve">
+    <value>Load a actions list from a file</value>
+  </data>
+  <data name="&gt;&gt;button2.Name" xml:space="preserve">
+    <value>button2</value>
+  </data>
+  <data name="&gt;&gt;button2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button2.Parent" xml:space="preserve">
+    <value>PageRecPlay</value>
+  </data>
+  <data name="&gt;&gt;button2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="Color_Clickakey_setkey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -2355,10 +2418,10 @@ below 50ms it will handle it just as a click</value>
     <value>NoControl</value>
   </data>
   <data name="RepeatUnlimited.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 63</value>
+    <value>8, 62</value>
   </data>
   <data name="RepeatUnlimited.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 24</value>
+    <value>88, 24</value>
   </data>
   <data name="RepeatUnlimited.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -3174,6 +3237,87 @@ below 50ms it will handle it just as a click</value>
   <data name="&gt;&gt;PageColorClick.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="PageRecPlay.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="RecTimelineEditor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RecTimelineEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 88</value>
+  </data>
+  <data name="RecTimelineEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 33</value>
+  </data>
+  <data name="RecTimelineEditor.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="RecTimelineEditor.Text" xml:space="preserve">
+    <value>Edit Actions</value>
+  </data>
+  <data name="&gt;&gt;RecTimelineEditor.Name" xml:space="preserve">
+    <value>RecTimelineEditor</value>
+  </data>
+  <data name="&gt;&gt;RecTimelineEditor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RecTimelineEditor.Parent" xml:space="preserve">
+    <value>PageRecPlay</value>
+  </data>
+  <data name="&gt;&gt;RecTimelineEditor.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="RecBoxList.ItemHeight" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="RecBoxList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>335, 37</value>
+  </data>
+  <data name="RecBoxList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 378</value>
+  </data>
+  <data name="RecBoxList.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;RecBoxList.Name" xml:space="preserve">
+    <value>RecBoxList</value>
+  </data>
+  <data name="&gt;&gt;RecBoxList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RecBoxList.Parent" xml:space="preserve">
+    <value>PageRecPlay</value>
+  </data>
+  <data name="&gt;&gt;RecBoxList.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="PageRecPlay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 26</value>
+  </data>
+  <data name="PageRecPlay.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 7, 6, 7</value>
+  </data>
+  <data name="PageRecPlay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>605, 464</value>
+  </data>
+  <data name="PageRecPlay.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="PageRecPlay.Text" xml:space="preserve">
+    <value>Rec / Play</value>
+  </data>
+  <data name="&gt;&gt;PageRecPlay.Name" xml:space="preserve">
+    <value>PageRecPlay</value>
+  </data>
+  <data name="&gt;&gt;PageRecPlay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PageRecPlay.Parent" xml:space="preserve">
+    <value>TabPages</value>
+  </data>
+  <data name="&gt;&gt;PageRecPlay.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="TabPages.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -3223,7 +3367,7 @@ below 50ms it will handle it just as a click</value>
     <value>HotkeyBoxOC</value>
   </data>
   <data name="&gt;&gt;HotkeyFindKey.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="HotkeyBoxOC.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>

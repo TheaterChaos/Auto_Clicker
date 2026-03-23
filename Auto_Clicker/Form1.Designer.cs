@@ -113,6 +113,8 @@ namespace Auto_Clicker
             Actions_Load_List = new Button();
             Color_SelectActionsbox = new ComboBox();
             Num_Randomizer = new NumericUpDown();
+            button1 = new Button();
+            button2 = new Button();
             Color_Clickakey_setkey = new Button();
             TabPages = new TabControl();
             PageMain = new TabPage();
@@ -152,6 +154,9 @@ namespace Auto_Clicker
             label14 = new Label();
             label13 = new Label();
             ColorAreaRecText = new Label();
+            PageRecPlay = new TabPage();
+            RecTimelineEditor = new Button();
+            RecBoxList = new ListBox();
             HotkeyBoxOC = new GroupBox();
             HotkeyFindKey = new Button();
             panelTopInfo = new Panel();
@@ -182,6 +187,7 @@ namespace Auto_Clicker
             ((System.ComponentModel.ISupportInitialize)WaitTimeSec).BeginInit();
             ((System.ComponentModel.ISupportInitialize)WaitTimeMs).BeginInit();
             PageColorClick.SuspendLayout();
+            PageRecPlay.SuspendLayout();
             HotkeyBoxOC.SuspendLayout();
             panelTopInfo.SuspendLayout();
             panelHotkey.SuspendLayout();
@@ -663,7 +669,7 @@ namespace Auto_Clicker
             SelectedFuncUse.BackColor = SystemColors.ScrollBar;
             SelectedFuncUse.DropDownStyle = ComboBoxStyle.DropDownList;
             SelectedFuncUse.FormattingEnabled = true;
-            SelectedFuncUse.Items.AddRange(new object[] { resources.GetString("SelectedFuncUse.Items"), resources.GetString("SelectedFuncUse.Items1"), resources.GetString("SelectedFuncUse.Items2") });
+            SelectedFuncUse.Items.AddRange(new object[] { resources.GetString("SelectedFuncUse.Items"), resources.GetString("SelectedFuncUse.Items1"), resources.GetString("SelectedFuncUse.Items2"), resources.GetString("SelectedFuncUse.Items3") });
             resources.ApplyResources(SelectedFuncUse, "SelectedFuncUse");
             SelectedFuncUse.Name = "SelectedFuncUse";
             SelectedFuncUse.TabStop = false;
@@ -823,6 +829,24 @@ namespace Auto_Clicker
             AToolTips.SetToolTip(Num_Randomizer, resources.GetString("Num_Randomizer.ToolTip"));
             Num_Randomizer.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
+            // button1
+            // 
+            button1.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(button1, "button1");
+            button1.Name = "button1";
+            button1.TabStop = false;
+            AToolTips.SetToolTip(button1, resources.GetString("button1.ToolTip"));
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            button2.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(button2, "button2");
+            button2.Name = "button2";
+            button2.TabStop = false;
+            AToolTips.SetToolTip(button2, resources.GetString("button2.ToolTip"));
+            button2.UseVisualStyleBackColor = false;
+            // 
             // Color_Clickakey_setkey
             // 
             Color_Clickakey_setkey.BackColor = SystemColors.ActiveCaption;
@@ -836,6 +860,7 @@ namespace Auto_Clicker
             TabPages.Controls.Add(PageMain);
             TabPages.Controls.Add(PageActions);
             TabPages.Controls.Add(PageColorClick);
+            TabPages.Controls.Add(PageRecPlay);
             resources.ApplyResources(TabPages, "TabPages");
             TabPages.Name = "TabPages";
             TabPages.SelectedIndex = 0;
@@ -1140,12 +1165,38 @@ namespace Auto_Clicker
             resources.ApplyResources(ColorAreaRecText, "ColorAreaRecText");
             ColorAreaRecText.Name = "ColorAreaRecText";
             // 
+            // PageRecPlay
+            // 
+            PageRecPlay.Controls.Add(RecTimelineEditor);
+            PageRecPlay.Controls.Add(button2);
+            PageRecPlay.Controls.Add(PlayRecord);
+            PageRecPlay.Controls.Add(button1);
+            PageRecPlay.Controls.Add(RecordButton);
+            PageRecPlay.Controls.Add(RecBoxList);
+            resources.ApplyResources(PageRecPlay, "PageRecPlay");
+            PageRecPlay.Name = "PageRecPlay";
+            PageRecPlay.UseVisualStyleBackColor = true;
+            // 
+            // RecTimelineEditor
+            // 
+            RecTimelineEditor.BackColor = SystemColors.ActiveCaption;
+            resources.ApplyResources(RecTimelineEditor, "RecTimelineEditor");
+            RecTimelineEditor.Name = "RecTimelineEditor";
+            RecTimelineEditor.TabStop = false;
+            RecTimelineEditor.UseVisualStyleBackColor = false;
+            RecTimelineEditor.Click += RecTimelineEditor_Click;
+            // 
+            // RecBoxList
+            // 
+            RecBoxList.ContextMenuStrip = ActionRightclick;
+            RecBoxList.FormattingEnabled = true;
+            resources.ApplyResources(RecBoxList, "RecBoxList");
+            RecBoxList.Name = "RecBoxList";
+            // 
             // HotkeyBoxOC
             // 
             resources.ApplyResources(HotkeyBoxOC, "HotkeyBoxOC");
             HotkeyBoxOC.Controls.Add(SelectedFuncUse);
-            HotkeyBoxOC.Controls.Add(PlayRecord);
-            HotkeyBoxOC.Controls.Add(RecordButton);
             HotkeyBoxOC.Controls.Add(WhitelistappsCheck);
             HotkeyBoxOC.Controls.Add(SwitchToClick);
             HotkeyBoxOC.Controls.Add(HoldToClick);
@@ -1228,6 +1279,7 @@ namespace Auto_Clicker
             ((System.ComponentModel.ISupportInitialize)WaitTimeSec).EndInit();
             ((System.ComponentModel.ISupportInitialize)WaitTimeMs).EndInit();
             PageColorClick.ResumeLayout(false);
+            PageRecPlay.ResumeLayout(false);
             HotkeyBoxOC.ResumeLayout(false);
             panelTopInfo.ResumeLayout(false);
             panelTopInfo.PerformLayout();
@@ -1364,6 +1416,11 @@ namespace Auto_Clicker
         public NumericUpDown Num_Randomizer;
         public Label label16;
         public Label label17;
+        private TabPage PageRecPlay;
+        public Button button2;
+        public Button button1;
+        public ListBox RecBoxList;
+        public Button RecTimelineEditor;
     }
 }
 

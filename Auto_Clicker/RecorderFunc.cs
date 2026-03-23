@@ -1,299 +1,340 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Text;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using WindowsInput;
 
 namespace Auto_Clicker
 {
-    public class RecorderFunc
+    public enum RecActionType
     {
+        KeyDown,
+        KeyUp,
+        MouseDown,
+        MouseUp,
+        MouseMove
+    }
 
-        private Form1 mainForm;
+    public abstract class RecAction
+    {
+        public RecActionType Type { get; set; }
+        public int DelayMs { get; set; }
+    }
 
-        public RecorderFunc(Form1 form)
-        {
-            mainForm = form;
-        }
+    public sealed class RecKeyAction : RecAction
+    {
+        public Keys Key { get; set; }
+    }
+
+    public sealed class RecMouseButtonAction : RecAction
+    {
+        public MouseButtons Button { get; set; }
+    }
+
+    public sealed class RecMouseMoveAction : RecAction
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+
+
+    public sealed class RecorderFunc
+    {
+        private readonly Form _Main;
+
+        public List<RecAction> RecActions { get; } = new();
 
         private KeyboardHook kHook;
         private MouseHook mHook;
-        private Stopwatch sw = new Stopwatch();
-        public List<Common.InputAction> RecordedActions = new List<Common.InputAction>();
-        private bool recording = false;
 
-        public void playbackstart()
+        private readonly Stopwatch sw = new();
+        private long lastActionTime;
+        private long lastMouseMoveTime;
+        private int lastX, lastY;
+
+        public RecorderFunc(Form form)
         {
-            if (RecordedActions.Count == 0)
-            {
-                MessageBox.Show("Keine Aktionen aufgenommen!");
-                return;
-            }
-
-            // Playback starten
-            InputPlayer.PlayActions(RecordedActions);
+            _Main = form;
         }
+
+        // ---------------- RECORD ----------------
 
         public void StartRecording()
         {
-            if (recording) return;
-
-            RecordedActions.Clear();
+            RecActions.Clear();
             sw.Restart();
+            lastActionTime = 0;
 
             kHook = new KeyboardHook();
             mHook = new MouseHook();
 
-            kHook.KeyDownEvent += key => RecordKey(key, true);
-            kHook.KeyUpEvent += key => RecordKey(key, false);
-
-            mHook.MouseDownEvent += button => RecordMouse(button, true);
-            mHook.MouseUpEvent += button => RecordMouse(button, false);
-
-            mHook.MouseMoveEvent += (x, y) =>
+            kHook.KeyDownEvent += k =>
             {
-                long delay = sw.ElapsedMilliseconds;
-                RecordedActions.Add(new Common.InputAction
+                if (k == Keys.Escape) StopRecording();
+                Add(new RecKeyAction
                 {
-                    Type = Common.InputType.Mouse,
-                    IsDown = false,
-                    MouseX = x,
-                    MouseY = y,
-                    Delay = delay
+                    Type = RecActionType.KeyDown,
+                    Key = k
                 });
-                sw.Restart();
             };
 
-            recording = true;
-            mainForm.InfoLabel.Text = "Recorder läuft. ESC beendet die Aufnahme.";
+            kHook.KeyUpEvent += k =>
+                Add(new RecKeyAction
+                {
+                    Type = RecActionType.KeyUp,
+                    Key = k
+                });
+
+            mHook.MouseDownEvent += b =>
+                Add(new RecMouseButtonAction
+                {
+                    Type = RecActionType.MouseDown,
+                    Button = ToWinBtn(b)
+                });
+
+            mHook.MouseUpEvent += b =>
+                Add(new RecMouseButtonAction
+                {
+                    Type = RecActionType.MouseUp,
+                    Button = ToWinBtn(b)
+                });
+
+            mHook.MouseMoveEvent += OnMouseMove;
         }
 
-        private void btnStopRecording_Click(object sender, EventArgs e)
+        public void StopRecording()
         {
-            StopRecording();
-            mainForm.InfoLabel.Text = "Aufnahme beendet. " + RecordedActions.Count + " Aktionen aufgenommen.";
-        }
-
-        private void StopRecording()
-        {
-            if (!recording) return;
-            kHook.Dispose();
-            mHook.Dispose();
+            kHook?.Dispose();
+            mHook?.Dispose();
             sw.Stop();
-            recording = false;
         }
 
-        private void RecordKey(Keys key, bool isDown)
+        private void Add(RecAction act)
         {
-            if (key == Keys.Escape)
+            long now = sw.ElapsedMilliseconds;
+            act.DelayMs = (int)(now - lastActionTime);
+            lastActionTime = now;
+            RecActions.Add(act);
+        }
+
+        private void OnMouseMove(int x, int y)
+        {
+            long now = sw.ElapsedMilliseconds;
+
+            if (now - lastMouseMoveTime < 15) return;
+            if (Math.Abs(x - lastX) < 3 && Math.Abs(y - lastY) < 3) return;
+
+            lastMouseMoveTime = now;
+            lastX = x;
+            lastY = y;
+
+            Add(new RecMouseMoveAction
             {
-                StopRecording();
-                return;
-            }
-            long delay = sw.ElapsedMilliseconds;
-            RecordedActions.Add(new Common.InputAction { Type = Common.InputType.Key, Key = key, IsDown = isDown, Delay = delay });
-            sw.Restart();
-
-            Debug.WriteLine($"Key: {key}, IsDown: {isDown}, Delay: {delay}");
+                Type = RecActionType.MouseMove,
+                X = x,
+                Y = y
+            });
         }
 
-        private void RecordMouse(MouseHook.MouseButton button, bool isDown)
-        {
-            long delay = sw.ElapsedMilliseconds;
-            RecordedActions.Add(new Common.InputAction { Type = Common.InputType.Mouse, Button = (Common.MouseButton)button, IsDown = isDown, Delay = delay });
-            sw.Restart();
-
-            Debug.WriteLine($"Mouse Button: {button}, IsDown: {isDown}, Delay: {delay}");
-        }
-
-    }
-
-    namespace Common
-    {
-        public enum InputType { Key, Mouse }
-        public enum MouseButton { None, Left, Right, Middle }
-
-        public class InputAction
-        {
-            public InputType Type;
-            public bool IsDown;
-            public Keys Key;
-            public MouseButton Button;
-            public long Delay;
-            public int MouseX;
-            public int MouseY;
-        }
-    }
-
-    public class InputPlayer
-    {
-
-        [DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(Keys vKey);
-
-        private static bool IsKeyDown(Keys key)
-        {
-            return (GetAsyncKeyState(key) & 0x8000) != 0;
-        }
-
-        private static InputSimulator sim = new InputSimulator();
-
-        public static void PlayActions(List<Common.InputAction> actions)
-        {
-            foreach (var act in actions)
+        private static MouseButtons ToWinBtn(MouseHook.MouseButton b) =>
+            b switch
             {
-                if (IsKeyDown(Keys.Escape))
+                MouseHook.MouseButton.Left => MouseButtons.Left,
+                MouseHook.MouseButton.Right => MouseButtons.Right,
+                MouseHook.MouseButton.Middle => MouseButtons.Middle,
+                _ => MouseButtons.None
+            };
+
+        // ---------------- PLAYBACK ----------------
+
+        private CancellationTokenSource cts;
+        private readonly InputSimulator sim = new();
+
+        public async Task StartPlaybackAsync(double speed = 1.0)
+        {
+            if (RecActions.Count == 0) return;
+
+            cts = new CancellationTokenSource();
+
+            try
+            {
+                foreach (var act in RecActions)
                 {
-                    break; // Playback abbrechen
+                    cts.Token.ThrowIfCancellationRequested();
+
+                    if (act.DelayMs > 0)
+                        await Task.Delay(
+                            (int)(act.DelayMs / speed),
+                            cts.Token);
+
+                    Execute(act);
                 }
+            }
+            catch (OperationCanceledException) { }
+        }
 
-                // Wartezeit einhalten
-                Thread.Sleep((int)act.Delay);
+        public void StopPlayback()
+        {
+            cts?.Cancel();
+        }
 
-                if (act.Type == Common.InputType.Key)
-                {
-                    if (act.IsDown)
-                        sim.Keyboard.KeyDown((VirtualKeyCode)act.Key);
+        private void Execute(RecAction act)
+        {
+            switch (act)
+            {
+                case RecKeyAction k:
+                    if (act.Type == RecActionType.KeyDown)
+                        sim.Keyboard.KeyDown((VirtualKeyCode)k.Key);
                     else
-                        sim.Keyboard.KeyUp((VirtualKeyCode)act.Key);
-                }
-                if (act.Type == Common.InputType.Mouse)
-                {
-                    if (act.Button is 0 )
-                    {
-                        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-                        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                        sim.Keyboard.KeyUp((VirtualKeyCode)k.Key);
+                    break;
 
-                        double absoluteX = act.MouseX * 65535.0 / (screenWidth - 1);
-                        double absoluteY = act.MouseY * 65535.0 / (screenHeight - 1);
-
-                        new InputSimulator().Mouse.MoveMouseTo(absoluteX, absoluteY);
-                        Debug.WriteLine($"Mouse Move to X: {act.MouseX}, Y: {act.MouseY} (Absolute: {absoluteX}, {absoluteY})");
-                    }
-                    else
+                case RecMouseButtonAction m:
+                    if (m.Button == MouseButtons.Left)
                     {
-                        // Mausbutton
-                        switch (act.Button)
-                        {
-                            case (Common.MouseButton)MouseHook.MouseButton.Left:
-                                if (act.IsDown) sim.Mouse.LeftButtonDown(); else sim.Mouse.LeftButtonUp();
-                                break;
-                            case (Common.MouseButton)MouseHook.MouseButton.Right:
-                                if (act.IsDown) sim.Mouse.RightButtonDown(); else sim.Mouse.RightButtonUp();
-                                break;
-                            case (Common.MouseButton)MouseHook.MouseButton.Middle:
-                                if (act.IsDown) sim.Mouse.MiddleButtonDown(); else sim.Mouse.MiddleButtonUp();
-                                break;
-                        }
+                        if (act.Type == RecActionType.MouseDown)
+                            sim.Mouse.LeftButtonDown();
+                        else
+                            sim.Mouse.LeftButtonUp();
                     }
-                }
-                Debug.WriteLine($"Action: {act.Type}, Key/Button: {act.Key}{act.Button}, IsDown: {act.IsDown}, Delay: {act.Delay}, MouseX: {act.MouseX}, MouseY: {act.MouseY}");
+                    else if (m.Button == MouseButtons.Right)
+                    {
+                        if (act.Type == RecActionType.MouseDown)
+                            sim.Mouse.RightButtonDown();
+                        else
+                            sim.Mouse.RightButtonUp();
+                    }
+                    else if (m.Button == MouseButtons.Middle)
+                    {
+                        if (act.Type == RecActionType.MouseDown)
+                            sim.Mouse.MiddleButtonDown();
+                        else
+                            sim.Mouse.MiddleButtonUp();
+                    }
+                    break;
+
+                case RecMouseMoveAction mm:
+                    var s = Screen.PrimaryScreen.Bounds;
+                    sim.Mouse.MoveMouseTo(
+                        mm.X * 65535d / s.Width,
+                        mm.Y * 65535d / s.Height);
+                    break;
             }
         }
     }
 
-    // === Keyboard Hook ===
+    // =====================================================
+    // KEYBOARD HOOK
+    // =====================================================
+
     public class KeyboardHook : IDisposable
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
-        private LowLevelKeyboardProc _proc;
-        private IntPtr _hookID = IntPtr.Zero;
+
+        private IntPtr hookId;
+        private LowLevelKeyboardProc proc;
 
         public event Action<Keys> KeyDownEvent;
         public event Action<Keys> KeyUpEvent;
 
         public KeyboardHook()
         {
-            _proc = HookCallback;
-            _hookID = SetHook(_proc);
+            proc = HookCallback;
+            hookId = SetHook(proc);
         }
 
-        public void Dispose() => UnhookWindowsHookEx(_hookID);
-
-        private IntPtr SetHook(LowLevelKeyboardProc proc)
-        {
-            using var curProcess = Process.GetCurrentProcess();
-            using var curModule = curProcess.MainModule;
-            return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
-        }
-
-        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        {
-            if (nCode >= 0)
-            {
-                int w = wParam.ToInt32();
-                int vkCode = Marshal.ReadInt32(lParam);
-                if (w == WM_KEYDOWN) KeyDownEvent?.Invoke((Keys)vkCode);
-                else if (w == WM_KEYUP) KeyUpEvent?.Invoke((Keys)vkCode);
-            }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
-        }
-
-        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")] private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-        [DllImport("user32.dll")] private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-        [DllImport("user32.dll")] private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-        [DllImport("kernel32.dll")] private static extern IntPtr GetModuleHandle(string lpModuleName);
-    }
-
-    // === Mouse Hook ===
-    public class MouseHook : IDisposable
-    {
-        private const int WH_MOUSE_LL = 14;
-        private const int WM_LBUTTONDOWN = 0x0201;
-        private const int WM_LBUTTONUP = 0x0202;
-        private const int WM_RBUTTONDOWN = 0x0204;
-        private const int WM_RBUTTONUP = 0x0205;
-        private const int WM_MBUTTONDOWN = 0x0207;
-        private const int WM_MBUTTONUP = 0x0208;
-        private const int WM_MOUSEMOVE = 0x0200;
-
-        private LowLevelMouseProc _proc;
-        private IntPtr _hookID = IntPtr.Zero;
-
-        public enum MouseButton { Left, Right, Middle }
-        public event Action<MouseButton> MouseDownEvent;
-        public event Action<MouseButton> MouseUpEvent;
-
-        public MouseHook()
-        {
-            _proc = HookCallback;
-            _hookID = SetHook(_proc);
-        }
-
-        public void Dispose() => UnhookWindowsHookEx(_hookID);
-
-        private IntPtr SetHook(LowLevelMouseProc proc)
-        {
-            using var curProcess = Process.GetCurrentProcess();
-            using var curModule = curProcess.MainModule;
-            return SetWindowsHookEx(WH_MOUSE_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
-        }
+        public void Dispose() => UnhookWindowsHookEx(hookId);
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
                 int msg = wParam.ToInt32();
+                int vk = Marshal.ReadInt32(lParam);
+
+                if (msg == WM_KEYDOWN) KeyDownEvent?.Invoke((Keys)vk);
+                else if (msg == WM_KEYUP) KeyUpEvent?.Invoke((Keys)vk);
+            }
+            return CallNextHookEx(hookId, nCode, wParam, lParam);
+        }
+
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+        private static IntPtr SetHook(LowLevelKeyboardProc proc)
+        {
+            using var p = Process.GetCurrentProcess();
+            using var m = p.MainModule;
+            return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(m.ModuleName), 0);
+        }
+
+        [DllImport("user32.dll")] private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint threadId);
+        [DllImport("user32.dll")] private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+        [DllImport("user32.dll")] private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport("kernel32.dll")] private static extern IntPtr GetModuleHandle(string name);
+    }
+
+    // =====================================================
+    // MOUSE HOOK
+    // =====================================================
+
+    public class MouseHook : IDisposable
+    {
+        private const int WH_MOUSE_LL = 14;
+        private const int WM_MOUSEMOVE = 0x0200;
+        private const int WM_LBUTTONDOWN = 0x0201;
+        private const int WM_LBUTTONUP = 0x0202;
+        private const int WM_RBUTTONDOWN = 0x0204;
+        private const int WM_RBUTTONUP = 0x0205;
+        private const int WM_MBUTTONDOWN = 0x0207;
+        private const int WM_MBUTTONUP = 0x0208;
+
+        public enum MouseButton { Left, Right, Middle }
+
+        public event Action<int, int> MouseMoveEvent;
+        public event Action<MouseButton> MouseDownEvent;
+        public event Action<MouseButton> MouseUpEvent;
+
+        private IntPtr hookId;
+        private LowLevelMouseProc proc;
+
+        public MouseHook()
+        {
+            proc = HookCallback;
+            hookId = SetHook(proc);
+        }
+
+        public void Dispose() => UnhookWindowsHookEx(hookId);
+
+        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0)
+            {
+                int msg = wParam.ToInt32();
+                var data = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
 
                 if (msg == WM_MOUSEMOVE)
-                {
-                    MSLLHOOKSTRUCT hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                    MouseMoveEvent?.Invoke(hookStruct.pt.x, hookStruct.pt.y);
-                }
+                    MouseMoveEvent?.Invoke(data.pt.x, data.pt.y);
 
-                switch (msg)
-                {
-                    case WM_LBUTTONDOWN: MouseDownEvent?.Invoke(MouseButton.Left); break;
-                    case WM_LBUTTONUP: MouseUpEvent?.Invoke(MouseButton.Left); break;
-                    case WM_RBUTTONDOWN: MouseDownEvent?.Invoke(MouseButton.Right); break;
-                    case WM_RBUTTONUP: MouseUpEvent?.Invoke(MouseButton.Right); break;
-                    case WM_MBUTTONDOWN: MouseDownEvent?.Invoke(MouseButton.Middle); break;
-                    case WM_MBUTTONUP: MouseUpEvent?.Invoke(MouseButton.Middle); break;
-                }
+                if (msg == WM_LBUTTONDOWN) MouseDownEvent?.Invoke(MouseButton.Left);
+                else if (msg == WM_LBUTTONUP) MouseUpEvent?.Invoke(MouseButton.Left);
+                else if (msg == WM_RBUTTONDOWN) MouseDownEvent?.Invoke(MouseButton.Right);
+                else if (msg == WM_RBUTTONUP) MouseUpEvent?.Invoke(MouseButton.Right);
+                else if (msg == WM_MBUTTONDOWN) MouseDownEvent?.Invoke(MouseButton.Middle);
+                else if (msg == WM_MBUTTONUP) MouseUpEvent?.Invoke(MouseButton.Middle);
             }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+            return CallNextHookEx(hookId, nCode, wParam, lParam);
+        }
+
+        private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+        private static IntPtr SetHook(LowLevelMouseProc proc)
+        {
+            using var p = Process.GetCurrentProcess();
+            using var m = p.MainModule;
+            return SetWindowsHookEx(WH_MOUSE_LL, proc, GetModuleHandle(m.ModuleName), 0);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -309,13 +350,9 @@ namespace Auto_Clicker
             public IntPtr dwExtraInfo;
         }
 
-        public event Action<int, int> MouseMoveEvent;
-
-        private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll")] private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll")] private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint threadId);
         [DllImport("user32.dll")] private static extern bool UnhookWindowsHookEx(IntPtr hhk);
         [DllImport("user32.dll")] private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-        [DllImport("kernel32.dll")] private static extern IntPtr GetModuleHandle(string lpModuleName);
+        [DllImport("kernel32.dll")] private static extern IntPtr GetModuleHandle(string name);
     }
 }

@@ -110,8 +110,7 @@ namespace Auto_Clicker
                 {
                     if (sw.ElapsedMilliseconds > 50)
                     {
-                        List<String> parts = Ms_to_PartsString(sw.ElapsedMilliseconds);
-                        coordLabel.Text = $"Rec: "+ string.Join(" ", parts);
+                        coordLabel.Text = $"Rec: "+ Ms_to_PartsString(sw.ElapsedMilliseconds);
                         Application.DoEvents();
                     }
                     Thread.Sleep(10); // Warten, bis die Taste losgelassen wird
@@ -371,6 +370,12 @@ namespace Auto_Clicker
             var result = form.ShowDialog();
         }
 
+        public bool CheckappWB()
+        {
+            var (proc, _) = _Main._SideForm.GetActiveProcessName();
+            return _Main.WhitelistappsCheck.Checked && _Main._SideForm.AppsCheckedlist.Contains(proc) || !_Main.WhitelistappsCheck.Checked && !_Main._SideForm.AppsCheckedlist.Contains(proc);
+        }
+
 
         public void StartClickingAction()
         {
@@ -403,6 +408,7 @@ namespace Auto_Clicker
             // Klick-Intervall berechnen
             bool infinity = _Main.ActionRepeatTimes.Value == 0;
             int clickCount = 0;
+            string infoworking = "";
 
             Task.Run(() =>
             {
@@ -410,11 +416,9 @@ namespace Auto_Clicker
 
                 while ((infinity || clickCount < repeatCount) && !token.IsCancellationRequested)
                 {
-                    clickCount++;
-                    sw.Restart();
-                    var (proc, _) = _Main._SideForm.GetActiveProcessName();
-                    if (_Main.WhitelistappsCheck.Checked && _Main._SideForm.AppsCheckedlist.Contains(proc) || !_Main.WhitelistappsCheck.Checked && !_Main._SideForm.AppsCheckedlist.Contains(proc))//(!BlacklistedWindowTitles.Contains(proc))
+                    if (CheckappWB())
                     {
+                        clickCount++;
                         if (switchinfotext)
                             _Main.Setinfotextfast("Auto clicker running.....", true);
                         switchinfotext = false;
@@ -422,6 +426,15 @@ namespace Auto_Clicker
                         int i = 0;
                         foreach (var action in SavedActions)
                         {
+                            while (!CheckappWB())
+                            {
+                                if (!_Main.clicking || token.IsCancellationRequested)
+                                    break;
+                                if (!switchinfotext)
+                                    _Main.Setinfotextfast("Auto clicker ON: Waiting for None Blacklisted window.......", true);
+                                switchinfotext = true;
+                                Thread.Sleep(200);
+                            }
                             i++;
                             sw.Restart();
                             if (!_Main.clicking || token.IsCancellationRequested)
@@ -442,13 +455,14 @@ namespace Auto_Clicker
 
                                     if (action.Mousepress != null && action.Mousepress.Value != Keys.Modifiers)
                                     {
-                                        _Main.Setinfotextfast($"Auto clicker ON   Count: {clickCount} Working on: {i} {action.Mousepress.Value.ToString()}", true);
+                                        infoworking = $"Auto clicker ON   Count: {clickCount} Working on: {i} <{action.Mousepress.Value.ToString()}> Hold: ";
+                                        _Main.Setinfotextfast(infoworking, true);
                                         if (action.Mousepress.Value != _Main.hotkey)
                                         {
                                             if (action.HoldClickMS > 0)
                                             {
                                                 sw.Stop();
-                                                _Main.DoClick(action.Mousepress.Value, action.HoldClickMS);
+                                                _Main.DoClick(action.Mousepress.Value, action.HoldClickMS, infoworking);
                                                 sw.Start();
                                             }
                                             else
@@ -463,14 +477,15 @@ namespace Auto_Clicker
                                 }
                                 else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
                                 {
-                                    _Main.Setinfotextfast($"Auto clicker ON   Count: {clickCount} Working on: {i} {action.Key.Value.ToString()}", true);
+                                    infoworking = $"Auto clicker ON   Count: {clickCount} Working on: {i} <{action.Key.Value.ToString()}> Hold: ";
+                                    _Main.Setinfotextfast(infoworking, true);
                                     string keyName = action.Key.Value.ToString();
                                     if (DataStings.keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
                                     {
                                         if (action.HoldClickMS > 0)
                                         {
                                             sw.Stop();
-                                            _Main.DoClick(action.Key.Value, action.HoldClickMS);
+                                            _Main.DoClick(action.Key.Value, action.HoldClickMS, infoworking);
                                             sw.Start();
                                         }
                                         else
@@ -483,7 +498,7 @@ namespace Auto_Clicker
                                         if (action.HoldClickMS > 0)
                                         {
                                             sw.Stop();
-                                            _Main.DoClick(action.Key.Value, action.HoldClickMS);
+                                            _Main.DoClick(action.Key.Value, action.HoldClickMS, infoworking);
                                             sw.Start();
                                         }
                                         else
@@ -559,7 +574,7 @@ namespace Auto_Clicker
 
                                     nextUpdate += updateInterval;
                                 }
-                                Debug.WriteLine($"{remaining}  {timetowait}  {nextUpdate}");
+                                //Debug.WriteLine($"{remaining}  {timetowait}  {nextUpdate}");
                                 if (remaining > 2)
                                     Thread.Sleep(1);
                                 else
@@ -637,7 +652,7 @@ namespace Auto_Clicker
             got.Hours = (long)_Main.WaitTimeHour.Value;
             long totalMs = PartsToMs(got);
             SaveWaitTime(totalMs);
-            _Main.Setinfotextfast("Wait Added: "+string.Join(" ", Ms_to_PartsString(totalMs)));
+            _Main.Setinfotextfast("Wait Added: " + Ms_to_PartsString(totalMs));
         }
 
         public TimeParts MsToParts(long ms)
@@ -658,7 +673,7 @@ namespace Auto_Clicker
                    t.Hours * 60 * 60 * 1000;
         }
 
-        public List<string> Ms_to_PartsString(long ms)
+        public string Ms_to_PartsString(long ms)
         {
             long milliseconds = ms % 1000;
             long seconds = (ms / 1000) % 60;
@@ -671,7 +686,9 @@ namespace Auto_Clicker
             if (seconds > 0) parts.Add($"{seconds}s");
             if (milliseconds > 0) parts.Add($"{milliseconds}ms");
 
-            return parts;
+            String DoneString = string.Join(" ", parts);
+
+            return DoneString;
         }
 
         public void SelectedAction()
@@ -1152,7 +1169,7 @@ namespace Auto_Clicker
             {
                 var parts = tranformtoparts(ToWait);
                 string waitText = "Wait: " + string.Join(" ", parts);
-                return Environment.NewLine + waitText;
+                return waitText;//Environment.NewLine + waitText;
             }
 
             if (HoldClickMS > 0)

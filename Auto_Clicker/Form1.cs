@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
@@ -47,6 +48,9 @@ namespace Auto_Clicker
         public Keys hotkey = Keys.F6;
         private Keys clickKey = Keys.LButton; // Standard: Linksklick
         private bool keyWasDown = false;
+        bool devpanels = false;
+        private Form logForm;
+        private TextBox logBox;
 
         private bool sidebarexpanded = false;
         private System.Windows.Forms.Timer Sidebartimer;
@@ -390,7 +394,6 @@ namespace Auto_Clicker
             }
 
             TabPages.SelectedIndex = Properties.Settings.Default.TabPagesSelected;
-            setwindowsizeFunc();
 
             if (Properties.Settings.Default.SRectUseArea.Length >= 3)
             {
@@ -437,6 +440,7 @@ namespace Auto_Clicker
                     Color_Clickakey_setkey_Label.Text = $"X:{_ColorClick.ClickPosition.X}, Y:{_ColorClick.ClickPosition.Y} <{_ColorClick.ClickPos_Key.ToString()}>";
                     break;
             }
+            setwindowsizeFunc();
             _Actions.UpdateActionList(); // UI aktualisieren
         }
 
@@ -609,6 +613,12 @@ namespace Auto_Clicker
             {
                 _Actions.Menu_On_CloseFunc();
             };
+
+            if (!devpanels)
+            {
+                TabPages.TabPages.Remove(PageRecPlay);
+                SelectedFuncUse.Items.RemoveAt(3);
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -904,7 +914,7 @@ namespace Auto_Clicker
 
 
 
-        public void DoClick(Keys ToClick, long holdtime = 0)
+        public void DoClick(Keys ToClick, long holdtime = 0, string infotext = "")
         {
             if (holdtime == 0)
             {
@@ -996,12 +1006,52 @@ namespace Auto_Clicker
             void waitforholding()
             {
                 Stopwatch time = new Stopwatch();
+                long updateInterval = holdtime >= 100 ? 100 : holdtime;
+                long nextUpdate = 0;
                 time.Restart();
                 while (clicking)
                 {
                     if (time.ElapsedMilliseconds > holdtime)
                         break;
-                    Thread.Sleep(50);
+
+
+                    long elapsed = time.ElapsedMilliseconds;
+                    long remaining = holdtime - elapsed;
+
+                    if (elapsed >= nextUpdate && holdtime > 100 && infotext != "")
+                    {
+                        string Timestring;
+
+                        if (remaining > 1000)
+                        {
+                            // ⏱ über 1 Sekunde → Sekunden-Anzeige
+                            long seconds = remaining / 1000;
+                            Timestring = $"{seconds}s";
+                        }
+                        else
+                        {
+                            // 🔢 auf 100ms runden
+                            long roundedMs = (remaining / 100) * 100;
+
+                            // optional: nie 0 anzeigen, solange noch gewartet wird
+                            if (roundedMs == 0 && remaining > 0)
+                                roundedMs = 100;
+
+                            Timestring = $"{roundedMs}ms";
+                        }
+
+                        Setinfotextfast(
+                            infotext + Timestring,
+                            true
+                        );
+
+                        nextUpdate += updateInterval;
+                    }
+                    //Debug.WriteLine($"{remaining}  {timetowait}  {nextUpdate}");
+                    if (remaining > 2)
+                        Thread.Sleep(1);
+                    else
+                        Thread.SpinWait(5);
                 }
                 time.Stop();
             }
@@ -1078,7 +1128,7 @@ namespace Auto_Clicker
 
                         double remaining = randomizedInterval - sw.Elapsed.TotalMilliseconds;
 
-                        Debug.WriteLine(intervalMs+"  "+randomizedInterval);
+                        Debug.WriteLine(intervalMs + "  " + randomizedInterval);
 
                         if (remaining > 2)
                             Thread.Sleep((int)(remaining - 1));
@@ -1196,7 +1246,7 @@ namespace Auto_Clicker
                 if (keyDown && !clicking)
                 {
                     Setinfotextfast("Auto clicker running.....");
-                    
+
                     switch (SelectedFuncUse.SelectedIndex)
                     {
                         case 0:
@@ -1207,6 +1257,8 @@ namespace Auto_Clicker
                             break;
                         case 2:
                             _ColorClick.StartClickingColor();
+                            break;
+                        case 3:
                             break;
                     }
 
@@ -1234,6 +1286,8 @@ namespace Auto_Clicker
                                 break;
                             case 2:
                                 _ColorClick.StartClickingColor();
+                                break;
+                            case 3:
                                 break;
                         }
                     }
@@ -1269,14 +1323,20 @@ namespace Auto_Clicker
 
         void OpenLogWindow()
         {
-            Form logForm = new Form
+            if (logForm != null && !logForm.IsDisposed)
+            {
+                logForm.BringToFront();
+                return;
+            }
+
+            logForm = new Form
             {
                 Text = "Logs",
                 Size = new Size(500, 400),
-                StartPosition = FormStartPosition.CenterParent
+                StartPosition = FormStartPosition.Manual,
             };
 
-            TextBox logBox = new TextBox
+            logBox = new TextBox
             {
                 Multiline = true,
                 ReadOnly = true,
@@ -1285,10 +1345,31 @@ namespace Auto_Clicker
                 Font = new Font("Consolas", 9f)
             };
 
-            logBox.Text = string.Join(Environment.NewLine, _infoLogs);
+            logBox.Text = string.Join(Environment.NewLine, _infoLogs.AsEnumerable().Reverse());
 
             logForm.Controls.Add(logBox);
+
+            logForm.Location = new Point(
+                this.Left + (this.Width - logForm.Width) / 2,
+                this.Top + (this.Height - logForm.Height) / 2
+            );
+
             logForm.Show(this);
+        }
+
+        private void UpdateLogBox()
+        {
+            if (logBox == null || logBox.IsDisposed) return;
+
+            if (logBox.InvokeRequired)
+            {
+                logBox.Invoke(UpdateLogBox);
+                return;
+            }
+
+            logBox.Text = string.Join(Environment.NewLine, _infoLogs.AsEnumerable().Reverse());
+            logBox.SelectionStart = logBox.Text.Length;
+            logBox.ScrollToCaret();
         }
 
         public void UpdateColorClickAreaText(Rectangle bounds)
@@ -1308,6 +1389,7 @@ namespace Auto_Clicker
         {
             string line = $"[{DateTime.Now:HH:mm:ss}] {Text}";
             _infoLogs.Add(line);
+            UpdateLogBox();
             if (isinvoke)
             {
                 if (!clicking)
@@ -1325,59 +1407,46 @@ namespace Auto_Clicker
 
         private void OpenOverlaySettings()
         {
-            if (settingsForm != null && !settingsForm.IsDisposed)
-            {
-                settingsForm.BringToFront();
-                return;
-            }
             hotkeyTimer.Stop();
-            this.Enabled = false;
 
-            // Overlay starten, falls nicht aktiv
             if (cursorOverlay == null || cursorOverlay.IsDisposed)
             {
                 cursorOverlay = new CursorOverlayForm();
                 cursorOverlay.Show();
             }
 
-            // Settings-Fenster erstellen
-            settingsForm = new OverlaySettingsForm(cursorOverlay.CurrentColor, cursorOverlay.CurrentSize);
-
-            // Änderungen übernehmen
-            settingsForm.ColorChanged += color =>
+            using (var settingsForm = new OverlaySettingsForm(cursorOverlay.CurrentColor, cursorOverlay.CurrentSize))
             {
-                cursorOverlay?.SetOverlayColor(color);
-                Properties.Settings.Default.ClickCircleColor = color;
-            };
-
-            settingsForm.SizeChanged += size =>
-            {
-                cursorOverlay?.SetOverlaySize(size);
-                Properties.Settings.Default.ClickCircleSize = size;
-            };
-
-            settingsForm.TransparencyChanged += transparency =>
-            {
-                cursorOverlay?.SetOverlayTransparency(transparency);
-                Properties.Settings.Default.ClickCircleTransparent = transparency;
-            };
-
-            settingsForm.FormClosed += (s, e) =>
-            {
-                Properties.Settings.Default.Save();
-
-                if (cursorOverlay != null && !cursorOverlay.IsDisposed)
+                settingsForm.ColorChanged += color =>
                 {
-                    cursorOverlay.Close();
-                    cursorOverlay = null;
-                }
-                hotkeyTimer.Start();
-                this.Enabled = true;
+                    cursorOverlay?.SetOverlayColor(color);
+                    Properties.Settings.Default.ClickCircleColor = color;
+                };
 
-                settingsForm = null;
-            };
+                settingsForm.SizeChanged += size =>
+                {
+                    cursorOverlay?.SetOverlaySize(size);
+                    Properties.Settings.Default.ClickCircleSize = size;
+                };
 
-            settingsForm.Show();
+                settingsForm.TransparencyChanged += transparency =>
+                {
+                    cursorOverlay?.SetOverlayTransparency(transparency);
+                    Properties.Settings.Default.ClickCircleTransparent = transparency;
+                };
+
+                settingsForm.ShowDialog(this);
+            }
+
+            Properties.Settings.Default.Save();
+
+            if (cursorOverlay != null && !cursorOverlay.IsDisposed)
+            {
+                cursorOverlay.Close();
+                cursorOverlay = null;
+            }
+
+            hotkeyTimer.Start();
         }
 
         public void MakeClickThrough(Form form)
@@ -1424,6 +1493,7 @@ namespace Auto_Clicker
 
             hotkeyTimer.Stop();
             TabPages.Enabled = false;
+            HotkeyBoxOC.Enabled = false;
 
             using (DarkBackgroundOverlay bg = new DarkBackgroundOverlay())
             using (KeyCaptureOverlay overlay = new KeyCaptureOverlay())
@@ -1547,9 +1617,8 @@ namespace Auto_Clicker
                         while ((GetAsyncKeyState(detectedKey) & 0x8000) != 0)
                         {
                             long swtime = sw.ElapsedMilliseconds;
-                            List<String> parts = _Actions.Ms_to_PartsString(swtime);
                             if (swtime > 50)
-                                overlay.SetMessage($"Key detected: {detectedKey}\nRecoding of Holding: " + string.Join(" ", parts));
+                                overlay.SetMessage($"Key detected: {detectedKey}\nRecoding of Holding: " + _Actions.Ms_to_PartsString(swtime));
                             overlay.Refresh();
                             Thread.Sleep(10);
                         }
@@ -1573,6 +1642,7 @@ namespace Auto_Clicker
             }
             hotkeyTimer.Start();
             TabPages.Enabled = true;
+            HotkeyBoxOC.Enabled = true;
             return (detectedKey, washolding);
         }
 
@@ -1654,6 +1724,7 @@ namespace Auto_Clicker
             ClickPerSecNum.Enabled = true;
             HoldToClick.Enabled = true;
             Num_Randomizer.Enabled = true;
+
             ClickRepeatgroup.Enabled = false;
             PerTimems.Enabled = false;
             PerTimesec.Enabled = false;
@@ -1730,16 +1801,25 @@ namespace Auto_Clicker
                     PageMain.Text = "Main ⬤";
                     PageActions.Text = "Actions";
                     PageColorClick.Text = "ColorClick";
+                    PageRecPlay.Text = "Rec / Play";
                     break;
                 case 1:
-                    PageActions.Text = "Actions ⬤";
                     PageMain.Text = "Main";
+                    PageActions.Text = "Actions ⬤";
                     PageColorClick.Text = "ColorClick";
+                    PageRecPlay.Text = "Rec / Play";
                     break;
                 case 2:
-                    PageColorClick.Text = "ColorClick ⬤";
                     PageMain.Text = "Main";
                     PageActions.Text = "Actions";
+                    PageColorClick.Text = "ColorClick ⬤";
+                    PageRecPlay.Text = "Rec / Play";
+                    break;
+                case 3:
+                    PageMain.Text = "Main";
+                    PageActions.Text = "Actions";
+                    PageColorClick.Text = "ColorClick";
+                    PageRecPlay.Text = "Rec / Play ⬤";
                     break;
             }
         }
@@ -1901,7 +1981,7 @@ namespace Auto_Clicker
 
         private void PlayRecord_Click(object sender, EventArgs e)
         {
-            recorderFunc.playbackstart();
+            recorderFunc.StartPlaybackAsync(1.0);
         }
 
         private void ColorSetArea_Click(object sender, EventArgs e)
@@ -2024,6 +2104,13 @@ namespace Auto_Clicker
                     Color_Clickakey_setkey_Label.Text = $"X:{_ColorClick.ClickPosition.X}, Y:{_ColorClick.ClickPosition.Y} <{_ColorClick.ClickPos_Key.ToString()}>";
                     break;
             }
+            setwindowsizeFunc();
+        }
+
+        private void RecTimelineEditor_Click(object sender, EventArgs e)
+        {
+            var editor = new TimelineEditorForm(recorderFunc);
+            editor.Show();
         }
     }
 
@@ -2270,6 +2357,7 @@ namespace Auto_Clicker
             Width = 300;
             Height = 250;
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
 
             initialSize = Math.Clamp(initialSize, 10, 100);
