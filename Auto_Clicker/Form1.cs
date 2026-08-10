@@ -105,7 +105,9 @@ namespace Auto_Clicker
                 if (action.Type == ActionType.MouseClick)
                     return $"M:{action.MousePosition.X}:{action.MousePosition.Y}:{action.HoldClickMS}:<{action.Mousepress}>";
                 else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
-                    return $"K:{action.Key}:{action.HoldClickMS}";
+                    return action.HoldKey.HasValue
+                        ? $"K:{action.Key}:{action.HoldClickMS}:H:{action.HoldKey}"
+                        : $"K:{action.Key}:{action.HoldClickMS}";
                 else if (action.Type == ActionType.Waittime && action.ToWait > 0)
                     return $"W:{action.ToWait}";
                 return null;
@@ -330,14 +332,22 @@ namespace Auto_Clicker
                             {
                                 long holdMs = 0;
 
+                                Keys? holdKey = null;
                                 if (parts.Length >= 3)
                                     long.TryParse(parts[2], out holdMs);
+
+                                if (parts.Length >= 5 && parts[3] == "H" &&
+                                    Enum.TryParse(parts[4], out Keys parsedHoldKey))
+                                {
+                                    holdKey = parsedHoldKey;
+                                }
 
                                 _Actions.SavedActions.Add(new ClickOrKeyAction
                                 {
                                     Type = ActionType.KeyPress,
                                     Key = key,
-                                    HoldClickMS = holdMs
+                                    HoldClickMS = holdMs,
+                                    HoldKey = holdKey
                                 });
                             }
 
@@ -692,6 +702,7 @@ namespace Auto_Clicker
                 HoldClickMS = a.HoldClickMS,
                 Mousepress = a.Mousepress,
                 Key = a.Key,
+                HoldKey = a.HoldKey,
                 ToWait = a.ToWait
             }).ToList();
 
@@ -729,7 +740,8 @@ namespace Auto_Clicker
                         {
                             Type = ActionType.KeyPress,
                             Key = d.Key,
-                            HoldClickMS = d.HoldClickMS
+                            HoldClickMS = d.HoldClickMS,
+                            HoldKey = d.HoldKey
                         });
                         break;
 
@@ -842,7 +854,7 @@ namespace Auto_Clicker
                         MessageBoxIcon.Warning);
 
                     if (overwrite != DialogResult.Yes)
-                        return; // ❗ Dialog bleibt offen
+                        return; // Dialog bleibt offen
                 }
 
                 form.DialogResult = DialogResult.OK;
@@ -896,7 +908,7 @@ namespace Auto_Clicker
 
         private void Presets_Open_Folder_Click(object sender, EventArgs e)
         {
-            String Folder = GetPresetFolder();
+            string Folder = GetPresetFolder();
 
             if (!Directory.Exists(Folder))
             {
@@ -910,9 +922,6 @@ namespace Auto_Clicker
                 UseShellExecute = true
             });
         }
-
-
-
 
         public void DoClick(Keys ToClick, long holdtime = 0, string infotext = "")
         {
@@ -1024,13 +1033,13 @@ namespace Auto_Clicker
 
                         if (remaining > 1000)
                         {
-                            // ⏱ über 1 Sekunde → Sekunden-Anzeige
+                            //über 1 Sekunde → Sekunden-Anzeige
                             long seconds = remaining / 1000;
                             Timestring = $"{seconds}s";
                         }
                         else
                         {
-                            // 🔢 auf 100ms runden
+                            // auf 100ms runden
                             long roundedMs = (remaining / 100) * 100;
 
                             // optional: nie 0 anzeigen, solange noch gewartet wird
@@ -2451,6 +2460,7 @@ namespace Auto_Clicker
         public Keys? Mousepress { get; set; }
 
         public Keys? Key { get; set; }
+        public Keys? HoldKey { get; set; }
 
         public long ToWait { get; set; }
     }

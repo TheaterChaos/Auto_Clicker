@@ -110,7 +110,7 @@ namespace Auto_Clicker
                 {
                     if (sw.ElapsedMilliseconds > 50)
                     {
-                        coordLabel.Text = $"Rec: "+ Ms_to_PartsString(sw.ElapsedMilliseconds);
+                        coordLabel.Text = $"Rec: " + Ms_to_PartsString(sw.ElapsedMilliseconds);
                         Application.DoEvents();
                     }
                     Thread.Sleep(10); // Warten, bis die Taste losgelassen wird
@@ -229,25 +229,25 @@ namespace Auto_Clicker
                 Location = new Point(20, 0),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            NumericUpDown Holdtimems = new NumericUpDown 
-            { 
-                Minimum = 0, 
-                Maximum = 1000000, 
-                Value = 100, 
-                Location = new Point(100, 65), 
-                Size = new Size(100, 25) 
+            NumericUpDown Holdtimems = new NumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 1000000,
+                Value = 100,
+                Location = new Point(100, 65),
+                Size = new Size(100, 25)
             };
-            Button DoneButton = new Button 
-            { 
-                Text = "Done", 
-                Location = new Point(60, 95), 
-                Size = new Size(80, 30) 
+            Button DoneButton = new Button
+            {
+                Text = "Done",
+                Location = new Point(60, 95),
+                Size = new Size(80, 30)
             };
-            Button CancleButton = new Button 
-            { 
-                Text = "Cancle", 
-                Location = new Point(160, 95), 
-                Size = new Size(80, 30) 
+            Button CancleButton = new Button
+            {
+                Text = "Cancle",
+                Location = new Point(160, 95),
+                Size = new Size(80, 30)
             };
 
             DoneButton.Click += (s, e) =>
@@ -281,6 +281,7 @@ namespace Auto_Clicker
                     {
                         Type = ActionType.KeyPress,
                         Key = Keypress,
+                        HoldKey = a.HoldKey,
                         HoldClickMS = holding
                     });
                 }
@@ -350,7 +351,7 @@ namespace Auto_Clicker
             {
                 var item = SavedActions[index];
                 SavedActions.RemoveAt(index);
-                SavedActions.Insert((int)Positiontoset.Value -1, item);
+                SavedActions.Insert((int)Positiontoset.Value - 1, item);
                 UpdateActionList();
                 form.Close();
             };
@@ -477,33 +478,89 @@ namespace Auto_Clicker
                                 }
                                 else if (action.Type == ActionType.KeyPress && action.Key.HasValue)
                                 {
-                                    infoworking = $"Auto clicker ON   Count: {clickCount} Working on: {i} <{action.Key.Value.ToString()}> Hold: ";
-                                    _Main.Setinfotextfast(infoworking, true);
-                                    string keyName = action.Key.Value.ToString();
-                                    if (DataStings.keyMap.TryGetValue(keyName, out VirtualKeyCode vk))
+                                    if (action.HoldKey.HasValue)
                                     {
-                                        if (action.HoldClickMS > 0)
+                                        infoworking = $"Auto clicker ON   Count: {clickCount} Working on: {i} Hold: <{action.HoldKey.Value}> + Press: <{action.Key.Value}> ";
+                                        _Main.Setinfotextfast(infoworking, true);
+
+                                        var input = new InputSimulator();
+                                        bool holdKeyboard = DataStings.keyMap.TryGetValue(action.HoldKey.Value.ToString(), out VirtualKeyCode holdVk);
+                                        bool holdMouse = DataStings.AllowedMouseList.Contains(action.HoldKey.Value.ToString());
+
+                                        Stopwatch holdandpresstimer = new Stopwatch();
+
+                                        if (holdKeyboard)
                                         {
+                                            input.Keyboard.KeyDown(holdVk);
+                                        }
+                                        else if (holdMouse)
+                                        {
+                                            if (action.HoldKey.Value == Keys.LButton)
+                                                input.Mouse.LeftButtonDown();
+                                            else if (action.HoldKey.Value == Keys.RButton)
+                                                input.Mouse.RightButtonDown();
+                                            else if (action.HoldKey.Value == Keys.MButton)
+                                                input.Mouse.MiddleButtonDown();
+                                            else if (action.HoldKey.Value == Keys.XButton1)
+                                                input.Mouse.XButtonDown(0x0001);
+                                            else if (action.HoldKey.Value == Keys.XButton2)
+                                                input.Mouse.XButtonDown(0x0002);
+                                        }
+
+                                        holdandpresstimer.Restart();
+
+                                        try
+                                        {
+                                            while (holdandpresstimer.ElapsedMilliseconds < action.HoldClickMS/2)
+                                            {
+                                            }
+
                                             sw.Stop();
-                                            _Main.DoClick(action.Key.Value, action.HoldClickMS, infoworking);
+                                            _Main.DoClick(action.Key.Value);
                                             sw.Start();
                                         }
-                                        else
+                                        finally
                                         {
-                                            _Main.DoClick(action.Key.Value);
-                                        }        
+                                            while (holdandpresstimer.ElapsedMilliseconds < action.HoldClickMS)
+                                            {
+                                            }
+
+                                            if (holdKeyboard)
+                                            {
+                                                input.Keyboard.KeyUp(holdVk);
+                                            }
+                                            else if (holdMouse)
+                                            {
+                                                if (action.HoldKey.Value == Keys.LButton)
+                                                    input.Mouse.LeftButtonUp();
+                                                else if (action.HoldKey.Value == Keys.RButton)
+                                                    input.Mouse.RightButtonUp();
+                                                else if (action.HoldKey.Value == Keys.MButton)
+                                                    input.Mouse.MiddleButtonUp();
+                                                else if (action.HoldKey.Value == Keys.XButton1)
+                                                    input.Mouse.XButtonUp(0x0001);
+                                                else if (action.HoldKey.Value == Keys.XButton2)
+                                                    input.Mouse.XButtonUp(0x0002);
+                                            }
+                                        }
                                     }
-                                    else if (DataStings.AllowedMouseList.Contains(action.Key.Value.ToString()))
+                                    else
                                     {
-                                        if (action.HoldClickMS > 0)
+                                        infoworking = $"Auto clicker ON   Count: {clickCount} Working on: {i} <{action.Key.Value.ToString()}> Hold: ";
+                                        _Main.Setinfotextfast(infoworking, true);
+                                        string keyName = action.Key.Value.ToString();
+                                        if (DataStings.keyMap.ContainsKey(keyName) || DataStings.AllowedMouseList.Contains(keyName))
                                         {
-                                            sw.Stop();
-                                            _Main.DoClick(action.Key.Value, action.HoldClickMS, infoworking);
-                                            sw.Start();
-                                        }
-                                        else
-                                        {
-                                            _Main.DoClick(action.Key.Value);
+                                            if (action.HoldClickMS > 0)
+                                            {
+                                                sw.Stop();
+                                                _Main.DoClick(action.Key.Value, action.HoldClickMS, infoworking);
+                                                sw.Start();
+                                            }
+                                            else
+                                            {
+                                                _Main.DoClick(action.Key.Value);
+                                            }
                                         }
                                     }
                                     TextActionShow = action.Key.Value.ToString();
@@ -696,7 +753,7 @@ namespace Auto_Clicker
             if (_Main.CurserPositionList.SelectedItem == null)
                 return;
 
-            if (_Main.ShowPointOnClick.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Key") && !_Main.ShowAllPositionsCheck.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Wait"))
+            if (_Main.ShowPointOnClick.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Key") && !_Main.ShowAllPositionsCheck.Checked && !_Main.CurserPositionList.SelectedItem.ToString().Contains("Wait") && !_Main.CurserPositionList.SelectedItem.ToString().Contains("+"))
             {
                 int indexpos = _Main.CurserPositionList.SelectedIndex;
                 Point pos = SavedActions[indexpos].MousePosition;
@@ -812,6 +869,7 @@ namespace Auto_Clicker
                 return;
             }
 
+            Keys? existingHoldKey = SavedActions[selectedIndex].HoldKey;
             (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
             if (PressedKey == Keys.None)
             {
@@ -824,6 +882,7 @@ namespace Auto_Clicker
                 {
                     Type = ActionType.KeyPress,
                     Key = PressedKey,
+                    HoldKey = existingHoldKey,
                     HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
                 });
             }
@@ -882,8 +941,33 @@ namespace Auto_Clicker
                 });
 
             }
+            else if (MouseKey == ActionType.HoldAndPress)
+            {
+                (Keys HoldKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, _Main.CheckAddHold.Checked);
+                if (HoldKey == Keys.None)
+                {
+                    _Main.Setinfotextfast("Hold key canceled.");
+                    return;
+                }
+
+                (Keys PressKey, long __) = _Main.RecordKeysSend(true, true, false, false, true, false);
+                if (PressKey == Keys.None)
+                {
+                    _Main.Setinfotextfast("Press key canceled.");
+                    return;
+                }
+                SavedActions.RemoveAt(selectedIndex);
+                SavedActions.Insert(selectedIndex, new ClickOrKeyAction
+                {
+                    Type = ActionType.HoldAndPress,
+                    HoldKey = HoldKey,
+                    Key = PressKey,
+                    HoldClickMS = holding
+                });
+            }
             else if (MouseKey == ActionType.KeyPress)
             {
+                Keys? existingHoldKey = SavedActions[selectedIndex].HoldKey;
                 (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
                 if (PressedKey == Keys.None)
                 {
@@ -896,6 +980,7 @@ namespace Auto_Clicker
                     {
                         Type = ActionType.KeyPress,
                         Key = PressedKey,
+                        HoldKey = existingHoldKey,
                         HoldClickMS = _Main.CheckAddHold.Checked ? holding : 0
                     });
                 }
@@ -935,8 +1020,41 @@ namespace Auto_Clicker
             }
         }
 
+        public void AddHoldAndPressAction()
+        {
+            (Keys HoldKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, _Main.CheckAddHold.Checked);
+            if (HoldKey == Keys.None)
+            {
+                _Main.Setinfotextfast("Hold key canceled.");
+                return;
+            }
+
+            (Keys PressKey, long __) = _Main.RecordKeysSend(true, true, false, false, true, false);
+            if (PressKey == Keys.None)
+            {
+                _Main.Setinfotextfast("Press key canceled.");
+                return;
+            }
+
+            SavedActions.Add(new ClickOrKeyAction
+            {
+                Type = ActionType.HoldAndPress,
+                HoldKey = HoldKey,
+                Key = PressKey,
+                HoldClickMS = holding
+            });
+
+            _Main.Setinfotextfast($"Action Saved: Hold <{HoldKey}> + Press <{PressKey}>");
+            UpdateActionList();
+        }
+
         public void KeySaveInAction()
         {
+            if (_Main.CheckAddHoldWithPress.Checked)
+            {
+                AddHoldAndPressAction();
+                return;
+            }
             (Keys PressedKey, long holding) = _Main.RecordKeysSend(true, true, false, false, true, true);
             if (PressedKey == Keys.None)
             {
@@ -959,14 +1077,14 @@ namespace Auto_Clicker
             int selectedIndex = _Main.CurserPositionList.SelectedIndex;
             if (selectedIndex >= 0 && selectedIndex < SavedActions.Count)
             {
-                _Main.Setinfotextfast("Removed Action: "+_Main.CurserPositionList.Items[selectedIndex].ToString());
+                _Main.Setinfotextfast("Removed Action: " + _Main.CurserPositionList.Items[selectedIndex].ToString());
                 SavedActions.RemoveAt(selectedIndex);
                 UpdateActionList();
                 if (_Main.CurserPositionList.Items.Count > 0)
                     if (_Main.CurserPositionList.Items.Count > selectedIndex)
                         _Main.CurserPositionList.SelectedIndex = selectedIndex;
                     else
-                        _Main.CurserPositionList.SelectedIndex = selectedIndex -1;
+                        _Main.CurserPositionList.SelectedIndex = selectedIndex - 1;
 
             }
         }
@@ -1046,7 +1164,7 @@ namespace Auto_Clicker
                 TopMost = true,
                 ShowInTaskbar = false,
                 Size = new Size(size + 170, 1),
-                Location = new Point(pos.X - size / 2 +5, pos.Y - size / 2)
+                Location = new Point(pos.X - size / 2 + 5, pos.Y - size / 2)
             };
 
             backgroundform.Paint += (s, e) =>
@@ -1134,7 +1252,8 @@ namespace Auto_Clicker
     {
         MouseClick,
         KeyPress,
-        Waittime
+        Waittime,
+        HoldAndPress
     }
 
     public class ClickOrKeyAction
@@ -1143,6 +1262,7 @@ namespace Auto_Clicker
         public Point MousePosition { get; set; }
         public Keys? Mousepress { get; set; }
         public Keys? Key { get; set; }
+        public Keys? HoldKey { get; set; }
         public long ToWait { get; set; }
         public long HoldClickMS { get; set; }
 
@@ -1170,6 +1290,16 @@ namespace Auto_Clicker
                 var parts = tranformtoparts(ToWait);
                 string waitText = "Wait: " + string.Join(" ", parts);
                 return waitText;//Environment.NewLine + waitText;
+            }
+
+            if (HoldKey.HasValue && Key.HasValue)
+            {
+                var parts = tranformtoparts(HoldClickMS);
+                if (parts.Count > 0)
+                {
+                    return $"H: <{HoldKey.Value} [{string.Join(" ", parts)}]> + P: <{Key.Value}>";
+                }
+                return $"H: <{HoldKey.Value}> + P: <{Key.Value}>";
             }
 
             if (HoldClickMS > 0)

@@ -162,6 +162,7 @@ namespace Auto_Clicker
             panelTopInfo = new Panel();
             panelHotkey = new Panel();
             panelContent = new Panel();
+            CheckAddHoldWithPress = new CheckBox();
             menuStrip1.SuspendLayout();
             ActionRightclick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PerTimems).BeginInit();
@@ -1022,6 +1023,7 @@ namespace Auto_Clicker
             // 
             // PageActions
             // 
+            PageActions.Controls.Add(CheckAddHoldWithPress);
             PageActions.Controls.Add(Actions_Load_List);
             PageActions.Controls.Add(Actions_Save_List);
             PageActions.Controls.Add(CheckAddHold);
@@ -1233,8 +1235,17 @@ namespace Auto_Clicker
             // panelContent
             // 
             resources.ApplyResources(panelContent, "panelContent");
+            panelContent.BackColor = SystemColors.ButtonFace;
             panelContent.Controls.Add(TabPages);
             panelContent.Name = "panelContent";
+            // 
+            // CheckAddHoldWithPress
+            // 
+            resources.ApplyResources(CheckAddHoldWithPress, "CheckAddHoldWithPress");
+            CheckAddHoldWithPress.Name = "CheckAddHoldWithPress";
+            CheckAddHoldWithPress.TabStop = false;
+            AToolTips.SetToolTip(CheckAddHoldWithPress, resources.GetString("CheckAddHoldWithPress.ToolTip"));
+            CheckAddHoldWithPress.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1421,6 +1432,7 @@ namespace Auto_Clicker
         public Button button1;
         public ListBox RecBoxList;
         public Button RecTimelineEditor;
+        public CheckBox CheckAddHoldWithPress;
     }
 }
 

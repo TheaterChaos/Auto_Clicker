@@ -26,6 +26,13 @@ namespace Auto_Clicker
 
         public void StartClickingColor()
         {
+            if (scanArea.Width <= 0 || scanArea.Height <= 0)
+            {
+                _Main.Setinfotextfast("Set first a valid scan area.");
+                _Main.StopClicking();
+                return;
+            }
+
             lock (_Main.clickLock)
             {
                 if (_Main.clicking) return;
