@@ -108,9 +108,14 @@ namespace Auto_Clicker
                     return action.HoldKey.HasValue
                         ? $"K:{action.Key}:{action.HoldClickMS}:H:{action.HoldKey}"
                         : $"K:{action.Key}:{action.HoldClickMS}";
+                else if (action.Type == ActionType.HoldAndPress &&
+                                        action.HoldKey.HasValue &&
+                                        action.Key.HasValue)
+                    return $"H:{action.HoldKey}:{action.Key}";
                 else if (action.Type == ActionType.Waittime && action.ToWait > 0)
                     return $"W:{action.ToWait}";
-                return null;
+
+            return null;
             }).Where(s => s != null);
             Properties.Settings.Default.SavedPoints = string.Join(";", parts); // Speichern der gespeicherten Punkte
             Properties.Settings.Default.ShowPointCLick = ShowPointOnClick.Checked; // true = Punkt anzeigen, false = keinen Punkt anzeigen
@@ -351,6 +356,22 @@ namespace Auto_Clicker
                                 });
                             }
 
+                        }
+                        else if (entry.StartsWith("H:")) // Hold + Press
+                        {
+                            var parts = entry.Split(':');
+
+                            if (parts.Length >= 3 &&
+                                Enum.TryParse(parts[1], out Keys holdKey) &&
+                                Enum.TryParse(parts[2], out Keys pressKey))
+                            {
+                                _Actions.SavedActions.Add(new ClickOrKeyAction
+                                {
+                                    Type = ActionType.HoldAndPress,
+                                    HoldKey = holdKey,
+                                    Key = pressKey
+                                });
+                            }
                         }
                         else if (entry.StartsWith("W:"))
                         {
@@ -739,6 +760,16 @@ namespace Auto_Clicker
                         _Actions.SavedActions.Add(new ClickOrKeyAction
                         {
                             Type = ActionType.KeyPress,
+                            Key = d.Key,
+                            HoldClickMS = d.HoldClickMS,
+                            HoldKey = d.HoldKey
+                        });
+                        break;
+
+                    case ActionType.HoldAndPress:
+                        _Actions.SavedActions.Add(new ClickOrKeyAction
+                        {
+                            Type = ActionType.HoldAndPress,
                             Key = d.Key,
                             HoldClickMS = d.HoldClickMS,
                             HoldKey = d.HoldKey
@@ -1491,7 +1522,7 @@ namespace Auto_Clicker
             }
         }
 
-        public (Keys, long) RecordKeysSend(bool Mousefind, bool keyboardfind, bool isHotkey = false, bool isKeypress = false, bool isAction = false, bool recHold = false)
+        public (Keys, long) RecordKeysSend(bool Mousefind, bool keyboardfind, bool isHotkey = false, bool isKeypress = false, bool isAction = false, bool recHold = false, Keys NotAllowed = Keys.None)
         {
             bool breakloop = false;
             Keys detectedKey = Keys.None;
@@ -1526,20 +1557,29 @@ namespace Auto_Clicker
                                 breakloop = true; // Escape-Taste gedrückt, Schleife beenden
                                 break;
                             }
+                            if (key == NotAllowed)
+                            {
+                                ShowError = true;
+                                ErrortoShow = $"(Cant Use the Same Key for Both): {key}";
+                                break;
+                            }
                             else if (key == hotkey && isKeypress)
                             {
                                 ShowError = true;
                                 ErrortoShow = $"(Same as Hotkey): {key}";
+                                break;
                             }
                             else if (key == clickKey && isHotkey)
                             {
                                 ShowError = true;
                                 ErrortoShow = $"(Same as ClickKey): {key}";
+                                break;
                             }
                             else if (key == hotkey && isAction)
                             {
                                 ShowError = true;
                                 ErrortoShow = $"(Same as Hotkey): {key}";
+                                break;
                             }
                             else if (Mousefind && DataStings.AllowedMouseList.Contains(key.ToString())) // Taste ist gedrückt
                             {
@@ -1547,6 +1587,7 @@ namespace Auto_Clicker
                                 {
                                     ShowError = true;
                                     ErrortoShow = $"(Hotkey disabled keys: LButton, RButton): {key}";
+                                    break;
                                 }
                                 else if (isKeypress && !UseMouse.Checked)
                                 {
@@ -1584,6 +1625,7 @@ namespace Auto_Clicker
                             {
                                 ShowError = true;
                                 ErrortoShow = $"(Not exist in list): {key}";
+                                break;
                             }
                         }
                     }
