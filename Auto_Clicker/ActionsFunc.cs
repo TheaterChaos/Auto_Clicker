@@ -233,7 +233,7 @@ namespace Auto_Clicker
             {
                 Minimum = 0,
                 Maximum = 1000000,
-                Value = 100,
+                Value = SavedActions[index].HoldClickMS == 0 ? 100 : SavedActions[index].HoldClickMS,
                 Location = new Point(100, 65),
                 Size = new Size(100, 25)
             };
@@ -271,6 +271,17 @@ namespace Auto_Clicker
                         Type = ActionType.MouseClick,
                         MousePosition = pos,
                         Mousepress = press,
+                        HoldClickMS = holding
+                    });
+                }
+                else if (type == ActionType.HoldAndPress)
+                {
+                    SavedActions.RemoveAt(index);
+                    SavedActions.Insert(index, new ClickOrKeyAction
+                    {
+                        Type = ActionType.HoldAndPress,
+                        Key = Keypress,
+                        HoldKey = a.HoldKey,
                         HoldClickMS = holding
                     });
                 }
@@ -473,8 +484,6 @@ namespace Auto_Clicker
                                             TextActionShow = action.Mousepress.Value.ToString();
                                         }
                                     }
-                                    //new InputSimulator().Mouse
-                                    //    .LeftButtonClick();
                                 }
                                 else if (action.Type == ActionType.HoldAndPress && action.Key.HasValue)
                                 {

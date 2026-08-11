@@ -115,7 +115,7 @@ namespace Auto_Clicker
                 else if (action.Type == ActionType.Waittime && action.ToWait > 0)
                     return $"W:{action.ToWait}";
 
-            return null;
+                return null;
             }).Where(s => s != null);
             Properties.Settings.Default.SavedPoints = string.Join(";", parts); // Speichern der gespeicherten Punkte
             Properties.Settings.Default.ShowPointCLick = ShowPointOnClick.Checked; // true = Punkt anzeigen, false = keinen Punkt anzeigen

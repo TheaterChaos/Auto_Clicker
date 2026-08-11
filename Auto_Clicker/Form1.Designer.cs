@@ -115,6 +115,7 @@ namespace Auto_Clicker
             Num_Randomizer = new NumericUpDown();
             button1 = new Button();
             button2 = new Button();
+            CheckAddHoldWithPress = new CheckBox();
             Color_Clickakey_setkey = new Button();
             TabPages = new TabControl();
             PageMain = new TabPage();
@@ -162,7 +163,6 @@ namespace Auto_Clicker
             panelTopInfo = new Panel();
             panelHotkey = new Panel();
             panelContent = new Panel();
-            CheckAddHoldWithPress = new CheckBox();
             menuStrip1.SuspendLayout();
             ActionRightclick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PerTimems).BeginInit();
@@ -848,6 +848,14 @@ namespace Auto_Clicker
             AToolTips.SetToolTip(button2, resources.GetString("button2.ToolTip"));
             button2.UseVisualStyleBackColor = false;
             // 
+            // CheckAddHoldWithPress
+            // 
+            resources.ApplyResources(CheckAddHoldWithPress, "CheckAddHoldWithPress");
+            CheckAddHoldWithPress.Name = "CheckAddHoldWithPress";
+            CheckAddHoldWithPress.TabStop = false;
+            AToolTips.SetToolTip(CheckAddHoldWithPress, resources.GetString("CheckAddHoldWithPress.ToolTip"));
+            CheckAddHoldWithPress.UseVisualStyleBackColor = true;
+            // 
             // Color_Clickakey_setkey
             // 
             Color_Clickakey_setkey.BackColor = SystemColors.ActiveCaption;
@@ -1238,14 +1246,6 @@ namespace Auto_Clicker
             panelContent.BackColor = SystemColors.ButtonFace;
             panelContent.Controls.Add(TabPages);
             panelContent.Name = "panelContent";
-            // 
-            // CheckAddHoldWithPress
-            // 
-            resources.ApplyResources(CheckAddHoldWithPress, "CheckAddHoldWithPress");
-            CheckAddHoldWithPress.Name = "CheckAddHoldWithPress";
-            CheckAddHoldWithPress.TabStop = false;
-            AToolTips.SetToolTip(CheckAddHoldWithPress, resources.GetString("CheckAddHoldWithPress.ToolTip"));
-            CheckAddHoldWithPress.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
