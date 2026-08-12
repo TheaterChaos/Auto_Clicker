@@ -111,7 +111,7 @@ namespace Auto_Clicker
                 else if (action.Type == ActionType.HoldAndPress &&
                                         action.HoldKey.HasValue &&
                                         action.Key.HasValue)
-                    return $"H:{action.HoldKey}:{action.Key}";
+                    return $"L:{action.HoldKey}:{action.Key}:{action.HoldClickMS}";
                 else if (action.Type == ActionType.Waittime && action.ToWait > 0)
                     return $"W:{action.ToWait}";
 
@@ -355,21 +355,22 @@ namespace Auto_Clicker
                                     HoldKey = holdKey
                                 });
                             }
-
                         }
-                        else if (entry.StartsWith("H:")) // Hold + Press
+                        else if (entry.StartsWith("L:")) // Hold + Press
                         {
                             var parts = entry.Split(':');
 
-                            if (parts.Length >= 3 &&
+                            if (parts.Length >= 4 &&
                                 Enum.TryParse(parts[1], out Keys holdKey) &&
-                                Enum.TryParse(parts[2], out Keys pressKey))
+                                Enum.TryParse(parts[2], out Keys pressKey)&&
+                                Enum.TryParse(parts[3], out Keys parsedHoldKey))
                             {
                                 _Actions.SavedActions.Add(new ClickOrKeyAction
                                 {
                                     Type = ActionType.HoldAndPress,
                                     HoldKey = holdKey,
-                                    Key = pressKey
+                                    Key = pressKey,
+                                    HoldClickMS = long.TryParse(parts[3], out long holdMs) ? holdMs : 0
                                 });
                             }
                         }
